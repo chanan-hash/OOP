@@ -49,6 +49,17 @@ public class Board {
         return true;
     }
 
+    // For ending the game
+//    private int countMarkInDirection(int row, int col, int rowDelta, int colDelta, Mark mark) {
+//        int count = 0;
+//        while(row < SIZE && row >= 0 && col < SIZE && col >= 0 && board[row][col] == mark) {
+//            count++;
+//            row += rowDelta;
+//            col += colDelta;
+//        }
+//        return count;
+//    }
+
     // returning if the game ended
     public boolean isGameEnded() {
         if (blank_spots == 0) {
