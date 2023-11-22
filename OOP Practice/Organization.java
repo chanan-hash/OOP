@@ -1,2 +1,8 @@
-package PACKAGE_NAME;public class Organization {
+public class Organization {
+
+
+
+    public static void main(String[] args) {
+
+    }
 }
