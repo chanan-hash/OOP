@@ -2,6 +2,7 @@ package Q3;
 
 public class Balloon {
     /**
+     * This class represent a 3D balloon
      * The balloon is defined by point which is the center and size if radius
      */
 

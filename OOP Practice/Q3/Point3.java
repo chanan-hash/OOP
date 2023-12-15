@@ -1,7 +1,9 @@
 package Q3;
 
 /**
- * This class represent a 3D balloon
+ * This class represent a 3D Point
+ * This is taken from self practice:
+ * https://drive.google.com/drive/folders/1rI7xavrdx89b2Kwzzrx4BYwZOysjgNwy
  */
 public class Point3 {
 
