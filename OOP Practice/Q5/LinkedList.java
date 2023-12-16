@@ -43,11 +43,11 @@ public class LinkedList<T> {
         T ans = null;
         Node node = head;
         int i = 0;
-        for (i = 0; j < size; i++) { // We an do the loop also by going over with nodes
+        for (i = 0; i < size; i++) { // We an do the loop also by going over with nodes
             if (node.data.equals(data)) {
                 break; // breaking the loop so we can handel the remove
-                node = node.right;
             }
+            node = node.right;
         }
         if (i == size) { // means we've finished going over the whole list and didn't find the data we've searched
             return null;
