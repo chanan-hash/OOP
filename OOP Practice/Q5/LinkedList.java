@@ -1,5 +1,8 @@
 package Q5;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * This class represents a two ways generic Cycled linked-list
  * from the drive:
@@ -14,6 +17,41 @@ public class LinkedList<T> {
     public LinkedList() { // initializing the linked-list
         head = null;
         size = 0;
+    }
+
+
+    class ListIterator implements Iterator {
+        private int count;
+        private Node current;
+        private boolean nextCall;
+
+        public ListIterator() {
+            count = 0;
+            current = head;
+            nextCall = false;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !(count == size); // if the counter hasn't got tot the size, meas we have next
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) throw new NoSuchElementException(); // IF we don;t have next
+            nextCall = true;
+            T ans = (T) current.data;
+            current = current.right;
+            return ans;
+        }
+
+        @Override
+        public void remove() {
+            // Iterator.super.remove();
+            if (!nextCall) throw new IllegalStateException();
+            current.left.right = current.right;
+            nextCall = false;
+        }
     }
 
     // Copy constructor
@@ -64,5 +102,29 @@ public class LinkedList<T> {
         }
         size--;
         return ans; // That how we know that it has been removed
+    }
+
+    @Override
+    public String toString() {
+        String ans = "";
+        ans += "LinkedList{";
+//                + "head=" + head.data;
+        for (Node n = head; n != null; n = n.right) { // Loop by nodes
+            ans += n.data;
+        }
+         /*
+         for (int i = 0; i < size-1; i++) { // Loop by the size
+			ans += n.data + ", ";
+			n = n.next;
+		}
+		if(size > 0) ans += n.data;
+		return ans + "]";
+          */
+        ans += ", size=" + size + '}';
+        return ans;
+    }
+
+    public ListIterator iterator() {
+        return new ListIterator();
     }
 }
