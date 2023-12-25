@@ -6,6 +6,7 @@ import java.awt.*;
 
 /**
  * A practice from the drive on static and final variables
+ * https://drive.google.com/drive/folders/1XtcKLFhY3wKH4HugXbGkyCPFs37hg0rg
  */
 public class Circle {
     static final double PI = 3.141592; // Constant value. Final valuesAre written with capital letters
@@ -79,5 +80,24 @@ public class Circle {
         return area;
     }
 
+    static final Circle canonical = new Circle(new Point(0, 0), 1); // The canonical circle is on the origin axis, and has radius 1
 
+    /**
+     * This function returns the biggest area of a Array of circles
+     *
+     * @param crr
+     * @return
+     */
+    public static Circle biggestArea(Circle[] crr) {
+        if (crr.length == 0) {
+            throw new ArrayIndexOutOfBoundsException("The array is empty");
+        }
+        Circle ans = crr[0]; // Just to start with someone
+        for (int i = 0; i < crr.length; i++) {
+            if (crr[i].area() > ans.area()) {
+                ans = crr[i]; // to be the pointer to that place
+            }
+        }
+        return new Circle(ans); // Creating a new object that it won;t be on the same place in the memory
+    }
 }
