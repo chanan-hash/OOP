@@ -36,12 +36,12 @@ class PrintNums {
         }
     }
 
-    public class OneAfterOther {
-        public static void main(String[] args) {
-            Thr_1 t1 = new Thr_1();
-            Thr_2 t2 = new Thr_2(t1);
-            t2.start();
-            t1.start();
-        }
-    }
+//    public class OneAfterOther {
+//        public static void main(String[] args) {
+//            Thr_1 t1 = new Thr_1();
+//            Thr_2 t2 = new Thr_2(t1);
+//            t2.start();
+//            t1.start();
+//        }
+//    }
 }
