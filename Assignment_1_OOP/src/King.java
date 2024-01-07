@@ -7,8 +7,8 @@ public class King extends ConcretePiece {
      */
     private static final String type = "♔"; // We define the type of the piece as a constant String
 
-    public King(Player player, String type) {
-        super(player, type);
+    public King(Player player, String type, int numberKing) {
+        super(player, type, numberKing); // Each piece has a Player/Owner,type and tag number
     }
 
     @Override
@@ -16,12 +16,11 @@ public class King extends ConcretePiece {
         return this.type;
     }
 
-
-    public int getEatNumber() { // The King can't eat
+    @Override
+    public int getNumberOfEats() {
         return 0;
     }
-
-
+    @Override
     public String getName() { // It will help us for the printing after it
         return "K7";
     }

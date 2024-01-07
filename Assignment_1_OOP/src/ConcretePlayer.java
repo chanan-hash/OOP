@@ -1,11 +1,14 @@
+
 public class ConcretePlayer implements Player{
     /**
      * A Simple class that represents a player in a chess-like game.
      * We have two players in the game, and each player has a number of wins.
      * And each player has a boolean value that indicates whether the player is player one or not.
      */
+
     private final boolean isPlayerOne;
     private int wins = 0;
+
 
     public ConcretePlayer(boolean isPlayerOne) {
         this.isPlayerOne = isPlayerOne;

@@ -14,7 +14,7 @@ public class Pawn extends ConcretePiece {
     //The owner and the type are inherited from the ConcretePiece class
     public Pawn(Player player, String type, int numberPwan) {
         super(player, type, numberPwan);
-        this.type = type.isPlayerOne() ? PLAYER1 : PLAYER2;
+        this.type = player.isPlayerOne() ? PLAYER1 : PLAYER2; // By checking which player is it, we will know which type is it
         this.eatNumber = 0; // The number of the pieces that the pawn ate, initialized by 0
     }
 
@@ -23,16 +23,17 @@ public class Pawn extends ConcretePiece {
         return this.type;
     }
 
+    @Override
+    public int getNumberOfEats() {
+        return this.eatNumber;
+    }
+
     // Updating the eatNumber
-    public void eat(){
+    public void eat() {
         eatNumber++;
     }
 
     @Override
-    public int getEatNumber() {
-        return this.eatNumber;
-    }
-
     public String getName() { // It will help us for the printing after it
         String pawnName = super.getOwner().isPlayerOne() ? "D" : "A"; // D - Defender, A - Attacker
         return pawnName + super.getPieceNum();
