@@ -51,7 +51,7 @@ public abstract class ConcretePiece implements Piece {
 
     public void addMove(Position position) {
         if (moves.size() > 0) {
-            this.distance += moves.get(moves.size() - 1).distance(position); // Updating thew distance, by adding last place distance
+            this.distance += moves.get(moves.size() - 1).distance(position); // Updating the distance by adding last place in 'moves'  and using distance method
         }
         this.moves.add(position);
     }
