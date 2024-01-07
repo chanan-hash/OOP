@@ -12,8 +12,8 @@ public class Pawn extends ConcretePiece {
     private int eatNumber = 0; // The number of the pieces that the pawn ate
 
     //The owner and the type are inherited from the ConcretePiece class
-    public Pawn(Player player, String type, int numberPwan) {
-        super(player, type, numberPwan);
+    public Pawn(Player player, String type, int numberPawn) {
+        super(player, type, numberPawn);
         this.type = player.isPlayerOne() ? PLAYER1 : PLAYER2; // By checking which player is it, we will know which type is it
         this.eatNumber = 0; // The number of the pieces that the pawn ate, initialized by 0
     }
