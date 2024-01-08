@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class GameLogic implements PlayableLogic {
     /**
      * This class represents the game logic of the game. and implements the PlayableLogic interface.
@@ -22,8 +24,8 @@ public class GameLogic implements PlayableLogic {
         pieces = new ConcretePiece[37]; // Initializing the pieces
         player1 = new ConcretePlayer(true); // Initializing the players
         player2 = new ConcretePlayer(false);
-
         isPlayer2Turn = true; // Initializing the turn to player 2
+        king1Position = new Position(5, 5); // Initializing the king's position
         player1Pieces();
         player2Pieces();
 
@@ -191,17 +193,17 @@ public class GameLogic implements PlayableLogic {
         // First we will check which in this position
         ConcretePiece currPiece = board[a.getY()][a.getX()]; // Getting the current piece in that position
 
-        Player currPlayer = currPiece.getOwner();
-//        Player currPlayer = isPlayer2Turn ? player2 : player1; // Getting the current player
+//        Player currPlayer = currPiece.getOwner();
+        Player currPlayer = isPlayer2Turn ? player2 : player1; // Getting the current player
 
         // checking first the position correction
         if (currPiece == null) { // if it is an empty position
             return false;
         }
 
-//        if (currPiece.getOwner() != currPlayer) { // If the piece isn't belong to the player
-//            return false;
-//        }
+        if (currPiece.getOwner() != currPlayer) { // If the piece isn't belong to the player
+            return false;
+        }
 
         if (a.equals(b)) {
             return false; // This is the same place
@@ -255,7 +257,7 @@ public class GameLogic implements PlayableLogic {
             king1Position = b; // Updating the position of the king
         }
 
-        //eatCheck(b);
+        eatCheck(b);
 
         isPlayer2Turn = !isPlayer2Turn; // Changing the turn
         return true;
@@ -263,20 +265,71 @@ public class GameLogic implements PlayableLogic {
 
 
     private void eatCheck(Position position) { // Check if can it
+        // Only pawn can eat
+        if (board[position.getY()][position.getX()] instanceof King) {
+            return;
+        }
 
+        //making the edges of the board as a pawn for eating
+        Pawn current = (Pawn) board[position.getY()][position.getX()]; // Getting the current pawn
+        board[0][0] = new Pawn(current.getOwner(), current.getType(), 0);
+        board[0][10] = new Pawn(current.getOwner(), current.getType(), 0);
+        board[10][0] = new Pawn(current.getOwner(), current.getType(), 0);
+        board[10][10] = new Pawn(current.getOwner(), current.getType(), 0);
+
+
+        // Ending the eating checkup, and returning the edges to null
+        board[0][0] = null;
+        board[0][10] = null;
+        board[10][0] = null;
+        board[10][10] = null;
+    }
+
+    /**
+     * This method checks if there is an enemy piece around the given position from 4 directions
+     * King cant eat, so we are checking only pawns, and in 'eatCheck' function
+     */
+    private boolean checkEenemy(Position a, int x, int y) {
+        // Checking boundaries
+        if (a.getX() + x < 0 || a.getX() + x > 10 || a.getY() + y < 0 || a.getY() + y > 10) {
+            return false;
+        }
+        boolean isEnemy = false;
+        // Checking if the owner are different and if the piece is a pawn
+        // Checking if it's a pawn also helping us overcome a NullPointerException, that why we're checking it first
+        isEnemy = (board[a.getY() + y][a.getX() + x] instanceof Pawn) && (board[a.getY() + y][a.getX() + x].getOwner() != board[a.getY()][a.getX()].getOwner());
+        return isEnemy;
+    }
+
+    @Override
+    public Piece getPieceAtPosition(Position position) {
+        return board[position.getY()][position.getX()];
+    }
+
+    @Override
+    public Player getFirstPlayer() {
+        return this.player1;
+    }
+
+    @Override
+    public Player getSecondPlayer() {
+        return this.player2;
     }
 
     /**
      * To check if the game is finished we have few options:
      * 1. the king got to one of the corners, and then player 1 wins
      * 2. the king is surrounded by player's 2 pawns, and then player 2 wins:
-     *   2.1. The king is surrounded by player's 2 pawns from 3 directions, and one of the edges of the board
-     *   2.2. The king is surrounded by player's 2 pawns from 4 directions
+     * 2.1. The king is surrounded by player's 2 pawns from 3 directions, and one of the edges of the board
+     * 2.2. The king is surrounded by player's 2 pawns from 4 directions
      * NOTE!!! is the king is next to the one of the corners and surrounded by 2 pawns, it's not count as a win!!!!
      * the edges and the corners are helping only for eating, and here the king can run to the corner.
+     *
      * @return
      */
-    public boolean isFinished() {
+
+    @Override
+    public boolean isGameFinished() {
         // Checking if the king got to one of the corners
         //  if (board[0][0] instanceof King || board[0][10] instanceof King || board[10][0] instanceof King || board[10][10] instanceof King) {
         if (king1Position == new Position(0, 0) || king1Position == new Position(0, 10) || king1Position == new Position(10, 0) || king1Position == new Position(10, 10)) {
@@ -327,42 +380,6 @@ public class GameLogic implements PlayableLogic {
         return false;
     }
 
-    /**
-     * This method checks if there is an enemy piece around the given position from 4 directions
-     * King cant eat, so we are checking only pawns, and in 'eatCheck' function
-     */
-    private boolean checkEenemy(Position a, int x, int y) {
-        // Checking boundaries
-        if (a.getX() + x < 0 || a.getX() + x > 10 || a.getY() + y < 0 || a.getY() + y > 10) {
-            return false;
-        }
-        boolean isEnemy = false;
-        // Checking if the owner are different and if the piece is a pawn
-        // Checking if it's a pawn also helping us overcome a NullPointerException, that why we're checking it first
-        isEnemy = (board[a.getY() + y][a.getX() + x] instanceof Pawn) && (board[a.getY() + y][a.getX() + x].getOwner() != board[a.getY()][a.getX()].getOwner());
-        return isEnemy;
-    }
-
-    @Override
-    public Piece getPieceAtPosition(Position position) {
-        return board[position.getY()][position.getX()];
-    }
-
-    @Override
-    public Player getFirstPlayer() {
-        return this.player1;
-    }
-
-    @Override
-    public Player getSecondPlayer() {
-        return this.player2;
-    }
-
-    @Override
-    public boolean isGameFinished() {
-        return false;
-    }
-
     @Override
     public boolean isSecondPlayerTurn() {
         return isPlayer2Turn;
@@ -370,6 +387,20 @@ public class GameLogic implements PlayableLogic {
 
     @Override
     public void reset() {
+        isPlayer2Turn = true; // player 2 is always starting
+        king1Position.set_x(5); // setting king's position to start
+        king1Position.set_y(5);
+
+        // resting the board to null as in beginning
+        // going on every row and turning it to null
+        for (Piece[] r : board) {
+            Arrays.fill(r, null);
+        }
+
+        // putting the pieces on the board from beginning
+        player1Pieces();
+        player2Pieces();
+
 
     }
 
