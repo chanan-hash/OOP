@@ -207,7 +207,7 @@ public class GameLogic implements PlayableLogic {
             return false; // This is the same place
         }
 
-         if(!(a.getX() == b.getX() || a.getY() == b.getY())){ // Checking if he tries to move diagonal
+        if (!(a.getX() == b.getX() || a.getY() == b.getY())) { // Checking if he tries to move diagonal
 //        if (!(a.getX() != b.getX() || a.getY() != b.getY())) {
             return false;
         }
@@ -230,9 +230,7 @@ public class GameLogic implements PlayableLogic {
                     return false;
                 }
             }
-        }
-
-        else if (a.getY() == b.getY()) { // We are moving on 'X' axis
+        } else if (a.getY() == b.getY()) { // We are moving on 'X' axis
             for (int i = a.getX() + 1; i <= b.getX(); i++) { // Checking up to down
                 if (board[a.getY()][i] != null) {
                     return false;
@@ -268,6 +266,16 @@ public class GameLogic implements PlayableLogic {
 
     }
 
+    /**
+     * To check if the game is finished we have few options:
+     * 1. the king got to one of the corners, and then player 1 wins
+     * 2. the king is surrounded by player's 2 pawns, and then player 2 wins:
+     *   2.1. The king is surrounded by player's 2 pawns from 3 directions, and one of the edges of the board
+     *   2.2. The king is surrounded by player's 2 pawns from 4 directions
+     * NOTE!!! is the king is next to the one of the corners and surrounded by 2 pawns, it's not count as a win!!!!
+     * the edges and the corners are helping only for eating, and here the king can run to the corner.
+     * @return
+     */
     public boolean isFinished() {
         // Checking if the king got to one of the corners
         //  if (board[0][0] instanceof King || board[0][10] instanceof King || board[10][0] instanceof King || board[10][10] instanceof King) {
@@ -278,15 +286,61 @@ public class GameLogic implements PlayableLogic {
         }
 
         // Checking 3 directions
-
-        // Checking if the king is surrounded by player's 2 pawns
-        // 4 directions
-        else if (board[king1Position.getY() + 1][king1Position.getX()].getOwner() == player2 && board[king1Position.getY() - 1][king1Position.getX()].getOwner() == player2 && board[king1Position.getY()][king1Position.getX() + 1].getOwner() == player2 && board[king1Position.getY()][king1Position.getX() - 1].getOwner() == player2) {
+        // If the king on the first column
+        else if ((king1Position.getX() == 0) && checkEenemy(king1Position, 0, -1) && checkEenemy(king1Position, 1, 0) && checkEenemy(king1Position, 0, 1)) {
             player2.addWin();
             // Printing the data
             return true;
         }
+
+        // If the king on the first row
+        else if ((king1Position.getY() == 0) && checkEenemy(king1Position, 1, 0) && checkEenemy(king1Position, 0, 1) && checkEenemy(king1Position, -1, 0)) {
+            player2.addWin();
+            // Printing the data
+            return true;
+        }
+
+        // If the king on the last column
+        else if (king1Position.getX() == 10 && checkEenemy(king1Position, 0, -1) && checkEenemy(king1Position, -1, 0) && checkEenemy(king1Position, 0, 1)) {
+            player2.addWin();
+            // Printing the data
+            return true;
+        }
+
+        // If the king on the last row
+        else if (king1Position.getY() == 10 && checkEenemy(king1Position, 1, 0) && checkEenemy(king1Position, 0, -1) && checkEenemy(king1Position, -1, 0)) {
+            player2.addWin();
+            // Printing the data
+            return true;
+        }
+
+        // Checking if the king is surrounded by player's 2 pawns
+        // 4 directions and need to check if not null
+        // else if (board[king1Position.getY() + 1][king1Position.getX()].getOwner() == player2 && board[king1Position.getY() - 1][king1Position.getX()].getOwner() == player2 && board[king1Position.getY()][king1Position.getX() + 1].getOwner() == player2 && board[king1Position.getY()][king1Position.getX() - 1].getOwner() == player2) {
+        else if (checkEenemy(king1Position, 1, 0) && checkEenemy(king1Position, -1, 0) && checkEenemy(king1Position, 0, 1) && checkEenemy(king1Position, 0, -1)) {
+            player2.addWin();
+            // Printing the data
+            return true;
+        }
+
+        // The ame hasn't finished yet
         return false;
+    }
+
+    /**
+     * This method checks if there is an enemy piece around the given position from 4 directions
+     * King cant eat, so we are checking only pawns, and in 'eatCheck' function
+     */
+    private boolean checkEenemy(Position a, int x, int y) {
+        // Checking boundaries
+        if (a.getX() + x < 0 || a.getX() + x > 10 || a.getY() + y < 0 || a.getY() + y > 10) {
+            return false;
+        }
+        boolean isEnemy = false;
+        // Checking if the owner are different and if the piece is a pawn
+        // Checking if it's a pawn also helping us overcome a NullPointerException, that why we're checking it first
+        isEnemy = (board[a.getY() + y][a.getX() + x] instanceof Pawn) && (board[a.getY() + y][a.getX() + x].getOwner() != board[a.getY()][a.getX()].getOwner());
+        return isEnemy;
     }
 
     @Override
