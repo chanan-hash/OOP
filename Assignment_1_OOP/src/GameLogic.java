@@ -187,8 +187,10 @@ public class GameLogic implements PlayableLogic {
 
     @Override
     public boolean move(Position a, Position b) {
+
         // First we will check which in this position
         ConcretePiece currPiece = board[a.getY()][a.getX()]; // Getting the current piece in that position
+
         Player currPlayer = currPiece.getOwner();
 //        Player currPlayer = isPlayer2Turn ? player2 : player1; // Getting the current player
 
@@ -197,39 +199,79 @@ public class GameLogic implements PlayableLogic {
             return false;
         }
 
-        if (a.equals(b)){
+//        if (currPiece.getOwner() != currPlayer) { // If the piece isn't belong to the player
+//            return false;
+//        }
+
+        if (a.equals(b)) {
             return false; // This is the same place
         }
 
-        // if(!(a.getX() == b.getX() || a.getY() == b.getY())
-        if (a.getX() != b.getX() || a.getY() != b.getY()) { // Checking if he tries to move diagonal
+         if(!(a.getX() == b.getX() || a.getY() == b.getY())){ // Checking if he tries to move diagonal
+//        if (!(a.getX() != b.getX() || a.getY() != b.getY())) {
             return false;
         }
 
         // Checking if the position is a corner and the piece isn't a king
-        if(b.getX() == 0 && b.getY() == 0 || b.getX() == 0 && b.getY() == 10 || b.getX() == 10 && b.getY() == 0 || b.getX() == 10 && b.getY() == 10 && !(currPiece instanceof King)){
+        if ((b.getX() == 0 && b.getY() == 0) || (b.getX() == 0 && b.getY() == 10) || (b.getX() == 10 && b.getY() == 0) || (b.getX() == 10 && b.getY() == 10) && !(currPiece instanceof King)) {
             return false;
         }
+
+        // Now checking if there is a piece on the way to position b, if there is we cant move there
+        if (a.getX() == b.getX()) { // We are moving on 'Y' axis
+            for (int i = a.getY() + 1; i <= b.getY(); i++) { // Checking right to left
+                if (board[i][a.getX()] != null) {
+                    return false;
+                }
+            }
+
+            for (int i = a.getY() - 1; i >= b.getY(); i--) { // Checking left to right
+                if (board[i][a.getX()] != null) {
+                    return false;
+                }
+            }
+        }
+
+        else if (a.getY() == b.getY()) { // We are moving on 'X' axis
+            for (int i = a.getX() + 1; i <= b.getX(); i++) { // Checking up to down
+                if (board[a.getY()][i] != null) {
+                    return false;
+                }
+            }
+            for (int i = a.getX() - 1; i >= b.getX(); i--) { // Checking down to up
+                if (board[a.getY()][i] != null) {
+                    return false;
+                }
+            }
+        }
+
+        // Updating the board because if we've got here means we succeeded to move
+        board[a.getY()][a.getX()] = null;
+        board[b.getY()][b.getX()] = currPiece;
+
+        // Adding here a List or HashMap for collecting data for printing
 
         // Now we need to check if it is a pawn or a king
         // if(p instanceof King){ // If it is a king
         if (King.class.isInstance(currPiece)) {
-
-
-        } else { // It's a pawn
-
+            king1Position = b; // Updating the position of the king
         }
-        return false;
+
+        //eatCheck(b);
+
+        isPlayer2Turn = !isPlayer2Turn; // Changing the turn
+        return true;
     }
 
-    private void eatCheck(){ // Check if can it
+
+    private void eatCheck(Position position) { // Check if can it
 
     }
 
     public boolean isFinished() {
         // Checking if the king got to one of the corners
         //  if (board[0][0] instanceof King || board[0][10] instanceof King || board[10][0] instanceof King || board[10][10] instanceof King) {
-        if(king1Position == new Position(0, 0) || king1Position == new Position(0, 10) || king1Position == new Position(10, 0) || king1Position == new Position(10, 10)){
+        if (king1Position == new Position(0, 0) || king1Position == new Position(0, 10) || king1Position == new Position(10, 0) || king1Position == new Position(10, 10)) {
             player1.addWin();
             // Printing the data
             return true;
@@ -239,7 +281,7 @@ public class GameLogic implements PlayableLogic {
 
         // Checking if the king is surrounded by player's 2 pawns
         // 4 directions
-        else if(board[king1Position.getY() + 1][king1Position.getX()].getOwner() == player2 && board[king1Position.getY() - 1][king1Position.getX()].getOwner() == player2 && board[king1Position.getY()][king1Position.getX() + 1].getOwner() == player2 && board[king1Position.getY()][king1Position.getX() - 1].getOwner() == player2) {
+        else if (board[king1Position.getY() + 1][king1Position.getX()].getOwner() == player2 && board[king1Position.getY() - 1][king1Position.getX()].getOwner() == player2 && board[king1Position.getY()][king1Position.getX() + 1].getOwner() == player2 && board[king1Position.getY()][king1Position.getX() - 1].getOwner() == player2) {
             player2.addWin();
             // Printing the data
             return true;
