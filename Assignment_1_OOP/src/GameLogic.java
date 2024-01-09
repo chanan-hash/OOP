@@ -1,6 +1,4 @@
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Stack;
+import java.util.*;
 
 public class GameLogic implements PlayableLogic {
     /**
@@ -221,7 +219,7 @@ public class GameLogic implements PlayableLogic {
         }
 
         // Checking if the position is a corner and the piece isn't a king
-        if ((b.getX() == 0 && b.getY() == 0) || (b.getX() == 0 && b.getY() == 10) || (b.getX() == 10 && b.getY() == 0) || (b.getX() == 10 && b.getY() == 10) && !(currPiece instanceof King)) {
+        if (((b.getX() == 0 && b.getY() == 0) || (b.getX() == 0 && b.getY() == 10) || (b.getX() == 10 && b.getY() == 0) || (b.getX() == 10 && b.getY() == 10)) && !(currPiece instanceof King)) {
             return false;
         }
 
@@ -258,8 +256,8 @@ public class GameLogic implements PlayableLogic {
         // Adding here a List or HashMap for collecting data for printing
 
         // Now we need to check if it is a pawn or a king
-        // if(p instanceof King){ // If it is a king
-        if (King.class.isInstance(currPiece)) {
+        if (currPiece instanceof King) { // If it is a king
+//        if (King.class.isInstance(currPiece)) {
             king1Position = b; // Updating the position of the king
         }
 
@@ -273,7 +271,6 @@ public class GameLogic implements PlayableLogic {
         return true;
     }
 
-    // TODO update counters eat check
     private void eatCheck(Position position) { // Check if can it
         // Only pawn can eat
         if (board[position.getY()][position.getX()] instanceof King) {
@@ -461,6 +458,7 @@ public class GameLogic implements PlayableLogic {
 
             return true;
         }
+
         // Checking 3 directions
         // If the king on the first column
         else if ((king1Position.getX() == 0) && checkEenemy(king1Position, 0, -1) && checkEenemy(king1Position, 1, 0) && checkEenemy(king1Position, 0, 1)) {
@@ -622,32 +620,45 @@ public class GameLogic implements PlayableLogic {
 
     private void printPiecesData(boolean isPlayer1Won) {
         // copying the pieces array to a new array, so we can work on each player separately
-        ConcretePiece[] player1Pieces = Arrays.copyOfRange(pieces, 0, 13);
-        ConcretePiece[] player2Pieces = Arrays.copyOfRange(pieces, 13, 37);
+        ConcretePiece[] p1Pieces = Arrays.copyOfRange(pieces, 0, 13);
+        ConcretePiece[] p2Pieces = Arrays.copyOfRange(pieces, 13, 37);
 
-        //Creating the comparator
-        Comparator<ConcretePiece> comparatorPieces = Comparator.comparing(ConcretePiece::getPieceNum);
+        //Creating the comparator here locally. Define what he gets and what he return for each case
+        Comparator<ConcretePiece> comparatorPieces = (o1, o2) -> {
+//            if (o1.getMoves().size() > o2.getMoves().size()) {
+//                return -1;
+//            } else if (o1.getMoves().size() < o2.getMoves().size()) {
+//                return 1;
+//            } else if (o1.getMoves().size() == o2.getMoves().size()) {
+//                return 0;
+//            }
+//            return o1.getPieceNum() - o2.getPieceNum();
+            if (o1.getMoves().size() != o2.getMoves().size()) {
+                return o1.getMoves().size() - o2.getMoves().size();
+            }
+            // the number of moves is the same, so sort by the number of the pieces
+            return o1.getPieceNum() - o2.getPieceNum();
+        };
 
         // Sorting each player's pieces by according to the comparator
-        Arrays.sort(player1Pieces, comparatorPieces);
-        Arrays.sort(player2Pieces, comparatorPieces);
+        Arrays.sort(p1Pieces, comparatorPieces);
+        Arrays.sort(p2Pieces, comparatorPieces);
 
         // Now printing them
-
         ConcretePiece[] winner, loser;
         if (isPlayer1Won) {
             // We don't need to copy the array, just to point them
-            winner = player1Pieces;
-            loser = player2Pieces;
+            winner = p1Pieces;
+            loser = p2Pieces;
         } else {
-            winner = player2Pieces;
-            loser = player1Pieces;
+            winner = p2Pieces;
+            loser = p1Pieces;
         }
 
         // The printing itself, starting with the winner
         for (ConcretePiece win : winner) {
             // Printing only if the piece has moved
-            if ((win.getMoves() != null) && (win.getMoves().size() > 1)) { // each piece has his first move, but it's not enough
+            if (win.getMoves() != null && win.getMoves().size() > 1) { // each piece has his first move, but it's not enough
                 System.out.println(win.getName() + ": " + win.getPieceNum());
             }
         }
@@ -655,7 +666,7 @@ public class GameLogic implements PlayableLogic {
         // Printing the loser pieces
         for (ConcretePiece lose : loser) {
             // Printing only if the piece has moved
-            if ((lose.getMoves() != null) && (lose.getMoves().size() > 1)) { // each piece has his first move, but it's not enough
+            if (lose.getMoves() != null && lose.getMoves().size() > 1) { // each piece has his first move, but it's not enough
                 System.out.println(lose.getName() + ": " + lose.getPieceNum());
             }
         }
