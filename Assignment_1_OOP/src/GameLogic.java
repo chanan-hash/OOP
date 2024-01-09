@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Stack;
 
 public class GameLogic implements PlayableLogic {
@@ -624,9 +625,40 @@ public class GameLogic implements PlayableLogic {
         ConcretePiece[] player1Pieces = Arrays.copyOfRange(pieces, 0, 13);
         ConcretePiece[] player2Pieces = Arrays.copyOfRange(pieces, 13, 37);
 
+        //Creating the comparator
+        Comparator<ConcretePiece> comparatorPieces = Comparator.comparing(ConcretePiece::getPieceNum);
 
-        // Sorting the pieces by the number of moves
-        Arrays.sort(player1Pieces, (o1, o2) -> o2.getMoves().size() - o1.getMoves().size());
+        // Sorting each player's pieces by according to the comparator
+        Arrays.sort(player1Pieces, comparatorPieces);
+        Arrays.sort(player2Pieces, comparatorPieces);
+
+        // Now printing them
+
+        ConcretePiece[] winner, loser;
+        if (isPlayer1Won) {
+            // We don't need to copy the array, just to point them
+            winner = player1Pieces;
+            loser = player2Pieces;
+        } else {
+            winner = player2Pieces;
+            loser = player1Pieces;
+        }
+
+        // The printing itself, starting with the winner
+        for (ConcretePiece win : winner) {
+            // Printing only if the piece has moved
+            if ((win.getMoves() != null) && (win.getMoves().size() > 1)) { // each piece has his first move, but it's not enough
+                System.out.println(win.getName() + ": " + win.getPieceNum());
+            }
+        }
+
+        // Printing the loser pieces
+        for (ConcretePiece lose : loser) {
+            // Printing only if the piece has moved
+            if ((lose.getMoves() != null) && (lose.getMoves().size() > 1)) { // each piece has his first move, but it's not enough
+                System.out.println(lose.getName() + ": " + lose.getPieceNum());
+            }
+        }
     }
 
     private void printEatsData(boolean isPlayer1Won) {
