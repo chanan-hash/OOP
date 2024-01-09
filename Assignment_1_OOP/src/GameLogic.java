@@ -6,7 +6,11 @@ public class GameLogic implements PlayableLogic {
      * This class represents the game logic of the game. and implements the PlayableLogic interface.
      * here we'll have the running game methods.
      */
-    private final Stack<ConcretePiece[][]> undoStack = new Stack<>(); // The stack for undoing the last move
+    // Counters if all the pawn of other player are eaten, the other wins
+    private static final int count1Pieces = 0;
+    private static final int count2Pieces = 0;
+
+    private final Stack<ConcretePiece[][]> undoStack; // The stack for undoing the last move
     private final ConcretePiece[][] board; // The board of the game 2D array of ConcretePiece
     private final ConcretePiece[] pieces; // The pieces of the game from 0-12 players 1 and 13-36 players 2
 
@@ -22,6 +26,7 @@ public class GameLogic implements PlayableLogic {
     // Constructor
     public GameLogic() {
         board = new ConcretePiece[11][11]; // Initializing the board
+        undoStack = new Stack<>(); // Initializing the undo stack
         pieces = new ConcretePiece[37]; // Initializing the pieces
         player1 = new ConcretePlayer(true); // Initializing the players
         player2 = new ConcretePlayer(false);
@@ -260,10 +265,14 @@ public class GameLogic implements PlayableLogic {
         eatCheck(b);
 
         isPlayer2Turn = !isPlayer2Turn; // Changing the turn
+
+        ConcretePiece[][] currentState = cloneBoard(board);
+        undoStack.push(currentState);
+
         return true;
     }
 
-
+    // TODO update counters eat check
     private void eatCheck(Position position) { // Check if can it
         // Only pawn can eat
         if (board[position.getY()][position.getX()] instanceof King) {
@@ -384,9 +393,12 @@ public class GameLogic implements PlayableLogic {
     @Override
     public boolean isGameFinished() {
         // Checking if the king got to one of the corners
-          if (board[0][0] instanceof King || board[0][10] instanceof King || board[10][0] instanceof King || board[10][10] instanceof King) {
+        if (board[0][0] instanceof King || board[0][10] instanceof King || board[10][0] instanceof King || board[10][10] instanceof King) {
             player1.addWin();
-            // Printing the data
+
+            // Printing the data, according to that player 1 won
+            printGameData(true);
+
             return true;
         }
 
@@ -394,28 +406,40 @@ public class GameLogic implements PlayableLogic {
         // If the king on the first column
         else if ((king1Position.getX() == 0) && checkEenemy(king1Position, 0, -1) && checkEenemy(king1Position, 1, 0) && checkEenemy(king1Position, 0, 1)) {
             player2.addWin();
-            // Printing the data
+
+            // Printing the data, according to that player 2 won
+            printGameData(false);
+
             return true;
         }
 
         // If the king on the first row
         else if ((king1Position.getY() == 0) && checkEenemy(king1Position, 1, 0) && checkEenemy(king1Position, 0, 1) && checkEenemy(king1Position, -1, 0)) {
             player2.addWin();
-            // Printing the data
+
+            // Printing the data, according to that player 2 won
+            printGameData(false);
+
             return true;
         }
 
         // If the king on the last column
         else if (king1Position.getX() == 10 && checkEenemy(king1Position, 0, -1) && checkEenemy(king1Position, -1, 0) && checkEenemy(king1Position, 0, 1)) {
             player2.addWin();
-            // Printing the data
+
+            // Printing the data, according to that player 2 won
+            printGameData(false);
+
             return true;
         }
 
         // If the king on the last row
         else if (king1Position.getY() == 10 && checkEenemy(king1Position, 1, 0) && checkEenemy(king1Position, 0, -1) && checkEenemy(king1Position, -1, 0)) {
             player2.addWin();
-            // Printing the data
+
+            // Printing the data, according to that player 2 won
+            printGameData(false);
+
             return true;
         }
 
@@ -424,7 +448,10 @@ public class GameLogic implements PlayableLogic {
         // else if (board[king1Position.getY() + 1][king1Position.getX()].getOwner() == player2 && board[king1Position.getY() - 1][king1Position.getX()].getOwner() == player2 && board[king1Position.getY()][king1Position.getX() + 1].getOwner() == player2 && board[king1Position.getY()][king1Position.getX() - 1].getOwner() == player2) {
         else if (checkEenemy(king1Position, 1, 0) && checkEenemy(king1Position, -1, 0) && checkEenemy(king1Position, 0, 1) && checkEenemy(king1Position, 0, -1)) {
             player2.addWin();
-            // Printing the data
+
+            // Printing the data, according to that player 2 won
+            printGameData(false);
+
             return true;
         }
 
@@ -453,12 +480,22 @@ public class GameLogic implements PlayableLogic {
         player1Pieces();
         player2Pieces();
 
-
+        undoStack.clear(); // Clear the undo stack on reset
     }
 
     @Override
     public void undoLastMove() {
-        undoStack.pop(); // Removing the last move
+        if (!undoStack.isEmpty()) {
+            ConcretePiece[][] previousState = undoStack.pop();
+            // Restore the previous state
+            for (int i = 0; i < previousState.length; i++) {
+                for (int j = 0; j < previousState[i].length; j++) {
+                    board[i][j] = previousState[i][j];
+                }
+            }
+            // Switch the turn back
+            isPlayer2Turn = !isPlayer2Turn;
+        }
     }
 
     @Override
@@ -466,8 +503,71 @@ public class GameLogic implements PlayableLogic {
         return 11;
     }
 
+    private ConcretePiece[][] cloneBoard(ConcretePiece[][] original) {
+        ConcretePiece[][] copy = new ConcretePiece[original.length][original[0].length];
+        for (int i = 0; i < original.length; i++) {
+            for (int j = 0; j < original[i].length; j++) {
+                if (board[i][j] != null) { // abstract class need tp check instances
+                    if (board[i][j] instanceof Pawn) {
+                        copy[i][j] = new Pawn(original[i][j].getOwner(), original[i][j].getType(), original[i][j].getPieceNum());
+                    } else { // This is a king
+                        copy[i][j] = new King(original[i][j].getOwner(), original[i][j].getType(), original[i][j].getPieceNum());
+                    }
+                }
+                else {
+                    board[i][j] = null;
+                }
+            }
+        }
+        return copy;
+    }
+
 
     //************** Data Printing ******************\\
+
+    /**
+     * In isGameFinished function, we are calling after each kind of win to print the data, and passing who won.
+     * We need to know it because we have all kind of comparisons and sorting between the players.
+     *
+     * @param isPlayer1Won
+     */
+    private void printGameData(boolean isPlayer1Won) {
+        printPiecesData(isPlayer1Won);
+        printDivider();
+
+        printEatsData(isPlayer1Won);
+        printDivider();
+
+        printDistanceData(isPlayer1Won);
+        printDivider();
+
+        printPositionHistoryData(isPlayer1Won);
+        printDivider();
+    }
+
+
+    private void printPiecesData(boolean isPlayer1Won) {
+        // copying the pieces array to a new array, so we can work on each player separately
+        ConcretePiece[] player1Pieces = Arrays.copyOfRange(pieces, 0, 13);
+        ConcretePiece[] player2Pieces = Arrays.copyOfRange(pieces, 13, 37);
+
+
+        // Sorting the pieces by the number of moves
+        Arrays.sort(player1Pieces, (o1, o2) -> o2.getMoves().size() - o1.getMoves().size());
+    }
+
+    private void printEatsData(boolean isPlayer1Won) {
+
+    }
+
+    private void printDistanceData(boolean isPlayer1Won) {
+
+    }
+
+    private void printPositionHistoryData(boolean isPlayer1Won) {
+
+    }
+
 
     private void printDivider() {
         System.out.println("***************************************************************************");
