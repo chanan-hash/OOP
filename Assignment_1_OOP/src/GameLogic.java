@@ -7,8 +7,8 @@ public class GameLogic implements PlayableLogic {
      * here we'll have the running game methods.
      */
     // Counters if all the pawn of other player are eaten, the other wins
-    private static final int count1Pieces = 0;
-    private static final int count2Pieces = 0;
+    private static int count1Pieces = 0;
+    private static int count2Pieces = 0;
 
     private final Stack<ConcretePiece[][]> undoStack; // The stack for undoing the last move
     private final ConcretePiece[][] board; // The board of the game 2D array of ConcretePiece
@@ -281,6 +281,8 @@ public class GameLogic implements PlayableLogic {
 
         //making the edges of the board as a pawn for eating
         Pawn current = (Pawn) board[position.getY()][position.getX()]; // Getting the current pawn
+        Player whichPlayer = board[position.getY()][position.getX()].getOwner(); // Tp update the counters
+
         board[0][0] = new Pawn(current.getOwner(), current.getType(), 0);
         board[0][10] = new Pawn(current.getOwner(), current.getType(), 0);
         board[10][0] = new Pawn(current.getOwner(), current.getType(), 0);
@@ -292,10 +294,25 @@ public class GameLogic implements PlayableLogic {
         if (checkEenemy(position, 0, 1) && !king1Position.equals(new Position(position.getY() + 1, position.getY()))) {
             if (position.getY() + 1 == 10) { // On the last row
                 current.eat(); // Updating the number of eats for specific pawn
+
+                if (whichPlayer == player1) {
+                    count2Pieces++;
+                } else {
+                    count1Pieces++;
+                }
+
                 board[position.getY() + 1][position.getX()] = null; // Removing the enemy piece
             } else {
                 if (board[position.getY() + 2][position.getX()] instanceof Pawn && board[position.getY() + 2][position.getX()].getOwner() == current.getOwner()) {
                     current.eat(); // Updating the number of eats for specific pawn
+
+                    if (whichPlayer == player1) {
+                        count2Pieces++;
+                    } else {
+                        count1Pieces++;
+                    }
+
+
                     board[position.getY() + 1][position.getX()] = null; // Removing the enemy piece
                 }
             }
@@ -305,10 +322,24 @@ public class GameLogic implements PlayableLogic {
         if (checkEenemy(position, 1, 0) && !king1Position.equals(new Position(position.getY(), position.getX() + 1))) {
             if (position.getX() + 1 == 10) { // On the last column
                 current.eat(); // Updating the number of eats for specific pawn
+
+                if (whichPlayer == player1) {
+                    count2Pieces++;
+                } else {
+                    count1Pieces++;
+                }
+
                 board[position.getY()][position.getX() + 1] = null; // Removing the enemy piece
             } else {
                 if (board[position.getY()][position.getX() + 2] instanceof Pawn && board[position.getY()][position.getX() + 2].getOwner() == current.getOwner()) {
                     current.eat(); // Updating the number of eats for specific pawn
+
+                    if (whichPlayer == player1) {
+                        count2Pieces++;
+                    } else {
+                        count1Pieces++;
+                    }
+
                     board[position.getY()][position.getX() + 1] = null; // Removing the enemy piece
                 }
             }
@@ -318,10 +349,24 @@ public class GameLogic implements PlayableLogic {
         if (checkEenemy(position, 0, -1) && !king1Position.equals(new Position(position.getY() - 1, position.getX()))) {
             if (position.getY() - 1 == 0) { // On the first row
                 current.eat(); // Updating the number of eats for specific pawn
+
+                if (whichPlayer == player1) {
+                    count2Pieces++;
+                } else {
+                    count1Pieces++;
+                }
+
                 board[position.getY() - 1][position.getX()] = null; // Removing the enemy piece
             } else {
                 if (board[position.getY() - 2][position.getX()] instanceof Pawn && board[position.getY() - 2][position.getX()].getOwner() == current.getOwner()) {
                     current.eat(); // Updating the number of eats for specific pawn
+
+                    if (whichPlayer == player1) {
+                        count2Pieces++;
+                    } else {
+                        count1Pieces++;
+                    }
+
                     board[position.getY() - 1][position.getX()] = null; // Removing the enemy piece
                 }
             }
@@ -331,10 +376,24 @@ public class GameLogic implements PlayableLogic {
         if (checkEenemy(position, -1, 0) && !king1Position.equals(new Position(position.getY(), position.getX() - 1))) {
             if (position.getX() - 1 == 0) { // On the first column
                 current.eat(); // Updating the number of eats for specific pawn
+
+                if (whichPlayer == player1) {
+                    count2Pieces++;
+                } else {
+                    count1Pieces++;
+                }
+
                 board[position.getY()][position.getX() - 1] = null; // Removing the enemy piece
             } else {
                 if (board[position.getY()][position.getX() - 2] instanceof Pawn && board[position.getY()][position.getX() - 2].getOwner() == current.getOwner()) {
                     current.eat(); // Updating the number of eats for specific pawn
+
+                    if (whichPlayer == player1) {
+                        count2Pieces++;
+                    } else {
+                        count1Pieces++;
+                    }
+
                     board[position.getY()][position.getX() - 1] = null; // Removing the enemy piece
                 }
             }
@@ -401,7 +460,6 @@ public class GameLogic implements PlayableLogic {
 
             return true;
         }
-
         // Checking 3 directions
         // If the king on the first column
         else if ((king1Position.getX() == 0) && checkEenemy(king1Position, 0, -1) && checkEenemy(king1Position, 1, 0) && checkEenemy(king1Position, 0, 1)) {
@@ -452,6 +510,22 @@ public class GameLogic implements PlayableLogic {
             // Printing the data, according to that player 2 won
             printGameData(false);
 
+            return true;
+        }
+
+        // Player 1 ate all player'2 2 pieces
+        else if (count2Pieces == 24) {
+            player1.addWin();
+            printGameData(true);
+            return true;
+
+        }
+
+        // TODO check that rule
+        // Player 2 ate all player'1 2 pieces instead of the king only the king is left
+        else if (count1Pieces == 12) {
+            player2.addWin();
+            printGameData(false);
             return true;
         }
 
@@ -513,8 +587,7 @@ public class GameLogic implements PlayableLogic {
                     } else { // This is a king
                         copy[i][j] = new King(original[i][j].getOwner(), original[i][j].getType(), original[i][j].getPieceNum());
                     }
-                }
-                else {
+                } else {
                     board[i][j] = null;
                 }
             }
