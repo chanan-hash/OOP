@@ -9,10 +9,10 @@ public class GameLogic implements PlayableLogic {
     private static int count1Pieces = 0;
     private static int count2Pieces = 0;
 
+    private static final int BOARD_SIZE = 11; // The size of the board, can be updated if we want. Makes the board modular
     private final Stack<ConcretePiece[][]> undoStack; // The stack for undoing the last move
     private final ConcretePiece[][] board; // The board of the game 2D array of ConcretePiece
     private final ConcretePiece[] pieces; // The pieces of the game from 0-12 players 1 and 13-36 players 2
-
 
     private final ConcretePlayer player1;
     private final ConcretePlayer player2;
@@ -24,7 +24,8 @@ public class GameLogic implements PlayableLogic {
 
     // Constructor
     public GameLogic() {
-        board = new ConcretePiece[11][11]; // Initializing the board
+        board = new ConcretePiece[BOARD_SIZE][BOARD_SIZE]; // Initializing the board
+
         undoStack = new Stack<>(); // Initializing the undo stack
         pieces = new ConcretePiece[37]; // Initializing the pieces
         player1 = new ConcretePlayer(true); // Initializing the players
@@ -33,7 +34,6 @@ public class GameLogic implements PlayableLogic {
         king1Position = new Position(5, 5); // Initializing the king's position
         player1Pieces();
         player2Pieces();
-
     }
 
     public void player1Pieces() {
@@ -574,7 +574,7 @@ public class GameLogic implements PlayableLogic {
 
     @Override
     public int getBoardSize() {
-        return 11;
+        return BOARD_SIZE;
     }
 
     private ConcretePiece[][] cloneBoard(ConcretePiece[][] original) {
@@ -753,8 +753,7 @@ public class GameLogic implements PlayableLogic {
     private void printPositionHistoryData(boolean isPlayer1Won) {
 
     }
-
-
+    
     private void printDivider() {
         System.out.println("***************************************************************************");
     }
