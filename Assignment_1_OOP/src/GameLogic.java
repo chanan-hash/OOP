@@ -254,6 +254,7 @@ public class GameLogic implements PlayableLogic {
         board[b.getY()][b.getX()] = currPiece;
 
         // Adding here a List or HashMap for collecting data for printing
+        currPiece.addMove(b);
 
         // Now we need to check if it is a pawn or a king
         if (currPiece instanceof King) { // If it is a king
@@ -659,7 +660,7 @@ public class GameLogic implements PlayableLogic {
         for (ConcretePiece win : winner) {
             // Printing only if the piece has moved
             if (win.getMoves() != null && win.getMoves().size() > 1) { // each piece has his first move, but it's not enough
-                System.out.println(win.getName() + ": " + win.getPieceNum());
+                System.out.println(win.getName() + ": " + win.getMoves());
             }
         }
 
@@ -667,7 +668,7 @@ public class GameLogic implements PlayableLogic {
         for (ConcretePiece lose : loser) {
             // Printing only if the piece has moved
             if (lose.getMoves() != null && lose.getMoves().size() > 1) { // each piece has his first move, but it's not enough
-                System.out.println(lose.getName() + ": " + lose.getPieceNum());
+                System.out.println(lose.getName() + ": " + lose.getMoves());
             }
         }
     }

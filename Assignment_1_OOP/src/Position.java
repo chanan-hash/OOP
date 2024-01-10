@@ -38,12 +38,15 @@ public class Position {
         this._y = _y;
     }
 
+//    public String toString() {
+//        return "Position{" +
+//                "_x=" + _x +
+//                ", _y=" + _y +
+//                '}';
+//    }
     @Override
-    public String toString() {
-        return "Position{" +
-                "_x=" + _x +
-                ", _y=" + _y +
-                '}';
+    public String toString() { // To suit the format
+        return "(" + _x + "," + _y + ")";
     }
 
     @Override
