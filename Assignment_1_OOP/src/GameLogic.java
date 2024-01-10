@@ -14,6 +14,8 @@ public class GameLogic implements PlayableLogic {
     private final ConcretePiece[][] board; // The board of the game 2D array of ConcretePiece
     private final ConcretePiece[] pieces; // The pieces of the game from 0-12 players 1 and 13-36 players 2
 
+    private final Map<Position, Set<ConcretePiece>> cellHistory;
+
     private final ConcretePlayer player1;
     private final ConcretePlayer player2;
 
@@ -25,6 +27,8 @@ public class GameLogic implements PlayableLogic {
     // Constructor
     public GameLogic() {
         board = new ConcretePiece[BOARD_SIZE][BOARD_SIZE]; // Initializing the board
+
+        cellHistory = new HashMap<>();
 
         undoStack = new Stack<>(); // Initializing the undo stack
         pieces = new ConcretePiece[37]; // Initializing the pieces
@@ -265,6 +269,12 @@ public class GameLogic implements PlayableLogic {
         eatCheck(b);
 
         isPlayer2Turn = !isPlayer2Turn; // Changing the turn
+
+        // Update cell history for the "from" position
+        updateCellHistory(a, currPiece);
+
+        // Update cell history for the "to" position
+        updateCellHistory(b, currPiece);
 
         ConcretePiece[][] currentState = cloneBoard(board);
         undoStack.push(currentState);
@@ -595,6 +605,14 @@ public class GameLogic implements PlayableLogic {
         return copy;
     }
 
+    private void updateCellHistory(Position position, ConcretePiece piece) {
+        if (!cellHistory.containsKey(position)) {
+            cellHistory.put(position, new HashSet<>());
+        }
+
+        Set<ConcretePiece> piecesOnCell = cellHistory.get(position);
+        piecesOnCell.add(piece);
+    }
 
     //************** Data Printing ******************\\
 
@@ -751,9 +769,22 @@ public class GameLogic implements PlayableLogic {
     }
 
     private void printPositionHistoryData(boolean isPlayer1Won) {
+        for (Map.Entry<Position, Set<ConcretePiece>> entry : cellHistory.entrySet()) {
+            Position position = entry.getKey();
+            Set<ConcretePiece> pieces = entry.getValue();
 
+            // Sorting pieces by piece number
+            List<ConcretePiece> sortedPieces = new ArrayList<>(pieces);
+            sortedPieces.sort(Comparator.comparingInt(ConcretePiece::getPieceNum));
+
+            System.out.println("Cell " + position + " traces:");
+
+            for (ConcretePiece piece : sortedPieces) {
+                System.out.println("  " + piece.getName());
+            }
+        }
     }
-    
+
     private void printDivider() {
         System.out.println("***************************************************************************");
     }
