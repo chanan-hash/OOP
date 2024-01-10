@@ -626,19 +626,19 @@ public class GameLogic implements PlayableLogic {
 
         //Creating the comparator here locally. Define what he gets and what he return for each case
         Comparator<ConcretePiece> comparatorPieces = (o1, o2) -> {
-//            if (o1.getMoves().size() > o2.getMoves().size()) {
-//                return -1;
-//            } else if (o1.getMoves().size() < o2.getMoves().size()) {
-//                return 1;
-//            } else if (o1.getMoves().size() == o2.getMoves().size()) {
-//                return 0;
-//            }
-//            return o1.getPieceNum() - o2.getPieceNum();
-            if (o1.getMoves().size() != o2.getMoves().size()) {
-                return o1.getMoves().size() - o2.getMoves().size();
+            if (o1.getMoves().size() > o2.getMoves().size()) {
+                return 1;
+            } else if (o1.getMoves().size() < o2.getMoves().size()) {
+                return -1;
+            } else if (o1.getMoves().size() == o2.getMoves().size()) {
+                return 0;
             }
-            // the number of moves is the same, so sort by the number of the pieces
             return o1.getPieceNum() - o2.getPieceNum();
+//            if (o1.getMoves().size() != o2.getMoves().size()) {
+//                return o1.getMoves().size() - o2.getMoves().size();
+//            }
+//            // the number of moves is the same, so sort by the number of the pieces
+//            return o1.getPieceNum() - o2.getPieceNum();
         };
 
         // Sorting each player's pieces by according to the comparator
@@ -674,11 +674,80 @@ public class GameLogic implements PlayableLogic {
     }
 
     private void printEatsData(boolean isPlayer1Won) {
+        // We want only the pieces that ate, so we need to check if the size of the moves is bigger than 2
+        //         ConcretePiece[] filtered = Arrays.stream(gamePieces).filter(piece -> piece.getNumberOfEats() > 0).toArray(ConcretePiece[]::new);
+        List<ConcretePiece> didEat = new ArrayList<>();
 
+        for (ConcretePiece piece : pieces) {
+            if (piece.getNumberOfEats() > 0) {
+                didEat.add(piece);
+            }
+        }
+        ConcretePiece[] onlyEat = didEat.toArray(new ConcretePiece[0]);
+
+        // Now sorting according to the format, writing the comparator
+        Comparator<ConcretePiece> eatCompare = (o1, o2) -> {
+            // The kill order is descending
+            if (o1.getNumberOfEats() > o2.getNumberOfEats()) {
+                return -1;
+            } else if (o1.getNumberOfEats() < o2.getNumberOfEats()) {
+                return 1;
+            } else if (o1.getNumberOfEats() == o2.getNumberOfEats()) {
+                return 0;
+            }
+            // The number of pieces is ascending
+            else if (o1.getPieceNum() != o2.getPieceNum()) {
+                return o1.getPieceNum() - o2.getPieceNum();
+                // And this if functioning in the comparator: positive o1 > 02, Zero o1 = o2, negative o1 < o2
+            }
+
+            // How won for the to know which print first
+            if (isPlayer1Won) {
+                return o1.getOwner().isPlayerOne() ? -1 : 1;
+            } else {// the second player won
+                return o1.getOwner().isPlayerOne() ? 1 : -1;
+            }
+        };
+
+        Arrays.sort(onlyEat, eatCompare);
+        // print the sorted pieces
+        for (ConcretePiece eat : onlyEat) {
+            System.out.println(eat.getName() + ": " + eat.getNumberOfEats() + " kills");
+        }
     }
 
     private void printDistanceData(boolean isPlayer1Won) {
+        // Filtering the pieces that haven't moved
+        // The same way as before
+        List<ConcretePiece> didMove = new ArrayList<>();
 
+        for (ConcretePiece piece : pieces) {
+            if (piece.getMoves().size() > 1) {  // We aren't counting the first move
+                didMove.add(piece);
+            }
+        }
+
+        ConcretePiece[] onlyMove = didMove.toArray(new ConcretePiece[0]);
+        // Define the comparator here
+        Comparator<ConcretePiece> moveCompare = (o1, o2) -> {
+            // We need the squares in descending order
+            if (o1.getDistance() != o2.getDistance()) {
+                return o2.getDistance() - o1.getDistance(); // And this if functioning in the comparator: positive o2 > 01, Zero o2 = o1, negative o2 < o1
+            } else if (o1.getPieceNum() != o2.getPieceNum()) {
+                return o1.getPieceNum() - o2.getPieceNum();
+            }
+
+            if (isPlayer1Won) {
+                return o1.getOwner().isPlayerOne() ? -1 : 1;
+            } else {
+                return o1.getOwner().isPlayerOne() ? 1 : -1;
+            }
+        };
+
+        Arrays.sort(onlyMove, moveCompare);
+        for (ConcretePiece hasMoved : onlyMove) {
+            System.out.println(hasMoved.getName() + ": " + hasMoved.getDistance() + " squares");
+        }
     }
 
     private void printPositionHistoryData(boolean isPlayer1Won) {
