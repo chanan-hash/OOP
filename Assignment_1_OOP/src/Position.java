@@ -46,7 +46,7 @@ public class Position {
 //    }
     @Override
     public String toString() { // To suit the format
-        return "(" + _x + "," + _y + ")";
+        return "(" + _x + ", " + _y + ")";
     }
 
     @Override

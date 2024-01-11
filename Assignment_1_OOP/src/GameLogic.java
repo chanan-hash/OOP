@@ -643,6 +643,7 @@ public class GameLogic implements PlayableLogic {
         ConcretePiece[] p2Pieces = Arrays.copyOfRange(pieces, 13, 37);
 
         //Creating the comparator here locally. Define what he gets and what he return for each case
+        // This is a lambda concept
         Comparator<ConcretePiece> comparatorPieces = (o1, o2) -> {
             if (o1.getMoves().size() > o2.getMoves().size()) {
                 return 1;
@@ -701,7 +702,7 @@ public class GameLogic implements PlayableLogic {
                 didEat.add(piece);
             }
         }
-        ConcretePiece[] onlyEat = didEat.toArray(new ConcretePiece[0]);
+        //ConcretePiece[] onlyEat = didEat.toArray(new ConcretePiece[0]);
 
         // Now sorting according to the format, writing the comparator
         Comparator<ConcretePiece> eatCompare = (o1, o2) -> {
@@ -727,9 +728,10 @@ public class GameLogic implements PlayableLogic {
             }
         };
 
-        Arrays.sort(onlyEat, eatCompare);
+       // Arrays.sort(onlyEat, eatCompare);
         // print the sorted pieces
-        for (ConcretePiece eat : onlyEat) {
+        didEat.sort(eatCompare);
+        for (ConcretePiece eat : didEat) {
             System.out.println(eat.getName() + ": " + eat.getNumberOfEats() + " kills");
         }
     }
@@ -769,19 +771,31 @@ public class GameLogic implements PlayableLogic {
     }
 
     private void printPositionHistoryData(boolean isPlayer1Won) {
+        List<Position> positionsInfo = new ArrayList<>();
         for (Map.Entry<Position, Set<ConcretePiece>> entry : cellHistory.entrySet()) {
-            Position position = entry.getKey();
-            Set<ConcretePiece> pieces = entry.getValue();
-
-            // Sorting pieces by piece number
-            List<ConcretePiece> sortedPieces = new ArrayList<>(pieces);
-            sortedPieces.sort(Comparator.comparingInt(ConcretePiece::getPieceNum));
-
-            System.out.println("Cell " + position + " traces:");
-
-            for (ConcretePiece piece : sortedPieces) {
-                System.out.println("  " + piece.getName());
+            if (entry.getValue().size() > 1) {
+                positionsInfo.add(entry.getKey());
             }
+        }
+
+        Comparator<Position> positionCompare = (pos1, pos2) -> {
+            // Sorting according to number of pieces that stepped over
+            if ((cellHistory.get(pos1).size() != cellHistory.get(pos2).size())) {
+                return cellHistory.get(pos2).size() - cellHistory.get(pos1).size();
+            }
+            // Sorting according to X axis
+            if (pos1.getX() != pos2.getX()) {
+                return pos1.getX() - pos2.getX();
+            }
+            // Sorting according Y axis
+            else {
+                return pos1.getY() - pos2.getY();
+            }
+        };
+
+        positionsInfo.sort(positionCompare);
+        for (Position position : positionsInfo) {
+            System.out.println(position.toString() + cellHistory.get(position).size() + " pieces");
         }
     }
 
