@@ -21,6 +21,11 @@ public class King extends ConcretePiece {
         return 0;
     }
     @Override
+    public void setNumberOfEats(int nothing){
+        // Doing nothing because he can eat
+    }
+
+    @Override
     public String getName() { // It will help us for the printing after it
         return "K7";
     }

@@ -579,6 +579,7 @@ public class GameLogic implements PlayableLogic {
         if (undoStack.isEmpty()) {
             return;
         }
+
         // The stack is not empty, so we can undo the last move
         PositionHistory lastMove = undoStack.pop(); // Getting the last move
         ConcretePiece piece = lastMove.getPie(); // Getting the piece
@@ -593,13 +594,37 @@ public class GameLogic implements PlayableLogic {
         // Update the num of eats for that pawn if he ate, we need to decrease
         piece.setNumberOfEats(piece.getNumberOfEats() - lastMove.getEaten().size());
 
-        // TODO continue this
+        //Now we need to return the eaten pawns
+        for (Pawn eaten : lastMove.getEaten()) {
+            if (eaten.getOwner() == player2) {
+                count2Pieces--; // The counter for how many pieces remain
+            }
+            Position eatenLastPosition = eaten.getMoves().get(eaten.getMoves().size() - 1); // Getting the last position for
+            board[eatenLastPosition.getY()][eatenLastPosition.getX()] = eaten;
+        }
+
+        // TODO may need to be changed
+        // Need to update the cell history
+        Set<ConcretePiece> stepTracker = cellHistory.get(lastMove.getToWhere());
+        if (stepTracker.size() == 1) {
+            stepTracker.remove(piece);
+            if (stepTracker.isEmpty()) { // Nothing there
+                cellHistory.remove(lastMove.getToWhere());
+            }
+        } else {
+            stepTracker.add(piece);
+            cellHistory.put(lastMove.getToWhere(), stepTracker);
+        }
+
+
+        if (piece instanceof King) {
+            king1Position = lastMove.getFromWhere();
+        }
 
         // Switch the turn back
         isPlayer2Turn = !isPlayer2Turn;
     }
 
-}
 
     @Override
     public int getBoardSize() {
