@@ -10,7 +10,7 @@ public class GameLogic implements PlayableLogic {
     private static int count2Pieces = 0;
 
     private static final int BOARD_SIZE = 11; // The size of the board, can be updated if we want. Makes the board modular
-    private final Stack<ConcretePiece[][]> undoStack; // The stack for undoing the last move
+    private final Stack<PositionHistory> undoStack; // The stack for undoing the last move
     private final ConcretePiece[][] board; // The board of the game 2D array of ConcretePiece
     private final ConcretePiece[] pieces; // The pieces of the game from 0-12 players 1 and 13-36 players 2
 
@@ -270,14 +270,20 @@ public class GameLogic implements PlayableLogic {
 
         isPlayer2Turn = !isPlayer2Turn; // Changing the turn
 
-        // Update cell history for the "from" position
-        updateCellHistory(a, currPiece);
+
+        if (isGameFinished()) {
+            if (isPlayer2Turn) {
+                printGameData(false);
+            } else {
+                printGameData(true);
+            }
+        }
 
         // Update cell history for the "to" position
         updateCellHistory(b, currPiece);
 
-        ConcretePiece[][] currentState = cloneBoard(board);
-        undoStack.push(currentState);
+
+        undoStack.push(new PositionHistory(currPiece, a, b)); // Putting the new move in the stack with the current piece and the positions
 
         return true;
     }
@@ -309,7 +315,8 @@ public class GameLogic implements PlayableLogic {
                 } else {
                     count1Pieces++;
                 }
-
+                // Adding to current piece the number of eats in undo stack, so we can restore the eaten pawn
+                undoStack.peek().addEaten((Pawn) board[position.getY() + 1][position.getX()]);
                 board[position.getY() + 1][position.getX()] = null; // Removing the enemy piece
             } else {
                 if (board[position.getY() + 2][position.getX()] instanceof Pawn && board[position.getY() + 2][position.getX()].getOwner() == current.getOwner()) {
@@ -320,8 +327,7 @@ public class GameLogic implements PlayableLogic {
                     } else {
                         count1Pieces++;
                     }
-
-
+                    undoStack.peek().addEaten((Pawn) board[position.getY() + 1][position.getX()]);
                     board[position.getY() + 1][position.getX()] = null; // Removing the enemy piece
                 }
             }
@@ -337,7 +343,7 @@ public class GameLogic implements PlayableLogic {
                 } else {
                     count1Pieces++;
                 }
-
+                undoStack.peek().addEaten((Pawn) board[position.getY()][position.getX() + 1]);
                 board[position.getY()][position.getX() + 1] = null; // Removing the enemy piece
             } else {
                 if (board[position.getY()][position.getX() + 2] instanceof Pawn && board[position.getY()][position.getX() + 2].getOwner() == current.getOwner()) {
@@ -348,7 +354,7 @@ public class GameLogic implements PlayableLogic {
                     } else {
                         count1Pieces++;
                     }
-
+                    undoStack.peek().addEaten((Pawn) board[position.getY()][position.getX() + 1]);
                     board[position.getY()][position.getX() + 1] = null; // Removing the enemy piece
                 }
             }
@@ -364,7 +370,7 @@ public class GameLogic implements PlayableLogic {
                 } else {
                     count1Pieces++;
                 }
-
+                undoStack.peek().addEaten((Pawn) board[position.getY() - 1][position.getX()]);
                 board[position.getY() - 1][position.getX()] = null; // Removing the enemy piece
             } else {
                 if (board[position.getY() - 2][position.getX()] instanceof Pawn && board[position.getY() - 2][position.getX()].getOwner() == current.getOwner()) {
@@ -375,7 +381,7 @@ public class GameLogic implements PlayableLogic {
                     } else {
                         count1Pieces++;
                     }
-
+                    undoStack.peek().addEaten((Pawn) board[position.getY() - 1][position.getX()]);
                     board[position.getY() - 1][position.getX()] = null; // Removing the enemy piece
                 }
             }
@@ -391,7 +397,7 @@ public class GameLogic implements PlayableLogic {
                 } else {
                     count1Pieces++;
                 }
-
+                undoStack.peek().addEaten((Pawn) board[position.getY()][position.getX() - 1]);
                 board[position.getY()][position.getX() - 1] = null; // Removing the enemy piece
             } else {
                 if (board[position.getY()][position.getX() - 2] instanceof Pawn && board[position.getY()][position.getX() - 2].getOwner() == current.getOwner()) {
@@ -402,7 +408,7 @@ public class GameLogic implements PlayableLogic {
                     } else {
                         count1Pieces++;
                     }
-
+                    undoStack.peek().addEaten((Pawn) board[position.getY() - 1][position.getX()]);
                     board[position.getY()][position.getX() - 1] = null; // Removing the enemy piece
                 }
             }
@@ -465,7 +471,7 @@ public class GameLogic implements PlayableLogic {
             player1.addWin();
 
             // Printing the data, according to that player 1 won
-            printGameData(true);
+//            printGameData(true);
 
             return true;
         }
@@ -476,7 +482,7 @@ public class GameLogic implements PlayableLogic {
             player2.addWin();
 
             // Printing the data, according to that player 2 won
-            printGameData(false);
+//            printGameData(false);
 
             return true;
         }
@@ -486,7 +492,7 @@ public class GameLogic implements PlayableLogic {
             player2.addWin();
 
             // Printing the data, according to that player 2 won
-            printGameData(false);
+//            printGameData(false);
 
             return true;
         }
@@ -496,7 +502,7 @@ public class GameLogic implements PlayableLogic {
             player2.addWin();
 
             // Printing the data, according to that player 2 won
-            printGameData(false);
+//            printGameData(false);
 
             return true;
         }
@@ -506,7 +512,7 @@ public class GameLogic implements PlayableLogic {
             player2.addWin();
 
             // Printing the data, according to that player 2 won
-            printGameData(false);
+//            printGameData(false);
 
             return true;
         }
@@ -518,7 +524,7 @@ public class GameLogic implements PlayableLogic {
             player2.addWin();
 
             // Printing the data, according to that player 2 won
-            printGameData(false);
+//            printGameData(false);
 
             return true;
         }
@@ -526,7 +532,7 @@ public class GameLogic implements PlayableLogic {
         // Player 1 ate all player'2 2 pieces
         else if (count2Pieces == 24) {
             player1.addWin();
-            printGameData(true);
+//            printGameData(true);
             return true;
 
         }
@@ -535,7 +541,7 @@ public class GameLogic implements PlayableLogic {
         // Player 2 ate all player'1 2 pieces instead of the king only the king is left
         else if (count1Pieces == 12) {
             player2.addWin();
-            printGameData(false);
+//            printGameData(false);
             return true;
         }
 
@@ -564,45 +570,40 @@ public class GameLogic implements PlayableLogic {
         player1Pieces();
         player2Pieces();
 
+        cellHistory.clear(); // Clear the cell history on reset
         undoStack.clear(); // Clear the undo stack on reset
     }
 
     @Override
     public void undoLastMove() {
-        if (!undoStack.isEmpty()) {
-            ConcretePiece[][] previousState = undoStack.pop();
-            // Restore the previous state
-            for (int i = 0; i < previousState.length; i++) {
-                for (int j = 0; j < previousState[i].length; j++) {
-                    board[i][j] = previousState[i][j];
-                }
-            }
-            // Switch the turn back
-            isPlayer2Turn = !isPlayer2Turn;
+        if (undoStack.isEmpty()) {
+            return;
         }
+        // The stack is not empty, so we can undo the last move
+        PositionHistory lastMove = undoStack.pop(); // Getting the last move
+        ConcretePiece piece = lastMove.getPie(); // Getting the piece
+
+        // We've kept the position to know where to take the piece back
+        board[lastMove.getFromWhere().getY()][lastMove.getFromWhere().getX()] = piece; // Taking him back
+        board[lastMove.getToWhere().getY()][lastMove.getToWhere().getX()] = null;   // Removing him from the last position
+
+        // We need to update the distance of the piece
+        piece.removeMove(piece.getMoves().get(piece.getMoves().size() - 1)); // Removing the last move from the list and decreasing the distance
+
+        // Update the num of eats for that pawn if he ate, we need to decrease
+        piece.setNumberOfEats(piece.getNumberOfEats() - lastMove.getEaten().size());
+
+        // TODO continue this
+
+        // Switch the turn back
+        isPlayer2Turn = !isPlayer2Turn;
     }
+
+}
 
     @Override
     public int getBoardSize() {
         return BOARD_SIZE;
-    }
-
-    private ConcretePiece[][] cloneBoard(ConcretePiece[][] original) {
-        ConcretePiece[][] copy = new ConcretePiece[original.length][original[0].length];
-        for (int i = 0; i < original.length; i++) {
-            for (int j = 0; j < original[i].length; j++) {
-                if (board[i][j] != null) { // abstract class need tp check instances
-                    if (board[i][j] instanceof Pawn) {
-                        copy[i][j] = new Pawn(original[i][j].getOwner(), original[i][j].getType(), original[i][j].getPieceNum());
-                    } else { // This is a king
-                        copy[i][j] = new King(original[i][j].getOwner(), original[i][j].getType(), original[i][j].getPieceNum());
-                    }
-                } else {
-                    board[i][j] = null;
-                }
-            }
-        }
-        return copy;
     }
 
     private void updateCellHistory(Position position, ConcretePiece piece) {
@@ -728,7 +729,7 @@ public class GameLogic implements PlayableLogic {
             }
         };
 
-       // Arrays.sort(onlyEat, eatCompare);
+        // Arrays.sort(onlyEat, eatCompare);
         // print the sorted pieces
         didEat.sort(eatCompare);
         for (ConcretePiece eat : didEat) {

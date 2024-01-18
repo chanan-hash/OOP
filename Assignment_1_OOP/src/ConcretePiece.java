@@ -56,10 +56,15 @@ public abstract class ConcretePiece implements Piece {
         this.moves.add(position);
     }
 
+    public void removeMove(Position position) {
+        this.distance -= moves.get(moves.size() - 1).distance(position); // Updating the distance by removing last place in 'moves'  and using distance method
+        this.moves.remove(position);
+    }
 
     // Abstract methods
     public abstract int getNumberOfEats(); // Will be implemented in Pawn class
 
+    public abstract void setNumberOfEats(int i); // Setting the number of eats, will be implemented in Pawn class
     public abstract String getName(); // The same as above
 
 

@@ -28,6 +28,12 @@ public class Pawn extends ConcretePiece {
         return this.eatNumber;
     }
 
+    // This is for decreasing number of eats when we want to restore the game
+    @Override
+    public void setNumberOfEats(int i) {
+        this.eatNumber = i;
+    }
+
     // Updating the eatNumber
     public void eat() {
         eatNumber++;
