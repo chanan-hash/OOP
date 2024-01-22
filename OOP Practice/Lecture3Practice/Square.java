@@ -37,6 +37,14 @@ public class Square extends GeometricShape{
         this._x1 = _x1;
     }
 
+    public double get_y1() {
+        return _y1;
+    }
+
+    public void set_y1(double _y1) {
+        this._y1 = _y1;
+    }
+
     public double get_x2() {
         return _x2;
     }
@@ -44,6 +52,15 @@ public class Square extends GeometricShape{
     public void set_x2(double _x2) {
         this._x2 = _x2;
     }
+
+    public double get_y2() {
+        return _y2;
+    }
+
+    public void set_y2(double _y2) {
+        this._y2 = _y2;
+    }
+
     @Override
     public String toString() {
         return "Square with area " + getArea() + " and perimeter " + getPerimeter();

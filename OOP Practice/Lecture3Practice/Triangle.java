@@ -12,10 +12,7 @@ public class Triangle extends GeometricShape{
         this._x3 = x3;
         this._y3 = y3;
     }
-
-
-
-
+    
     public double get_x1() {
         return _x1;
     }
