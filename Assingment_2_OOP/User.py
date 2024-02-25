@@ -6,7 +6,7 @@ if TYPE_CHECKING:
 
 # type Checking helpers
 
-from CostomExeption import NotLoginError, IllegalOperationError #TODO need to be implemented
+from CostomException import NotLoginError, IllegalOperationError
 from PostFactory import PostFactory #TODO need to be implemented
 
 class User:

@@ -12,5 +12,5 @@ class TextPost(Post):
         super().__init__(creator)  # The creator of the post, the user
         self._content = content
 
-   def __repr__(self):
-      return f"{super.get_creator().username} published a post:\n'{self.content}'\n"
+    def __repr__(self):
+        return f"{super.get_creator().username} published a post:\n'{self.content}'\n"
