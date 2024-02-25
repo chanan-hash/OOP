@@ -16,7 +16,8 @@ class User:
         if len(password) < 4 or len(password) > 8:
             raise ValueError("Password must be 4 to 8 characters long")
 
-        # self.
+        self.username = username
+        self.password = password
 
     def notify(self, message: str, log: bool, extra_message: str= "")-> None:
         pass

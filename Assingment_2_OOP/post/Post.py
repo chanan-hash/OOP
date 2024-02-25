@@ -8,7 +8,6 @@ if TYPE_CHECKING:
 from abc import ABC, abstractmethod
 
 from CostomException import NotLoginError
-form Notificator import Notificator
+from Notificator import Notificator
 
 class Post(ABC):
-    
