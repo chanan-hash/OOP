@@ -45,7 +45,6 @@ class User:
         Unfollow a given user, and updating the user followers set
         If he is not following him, raise exception
         :param user:
-        :return:
         """
         User.check_if_user_login(self)
 
@@ -57,6 +56,20 @@ class User:
         else:
             raise IllegalOperationError("User is not following the given user")
 
+    def publish_post(self, post_type: str, *args):
+        """
+        Publish a post according to it's type
+        It we'll be created according to the post-factory
+
+        :param post_type: Type of the post to br published ["Text", "Sale", "Image"]
+        :param args: the arguments to pass to the post. beacue each king of post getting something else, we're using the args keyword
+        """
+
+        User.check_if_user_login(self)
+        new_post = User._post_factory.create_post(post_type,self,*args)
+        self._post_num += 1
+        return new_post
+
     def notify(self, message: str, log: bool, extra_message: str = "") -> None:
         pass
 
@@ -65,7 +78,7 @@ class User:
         Gets the user followers
         :return: A set of the followers
         """
-        return self._followers  # TODO handle this
+        return self._followers
 
     @staticmethod
     def check_if_user_login(user) -> None:
