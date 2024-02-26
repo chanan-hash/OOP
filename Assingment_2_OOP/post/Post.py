@@ -37,8 +37,8 @@ class Post(ABC):
 
     @staticmethod
     def check_if_user_logged(user: User):
-        #from SocialNetwork import SocialNetwork
-        if not SocialNetwork.get_instance().is_user_logged_in(user):
+        from SocialNetwork import SocialNetwork
+        if not SocialNetwork.get_instance().is_user_logged(user):
             raise NotLoginError("User is not logged in")
 
     def __str__(self):

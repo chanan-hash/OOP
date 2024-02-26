@@ -36,8 +36,8 @@ class SocialNetwork:
 
         print(f"The social network {name} was created!")
 
-    def sing_up(self, username: str, password: str):
-        if username in self._user:
+    def sign_up(self, username: str, password: str):
+        if username in self._users:
             raise UsernameAlreadyExistsError("Username already exists")
 
         user = User(username, password)  # Creating a User object

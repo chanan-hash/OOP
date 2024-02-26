@@ -19,8 +19,7 @@ class User:
 
         self.username = username
         self.password = password
-        self._followers = Set[
-            "User"] = set()  # creating a set that holds the followers. set saving us checking if someone tried to do follow twice
+        self._followers: Set["User"] = set()  # creating a set that holds the followers. set saving us checking if someone tried to do follow twice
         self._post_num = 0  # How many posts the user have posted
         self._notifications: List[str] = []  # A list that hold all user notifications
 
@@ -36,7 +35,7 @@ class User:
         if user == self:
             raise ValueError("Cannot follow yourself")
 
-        user.followers.add(self)
+        user._followers.add(self)
 
         print(f'{self.username} started following {user.username}')
 

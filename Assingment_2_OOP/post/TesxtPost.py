@@ -13,4 +13,4 @@ class TextPost(Post):
         self._content = content
 
     def __repr__(self):
-        return f"{super.get_creator().username} published a post:\n'{self.content}'\n"
+        return f"{super().get_creator().username} published a post:\n'{self._content}'\n"

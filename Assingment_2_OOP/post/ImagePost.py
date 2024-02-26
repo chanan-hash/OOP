@@ -18,7 +18,7 @@ class ImagePost(Post):
 
     def display(self) -> None:
         print("Show picture")
-        img = Image.open(self._image_url)
+        img = Image.open(self._image_url) # _image_path
         plt.imshow(img)
         plt.show()
 
