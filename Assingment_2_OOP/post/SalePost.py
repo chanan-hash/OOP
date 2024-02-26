@@ -24,7 +24,7 @@ class SalePost(Post):
         :return: None
         """
         if dis <= 0 or dis > 100:
-            raise ValueError("Discount must be in the range [0,100)")
+            raise ValueError("Discount must be in the range (0,100]")
 
         if super().get_creator().compare_password(password):
             self._price = self._price * (1 - dis / 100)
