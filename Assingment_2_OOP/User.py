@@ -121,4 +121,7 @@ class User:
 
     @staticmethod
     def check_if_user_login(user) -> None:
-        pass
+        from SocialNetwork import SocialNetwork
+        # Only logged-on user will be able to do the function above
+        if not SocialNetwork.get_instance().is_user_logged(user):
+            raise NotLoginError("User is not logged in")
