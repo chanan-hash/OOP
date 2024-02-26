@@ -66,12 +66,35 @@ class User:
         """
 
         User.check_if_user_login(self)
-        new_post = User._post_factory.create_post(post_type,self,*args)
+        new_post = User._post_factory.create_post(post_type, self, *args)
         self._post_num += 1
         return new_post
 
     def notify(self, message: str, log: bool, extra_message: str = "") -> None:
-        pass
+        """
+        Notify a user with a given message.
+        If the log == True, it will print the edited message.
+        :param message: message to notify
+        :param log: print it or not
+        :param extra_message: extra message to print
+        :return: None
+        """
+        self._notifications.append(message)
+        if log:  # Trying to add to existing notification
+            print(f"notification to {self.username}: {message}{extra_message}")
+
+    def print_notifications(self):
+        print(f"{self.username}'s notifications:")
+        for notification in self._notifications:
+            print(notification)
+
+    def compare_password(self, password: str) -> bool:
+        """
+        Comparing a given password to user's passowrd
+        :param password: password to compare
+        :return: True is equal, and False if not
+        """
+        return self.password == password
 
     def get_followers(self) -> Set["User"]:
         """
@@ -79,6 +102,22 @@ class User:
         :return: A set of the followers
         """
         return self._followers
+
+    # This is like a toString function
+    def __str__(self) -> str:
+        return f"User name: {self.username}, Number of posts: {self._post_num}, Number of followers {len(self._followers)}"
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+    # equal function, comparing between to users by their username
+    def __eq__(self, other):
+        if isinstance(other, User):
+            return self.username == other.username
+        return False
+
+    def __hash__(self):
+        return hash(self.username)
 
     @staticmethod
     def check_if_user_login(user) -> None:
