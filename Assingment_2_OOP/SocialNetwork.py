@@ -40,14 +40,39 @@ class SocialNetwork:
         if username in self._user:
             raise UsernameAlreadyExistsError("Username already exists")
 
-        user = User(username, password) # Creating a User object
-        self._users[username] = user # Adding it to the dictionary
-        self._logged_in.add(user) # logged in when register
+        user = User(username, password)  # Creating a User object
+        self._users[username] = user  # Adding it to the dictionary
+        self._logged_in.add(user)  # logged in when register
         return user
 
     def log_out(self, username: str) -> None:
-        if username in self._user: # non-registered user trying to log-out
+        if username in self._user:  # non-registered user trying to log-out
             raise UserDoesNotExistError("Username does not exists")
 
         if self._users[username] not in self._logged_in:
             raise NotLoginError("Can't log out a user that is not logged in")
+
+        self._logged_in.remove(self._users[username])
+        print(f"{username} disconnected")
+
+    def log_in(self, username: str, password: str) -> None:
+        # Checking if the user has been already registered and the correctness of username and password input
+        if username not in self._users or self._users[username].compare_password(password) is False:
+            raise InvalidCredentialsError("Invalid credentials")
+
+        user = self._users[username]
+
+        self._logged_in.add(user)  # The logged in Set
+        print(f'{username} connected')
+
+    def is_user_logged(self, user: User) -> bool:
+        return user in self._logged_in
+
+    # The toString of the class --> means class info in String format
+    def __str__(self):
+        users = "\n".join(
+            [str(u) for u in self._users.values()])  # lambda for iterating the all users in the dictionary
+        return f"{self._name} social network:\n{users}"
+
+    def __repr__(self):
+        return self.__str__()
