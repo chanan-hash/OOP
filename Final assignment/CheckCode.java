@@ -5,14 +5,14 @@ public class CheckCode {
     public static void main(String[] args) {
 
         // Q1
-//        List<Person> uppercaseLettersList = new ArrayList<>();
-//        List<Person> lowercaseLettersList = new ArrayList<>();
+//        List<Ex1B.Person> uppercaseLettersList = new ArrayList<>();
+//        List<Ex1B.Person> lowercaseLettersList = new ArrayList<>();
 //
-//        lowercaseLettersList.add(new Person("alice"));
-//        lowercaseLettersList.add(new Person("bob"));
+//        lowercaseLettersList.add(new Ex1B.Person("alice"));
+//        lowercaseLettersList.add(new Ex1B.Person("bob"));
 //
 ////        for (int i = 0; i < lowercaseLettersList.size(); i++) {
-////            uppercaseLettersList.add(new Person(lowercaseLettersList.get(i).getName().toUpperCase()));
+////            uppercaseLettersList.add(new Ex1B.Person(lowercaseLettersList.get(i).getName().toUpperCase()));
 ////        }
 ////        for (int i = 0; i < lowercaseLettersList.size(); i++) {
 ////            uppercaseLettersList.add(lowercaseLettersList.get(i));
@@ -20,19 +20,19 @@ public class CheckCode {
 ////        }
 //
 //        for (int i = 0; i < lowercaseLettersList.size(); i++) {
-//            uppercaseLettersList.add(new Person(lowercaseLettersList.get(i).getName()));
+//            uppercaseLettersList.add(new Ex1B.Person(lowercaseLettersList.get(i).getName()));
 //            uppercaseLettersList.get(i).setName(uppercaseLettersList.get(i).getName().toUpperCase());
 //        }
 //
 //        // Printing the first list
 //        System.out.println("Uppercase List:");
-//        for (Person person : uppercaseLettersList) {
+//        for (Ex1B.Person person : uppercaseLettersList) {
 //            System.out.println(person.getName());
 //        }
 //
 //        // Printing the second list
 //        System.out.println("Lowercase List:");
-//        for (Person person : lowercaseLettersList) {
+//        for (Ex1B.Person person : lowercaseLettersList) {
 //            System.out.println(person.getName());
 //        }
 
@@ -53,7 +53,35 @@ public class CheckCode {
         }
 
         // Q3
-
+        Animal animal = new Dog();
+        animal.makeSound(); // will return the sound of a dog because the method is overridden in the Dog class, and we've created a dog object
     }
 }
 
+/**
+public class Animal {
+    final static String sound = "Animal sound";
+
+    void makeSound() {
+        System.out.println(sound);
+    }
+}
+public class Dog extends Animal{
+    final static String sound = "Bark";
+
+    void makeSound() {
+        System.out.println(sound);
+    }
+}
+
+
+public class CheckCode {
+    public static void main(String[] args) {
+
+        Animal animal = new Dog();
+        animal.makeSound(); // will return the sound of a dog because the method is overridden in the Dog class, and we've created a dog object
+    }
+}
+
+What one thing should I change the code to be polymorfic behavior?
+*/
