@@ -11,7 +11,9 @@ public class Course {
 
     private int courseNumber;
 
-    private int courseCapacity;
+    private final int courseCapacity;
+
+    private int placeAvailable = 0;
 
     // Constructor
     public Course(String name, CourseType type, int courseNumber, int courseCapacity) {
@@ -34,15 +36,11 @@ public class Course {
     }
 
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return this.name;
     }
 
     public int getCourseNumber() {
-        return courseNumber;
+        return this.courseNumber;
     }
 
     public void setCourseNumber(int courseNumber) {
@@ -50,18 +48,18 @@ public class Course {
     }
 
     public int getCourseCapacity() {
-        return courseCapacity;
-    }
-
-    public void setCourseCapacity(int courseCapacity) {
-        this.courseCapacity = courseCapacity;
+        return this.courseCapacity;
     }
 
     /***
-     * Incrementing course capacity by 1
+     * Incrementing course place available by 1
      */
-    public void addStudent() {
-        courseCapacity++;
+    public boolean addStudent() {
+        if (this.placeAvailable <= this.courseCapacity) {
+            this.placeAvailable++;
+            return true;
+        }
+        return false; // No place available in the course
     }
 
     @Override
