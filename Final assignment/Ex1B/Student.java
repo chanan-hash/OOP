@@ -3,7 +3,7 @@ package Ex1B;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Student {
+public class Student implements Active{
     private String name;
     private int id;
 
@@ -38,11 +38,17 @@ public class Student {
             System.out.println(this.name + " registered to " + course.getName());
             return true;
         } else {
-            // TODO add here observer for notification
+            // TODO add to observer to check when there is place available
             System.out.println("Course is full, " + this.name + " could not register to " + course.getName());
             return false;
         }
     }
+    public void unsignCourse(Course course) {
+        courses.remove(course);
+        course.removeStudent();
+        System.out.println(this.name + " unregistered from " + course.getName());
+    }
+
 
     /**
      * Observer pattern, printing the courses that student registered

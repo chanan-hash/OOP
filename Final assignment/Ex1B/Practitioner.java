@@ -1,6 +1,6 @@
 package Ex1B;
 
-public class Practitioner extends Teacher{
+public class Practitioner extends Teacher implements Active{
 
         public Practitioner(String name, int id,int workHours) {
             super(name, id, workHours);

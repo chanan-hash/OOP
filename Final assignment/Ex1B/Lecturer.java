@@ -1,6 +1,6 @@
 package Ex1B;
 
-public class Lecturer extends Teacher{
+public class Lecturer extends Teacher implements Active{
 
     public Lecturer(String name, int id,int workHours) {
         super(name, id, workHours);

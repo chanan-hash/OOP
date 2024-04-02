@@ -62,6 +62,12 @@ public class Course {
         return false; // No place available in the course
     }
 
+    public void removeStudent() {
+        if (this.placeAvailable > 0) {
+            this.placeAvailable--;
+        }
+    }
+
     @Override
     public String toString() {
         return "Course{" +
