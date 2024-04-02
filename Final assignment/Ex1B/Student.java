@@ -47,6 +47,7 @@ public class Student implements Active{
         courses.remove(course);
         course.removeStudent();
         System.out.println(this.name + " unregistered from " + course.getName());
+        // TODO add to observer to check when there is place available
     }
 
 

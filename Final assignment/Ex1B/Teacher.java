@@ -1,7 +1,7 @@
 package Ex1B;
 
 /**
- * This abstract class is for the teacherable classes aka lecturer and excersier .
+ * This abstract class is for the teacherable classes aka lecturer and practitioner .
  * They will have to implement the option to define the course
  */
 public abstract class Teacher {

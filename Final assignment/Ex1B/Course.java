@@ -55,7 +55,7 @@ public class Course {
      * Incrementing course place available by 1
      */
     public boolean addStudent() {
-        if (this.placeAvailable <= this.courseCapacity) {
+        if (this.placeAvailable < this.courseCapacity) {
             this.placeAvailable++;
             return true;
         }
