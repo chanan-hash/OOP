@@ -2,6 +2,7 @@ package Ex1B;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Course {
     private static final Map<String, Course> courseMap = new HashMap<>(); // for saving defined courses, this is an kind of flyweight pattern
@@ -24,6 +25,7 @@ public class Course {
     }
 
     // For flyweight design pattern, creating only one instance if exists
+
     public static Course getInstance(String name, CourseType type, int courseNumber, int courseCapacity) {
         // Check if the course with the given name already exists
         if (!courseMap.containsKey(name)) {
@@ -74,5 +76,18 @@ public class Course {
                 "name='" + name + '\'' +
                 ", courseNumber=" + courseNumber +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return courseNumber == course.courseNumber && Objects.equals(name, course.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, courseNumber);
     }
 }

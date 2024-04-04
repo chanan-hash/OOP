@@ -9,7 +9,7 @@ import java.util.List;
 public class RegisterSystem {
     private static final RegisterSystem instance = new RegisterSystem();
     private static final int MAX_ACTIVE = 100; // Maximum number of active people
-    List<Active> active = new ArrayList<Active>(MAX_ACTIVE);
+    List<UniversityPerson> active = new ArrayList<UniversityPerson>(MAX_ACTIVE);
 
     public static RegisterSystem getInstance() { // for the singleton pattern
         return instance; // This will always return the same instance

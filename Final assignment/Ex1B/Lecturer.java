@@ -1,6 +1,6 @@
 package Ex1B;
 
-public class Lecturer extends Teacher implements Active{
+public class Lecturer extends Teacher {
 
     public Lecturer(String name, int id,int workHours) {
         super(name, id, workHours);
@@ -11,5 +11,10 @@ public class Lecturer extends Teacher implements Active{
         Course course = Course.getInstance(name, type, courseNumber, courseCapacity);
         System.out.println("Course " + course.getName() + " defined by " + this.getName());
         return course; // return the course so we know it hase been created
+    }
+
+    @Override
+    public void printInfo() {
+        System.out.println("Lecturer: " + this.getName() + " with id: " + this.getId());
     }
 }
