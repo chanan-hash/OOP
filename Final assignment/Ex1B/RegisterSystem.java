@@ -14,4 +14,6 @@ public class RegisterSystem {
     public static RegisterSystem getInstance() { // for the singleton pattern
         return instance; // This will always return the same instance
     }
+
+
 }

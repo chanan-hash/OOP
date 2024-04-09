@@ -5,9 +5,6 @@ package Ex1B;
  * They will have to implement the option to define the course
  */
 public abstract class Teacher extends UniversityPerson {
-    private String name;
-    private int id;
-
     private int workHours;
 
     // Constructor for Teacher class
