@@ -1,42 +1,56 @@
 package Ex1B;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class Student extends UniversityPerson {
+public class Student extends UniversityPerson implements CourseObserver {
 
-    private List<Course> courses; // courses that student registered
+    private Set<Course> courses; // courses that student have registered
 
     public Student(String name, int id) {
         super(name, id);
-        List<Course> courses = new ArrayList<>();
+        courses = new HashSet<>();
     }
 
-    public boolean registerCourse(Course course) {
-        // Check if the course is full
-        if (course.addStudent()) {
-            courses.add(course);
-            System.out.println(this.getName() + " registered to " + course.getName());
+    // TODO maybe use flyweight for student
+
+    // TODO can ask the student for input for asking for notification
+    public boolean registerCourse(Course course, boolean subscribe) {
+        if (course.addStudent(this)) {
+            this.courses.add(course);
             return true;
         } else {
-            // TODO add to observer to check when there is place available
-            System.out.println("Course is full, " + this.getName() + " could not register to " + course.getName());
+            if (subscribe) {
+                course.addObserver(this);
+            }
             return false;
         }
     }
-    public void unsignCourse(Course course) {
-        courses.remove(course);
-        course.removeStudent();
-        System.out.println(this.getName() + " unregistered from " + course.getName());
-        // TODO add to observer to check when there is place available
+
+    public void unsignedCourse(Course course) {
+        if (courses.contains(course)) {
+            courses.remove(course);
+            course.removeStudent(this);
+            System.out.println(this.getName() + " unregistered from " + course.getName());
+        }
+        System.out.println("The student is not registered to this course");
+    }
+
+
+    @Override
+    public void update(Course course) {
+        System.out.println("Course: " + course.getName() + ", number: " + course.getCourseID() + " has place available");
     }
 
     @Override
-    public void printInfo() {
-        System.out.println("Student: " + this.getName() + " with id: " + this.getId());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(courses, student.courses);
     }
 
-    /**
-     * Observer pattern, printing the courses that student registered
-     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(courses);
+    }
 }

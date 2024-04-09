@@ -27,6 +27,4 @@ public abstract class UniversityPerson {
     public void setId(int id) {
         this.id = id;
     }
-
-    public abstract void printInfo();
 }

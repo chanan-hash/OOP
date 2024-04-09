@@ -30,6 +30,7 @@ public class Course implements Subject {
         this.courseCapacity = courseCapacity;
         this.type = type;
         this.students = new HashSet<>(courseCapacity);
+        this.courseObservers = new HashSet<>();
     }
 
     // For flyweight design pattern, creating only one instance if exists
@@ -60,17 +61,13 @@ public class Course implements Subject {
         return this.courseCapacity;
     }
 
-    /***
-     * Incrementing course place available by 1
-     */
     public boolean addStudent(Student student) {
         if (this.students.size() == courseCapacity) {
             return false;
         }
-        // TODO handel observer
         this.students.add(student);
-        if(courseObservers.contains(student)){
-            courseObservers.remove(student);
+        if (courseObservers.contains(student)) {
+            removeObserver(student);
         }
         return true;
     }
@@ -78,9 +75,7 @@ public class Course implements Subject {
     public void removeStudent(Student student) {
         if (students.contains(student)) {
             this.students.remove(student);
-            for (CourseObserver observer : courseObservers) {
-                observer.update(this);
-            }
+            notifyStudents();
         }
     }
 
@@ -131,16 +126,18 @@ public class Course implements Subject {
 
     @Override
     public void addObserver(CourseObserver observer) {
-
+        this.courseObservers.add(observer);
     }
 
     @Override
     public void notifyStudents() {
-
+        for (CourseObserver observer : courseObservers) {
+            observer.update(this);
+        }
     }
 
     @Override
     public void removeObserver(CourseObserver observer) {
-
+        this.courseObservers.remove(observer);
     }
 }
