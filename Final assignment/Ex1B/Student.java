@@ -9,6 +9,8 @@ public class Student extends UniversityPerson implements CourseObserver {
     private Set<Course> courses; // courses that student have registered
     private static Set<Integer> idSet = new HashSet<>(); //  This is a set for keeping all the registered
 
+    private NotificationStrategy notificationStrategy = null;
+
     private Student(String name, int id) {
         super(name, id);
         courses = new HashSet<>();
@@ -23,33 +25,18 @@ public class Student extends UniversityPerson implements CourseObserver {
         }
     }
 
-
-    // TODO can ask the student for input for asking for notification
-    public boolean registerCourse(Course course, boolean subscribe) {
-        if (course.addStudent(this)) {
-            this.courses.add(course);
-            return true;
-        } else {
-            if (subscribe) {
-                course.addObserver(this);
-            }
-            return false;
-        }
+    public Set<Course> getCourses() {
+        return courses;
     }
 
-    public void unsignedCourse(Course course) {
-        if (courses.contains(course)) {
-            courses.remove(course);
-            course.removeStudent(this);
-            System.out.println(this.getName() + " unregistered from " + course.getName());
-        }
-        System.out.println("The student is not registered to this course");
+    public void setNotificationStrategy(NotificationStrategy notificationStrategy) {
+        this.notificationStrategy = notificationStrategy;
     }
-
 
     @Override
     public void update(Course course) {
-        System.out.println("Course: " + course.getName() + ", number: " + course.getCourseID() + " has place available");
+//        System.out.println("Course: " + course.getName() + ", number: " + course.getCourseID() + " has place available");
+        notificationStrategy.notifyStudents();
     }
 
     @Override

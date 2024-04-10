@@ -6,6 +6,7 @@ package Ex1B;
 
 public class Main {
     public static void main(String[] args) {
+        RegisterSystem registerSystem = RegisterSystem.getInstance(); // singleton
         Student chanan = Student.createStudent("chanan",1234);
         System.out.println(chanan);
     }

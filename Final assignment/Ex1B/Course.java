@@ -19,7 +19,7 @@ public class Course implements Subject {
 
     private final Set<Student> students; // set of registered student
 
-    private Set<CourseObserver> courseObservers;
+    private final Set<CourseObserver> courseObservers;
 
 
     public Course(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity) {

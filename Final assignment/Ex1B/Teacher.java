@@ -1,10 +1,15 @@
 package Ex1B;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * This abstract class is for the teacherable classes aka lecturer and practitioner .
  * They will have to implement the option to define the course
  */
+// TODO maybe add like in the Students Creeating only by single ID
 public abstract class Teacher extends UniversityPerson {
+    //    private static Set<Integer> idTeacher = new HashSet<>();
     private int workHours;
 
     // Constructor for Teacher class
