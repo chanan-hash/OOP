@@ -7,9 +7,8 @@ import java.util.Set;
  * This abstract class is for the teacherable classes aka lecturer and practitioner .
  * They will have to implement the option to define the course
  */
-// TODO maybe add like in the Students Creeating only by single ID
 public abstract class Teacher extends UniversityPerson {
-    //    private static Set<Integer> idTeacher = new HashSet<>();
+    private static Set<Integer> idTeacher = new HashSet<>();
     private int workHours;
 
     // Constructor for Teacher class
@@ -24,6 +23,10 @@ public abstract class Teacher extends UniversityPerson {
 
     public void setWorkHours(int workHours) {
         this.workHours = workHours;
+    }
+
+    public static Set<Integer> getIdTeacher() {
+        return idTeacher;
     }
 
     // The method to define the course
