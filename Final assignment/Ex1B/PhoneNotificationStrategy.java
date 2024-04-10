@@ -2,7 +2,7 @@ package Ex1B;
 
 public class PhoneNotificationStrategy implements NotificationStrategy{
     @Override
-    public void notifyStudents() {
-        System.out.println("We'll notify you by phone call...");
+    public void notifyStudents(Course course, Student student) {
+        System.out.println("Calling to " + student.getName() + " to notify that " + course.getName() + " has place available");
     }
 }

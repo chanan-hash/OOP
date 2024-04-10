@@ -36,7 +36,7 @@ public class Student extends UniversityPerson implements CourseObserver {
     @Override
     public void update(Course course) {
 //        System.out.println("Course: " + course.getName() + ", number: " + course.getCourseID() + " has place available");
-        notificationStrategy.notifyStudents();
+        notificationStrategy.notifyStudents(course,this);
     }
 
     @Override
