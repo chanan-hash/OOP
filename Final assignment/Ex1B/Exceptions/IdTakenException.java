@@ -1,4 +1,4 @@
-package Ex1B;
+package Ex1B.Exceptions;
 
 public class IdTakenException extends RuntimeException {
 

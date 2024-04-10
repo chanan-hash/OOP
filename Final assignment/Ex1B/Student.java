@@ -1,5 +1,7 @@
 package Ex1B;
 
+import Ex1B.Exceptions.IdTakenException;
+
 import java.util.*;
 
 public class Student extends UniversityPerson implements CourseObserver {
