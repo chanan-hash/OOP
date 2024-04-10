@@ -7,6 +7,10 @@ import java.util.List;
  * This will implement the singleton pattern, to make sure that there is only one register system
  */
 public class RegisterSystem {
+
+    // TODO add the course register here and the observers
+
+
     private static final RegisterSystem instance = new RegisterSystem();
     private static final int MAX_ACTIVE = 100; // Maximum number of active people
     List<UniversityPerson> active = new ArrayList<UniversityPerson>(MAX_ACTIVE);

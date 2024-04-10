@@ -27,4 +27,12 @@ public abstract class UniversityPerson {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "UniversityPerson {" +
+                "name= '" + name + '\'' +
+                ", id= " + id +
+                '}';
+    }
 }
