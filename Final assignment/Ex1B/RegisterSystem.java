@@ -105,7 +105,7 @@ public class RegisterSystem {
      * We want to enable only for them, so for creating a course we need to check if the person is a teacher, pass this argument
      */
 
-    public void createCourse(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseNumber, int courseCapacity, UniversityPerson person) throws NotLoggedInException, NotATeacherException {
+    public Course createCourse(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseNumber, int courseCapacity, UniversityPerson person) throws NotLoggedInException, NotATeacherException {
         if (!REGISTER_SYSTEM.contains(person)) {
             throw new NotLoggedInException("Try to login to continue...");
         }
@@ -114,6 +114,7 @@ public class RegisterSystem {
         }
         Course course = Course.getInstance(name, courseID, lecturer, practitioner, type, courseNumber, courseCapacity);
         COURSES_LIST.add(course);
+        return course;
     }
 
 
