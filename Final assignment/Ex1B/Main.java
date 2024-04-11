@@ -9,5 +9,6 @@ public class Main {
         RegisterSystem registerSystem = RegisterSystem.getInstance(); // singleton
         Student chanan = Student.createStudent("chanan",1234);
         System.out.println(chanan);
+        Student yossi = Student.createStudent("yossi",1235);
     }
 }

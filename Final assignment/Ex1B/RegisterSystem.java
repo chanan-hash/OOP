@@ -24,25 +24,25 @@ public class RegisterSystem {
 
 
     /**
-     * Student registration system
+     * University person registration system
      * return true if there is place in the system, else throws exception
      */
-    public boolean singIn(Student student) throws SystemIsFullException {
+    public boolean singIn(UniversityPerson person) throws SystemIsFullException {
         if (REGISTER_SYSTEM.size() == MAX_ACTIVE) {
             throw new SystemIsFullException("System is full. There is no place right now");
         }
-        return REGISTER_SYSTEM.add(student);
+        return REGISTER_SYSTEM.add(person);
     }
 
     /**
      * singing out form the system, if his not logged in he wouldn't be able to register for the course
      * If the student trying to log out when he is not in the system it'll throw exception
      */
-    public boolean singOut(Student student) throws NotLoggedInException {
-        if (!REGISTER_SYSTEM.contains(student)) {
+    public boolean singOut(UniversityPerson person) throws NotLoggedInException {
+        if (!REGISTER_SYSTEM.contains(person)) {
             throw new NotLoggedInException("You're already not in the system");
         }
-        return REGISTER_SYSTEM.remove(student);
+        return REGISTER_SYSTEM.remove(person);
     }
 
     /**
@@ -98,6 +98,7 @@ public class RegisterSystem {
     }
 
     // TODO createCourse
-    // TODO Teacher register
+
+
 
 }
