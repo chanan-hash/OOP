@@ -1,5 +1,6 @@
 package Ex1B;
 
+import Ex1B.Exceptions.NotATeacherException;
 import Ex1B.Exceptions.NotLoggedInException;
 import Ex1B.Exceptions.SystemIsFullException;
 
@@ -57,6 +58,8 @@ public class RegisterSystem {
     public boolean registerCourse(Course course, Student student, boolean subscribe) throws NotLoggedInException {
         if (!REGISTER_SYSTEM.contains(student)) {
             throw new NotLoggedInException("Try to login to register the course");
+        } else if (!COURSES_LIST.contains(course)) { // if trying to register to a course that is not in the system
+            throw new IllegalArgumentException("The course is not in the system");
         } else if (course.addStudent(student)) {
             student.getCourses().add(course);
             return true;
@@ -97,8 +100,28 @@ public class RegisterSystem {
         System.out.println("The student is not registered to this course");
     }
 
-    // TODO createCourse
+    /**
+     * Only the admin aka Teacher can add courses to the system.
+     * We want to enable only for them, so for creating a course we need to check if the person is a teacher, pass this argument
+     */
+
+    public void createCourse(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseNumber, int courseCapacity, UniversityPerson person) throws NotLoggedInException, NotATeacherException {
+        if (!REGISTER_SYSTEM.contains(person)) {
+            throw new NotLoggedInException("Try to login to continue...");
+        }
+        if (!(person instanceof Teacher)) {
+            throw new NotATeacherException("Only teachers can create courses");
+        }
+        Course course = Course.getInstance(name, courseID, lecturer, practitioner, type, courseNumber, courseCapacity);
+        COURSES_LIST.add(course);
+    }
 
 
+    //    public void addCourse(Course course, Teacher teacher) throws NotLoggedInException {
+//        if (!REGISTER_SYSTEM.contains(teacher)) {
+//            throw new NotLoggedInException("Try to login to continue...");
+//        }
+//        COURSES_LIST.add(course);
+//    }
 
 }
