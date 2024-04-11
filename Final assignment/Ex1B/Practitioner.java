@@ -4,7 +4,7 @@ import Ex1B.Exceptions.IdTakenException;
 
 public class Practitioner extends Teacher {
 
-    private Practitioner(String name, int id, int workHours) {
+    public Practitioner(String name, int id, int workHours) {
         super(name, id, workHours);
     }
 
