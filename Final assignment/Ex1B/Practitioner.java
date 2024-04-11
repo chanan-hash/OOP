@@ -12,7 +12,7 @@ public class Practitioner extends Teacher {
         if (Teacher.getIdTeacher().contains(id)) {
             throw new IdTakenException("This ID is already taken");
         } else {
-            Teacher.getIdTeacher(); // adding to the id set the student id
+            Teacher.getIdTeacher().add(id); // adding to the id set the student id
             return new Practitioner(name, id, workHours);
         }
     }
