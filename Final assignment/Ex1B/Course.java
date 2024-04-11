@@ -79,8 +79,6 @@ public class Course implements Subject {
         }
     }
 
-
-    // TODO think on permissions for those function
     public Lecturer getLecturer() {
         return lecturer;
     }

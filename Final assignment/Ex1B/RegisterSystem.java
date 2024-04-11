@@ -68,7 +68,7 @@ public class RegisterSystem {
                 course.addObserver(student);
 
                 // Strategy design pattern for how to send notification
-                // TODO add to strategy to get course for notification
+
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("How would you like to get the notification ? (Email/Sms/Phone)");
                 String notificationMethod = scanner.nextLine();
