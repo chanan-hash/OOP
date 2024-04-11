@@ -120,6 +120,7 @@ public class Main {
             e.printStackTrace();
         }
 
+        // TODO add the observer to the course and see the printing
 
     }
 }
