@@ -17,12 +17,12 @@ public class Course implements Subject {
 
     private final int courseCapacity;
 
-//    private final Set<Student> students; // set of registered student
+    //    private final Set<Student> students; // set of registered student
     private final ArrayList<Student> students;
-//    private final Set<CourseObserver> courseObservers;
+    //    private final Set<CourseObserver> courseObservers;
     private final ArrayList<CourseObserver> courseObservers;
 
-    public Course(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity) {
+    private Course(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity) {
         this.name = name;
         this.courseID = courseID;
         this.lecturer = lecturer;
@@ -67,7 +67,9 @@ public class Course implements Subject {
         if (this.students.size() == courseCapacity) {
             return false;
         }
-        this.students.add(student);
+        if (!students.contains(student)) {
+            this.students.add(student);
+        }
         if (courseObservers.contains(student)) {
             removeObserver(student);
         }
@@ -111,22 +113,24 @@ public class Course implements Subject {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Course course = (Course) o;
-        return courseID == course.courseID && courseCapacity == course.courseCapacity && Objects.equals(name, course.name) && Objects.equals(lecturer, course.lecturer) && Objects.equals(practitioner, course.practitioner) && type == course.type && Objects.equals(students, course.students);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, lecturer, practitioner, type, courseID, courseCapacity, students);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Course course = (Course) o;
+//        return courseID == course.courseID && courseCapacity == course.courseCapacity && Objects.equals(name, course.name) && Objects.equals(lecturer, course.lecturer) && Objects.equals(practitioner, course.practitioner) && type == course.type && Objects.equals(students, course.students);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(name, lecturer, practitioner, type, courseID, courseCapacity, students);
+//    }
 
     @Override
     public void addObserver(CourseObserver observer) {
-        this.courseObservers.add(observer);
+        if (!this.courseObservers.contains(observer)) {
+            this.courseObservers.add(observer);
+        }
     }
 
     @Override

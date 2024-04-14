@@ -17,10 +17,10 @@ public class RegisterSystem {
 
     private static final RegisterSystem instance = new RegisterSystem();
     private static final int MAX_ACTIVE = 100; // Maximum number of active people
-//    private static final Set<UniversityPerson> REGISTER_SYSTEM = new HashSet<>(MAX_ACTIVE);
-    private static final ArrayList<UniversityPerson> REGISTER_SYSTEM = new ArrayList<>(MAX_ACTIVE);
-//    private static final Set<Course> COURSES_LIST = new HashSet<>();
-    private static final ArrayList<Course> COURSES_LIST = new ArrayList<>();
+    private static final Set<UniversityPerson> REGISTER_SYSTEM = new HashSet<>(MAX_ACTIVE);
+//    private static final ArrayList<UniversityPerson> REGISTER_SYSTEM = new ArrayList<>(MAX_ACTIVE);
+    private static final Set<Course> COURSES_LIST = new HashSet<>();
+//    private static final ArrayList<Course> COURSES_LIST = new ArrayList<>();
     // This is for singleton pattern
     public static RegisterSystem getInstance() { // for the singleton pattern
         return instance; // This will always return the same instance
