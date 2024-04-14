@@ -34,15 +34,15 @@ public class Course implements Subject {
     }
 
     // For flyweight design pattern, creating only one instance if exists
-    public static Course getInstance(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseNumber, int courseCapacity) {
+    public static Course getInstance(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity) {
         // Check if the course with the given name already exists
-        if (!courseMap.containsKey(courseNumber)) {
+        if (!courseMap.containsKey(courseID)) {
             // If it doesn't exist, create a new instance and put it into the map
             Course course = new Course(name, courseID, lecturer, practitioner, type, courseCapacity);
-            courseMap.put(courseNumber, course);
+            courseMap.put(courseID, course);
         }
         // Return the existing instance
-        return courseMap.get(courseNumber);
+        return courseMap.get(courseID);
     }
 
     public String getName() {

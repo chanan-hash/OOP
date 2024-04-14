@@ -90,13 +90,13 @@ public class Main {
         // Creating the courses
         Course course1 = null;
         try {
-            course1 = registerSystem.createCourse("Calculus", 1, lecturer1, practitioner1, CourseType.CHOICE, 1, 30, lecturer1);
+            course1 = registerSystem.createCourse("Calculus", 1, lecturer1, practitioner1, CourseType.CHOICE, 30, lecturer1);
         } catch (Exception e) {
             e.printStackTrace();
         }
         Course course2 = null;
         try {
-            course2 = registerSystem.createCourse("Algebra", 2, lecturer2, practitioner2, CourseType.CHOICE, 2, 30, lecturer2);
+            course2 = registerSystem.createCourse("Algebra", 2, lecturer2, practitioner2, CourseType.CHOICE, 30, lecturer2);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -104,7 +104,7 @@ public class Main {
         // Trying to create a course when he is not a logged in
         Course course3 = null;
         try {
-            course3 = registerSystem.createCourse("Geometry", 3, lecturer3, practitioner3, CourseType.CHOICE, 3, 30, practitioner3);
+            course3 = registerSystem.createCourse("Geometry", 3, lecturer3, practitioner3, CourseType.CHOICE, 30, practitioner3);
         } catch (Exception e) {
             e.printStackTrace();
         }
