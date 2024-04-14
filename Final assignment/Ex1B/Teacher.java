@@ -30,8 +30,8 @@ public abstract class Teacher extends UniversityPerson {
     }
 
     // The method to define the course
-    public Course defineCourse(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseNumber, int courseCapacity) {
-        Course course = Course.getInstance(name, courseID, lecturer, practitioner, type, courseNumber, courseCapacity);
+    public Course defineCourse(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity) {
+        Course course = Course.getInstance(name, courseID, lecturer, practitioner, type, courseCapacity);
         System.out.println("Course " + course.getName() + " defined by " + this.getName());
         return course; // return the course so we know it hase been created
     }
