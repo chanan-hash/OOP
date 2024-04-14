@@ -17,9 +17,9 @@ public class Main {
 
         // Creating the students
         Student chanan = Student.createStudent("chanan", 1234);
-        System.out.println(chanan);
+//        System.out.println(chanan);
         Student yossi = Student.createStudent("yossi", 1235);
-        System.out.println(yossi);
+//        System.out.println(yossi);
 
 //        Student tom = Student.createStudent("Tom", 1234); // will be an Exception
         Student dana = Student.createStudent("Dana", 1236);
@@ -73,8 +73,8 @@ public class Main {
         registerSystem.singIn(yuval);
 
         // To check if they're not logged in and try to register for a course
-        registerSystem.singOut(yuval);
-        registerSystem.singOut(yael);
+//        registerSystem.singOut(yuval);
+//        registerSystem.singOut(yael);
 
         // register the teachers
         registerSystem.singIn(lecturer1);
@@ -85,8 +85,8 @@ public class Main {
         registerSystem.singIn(practitioner3);
 
         // To check if they're not logged in and try to register for a course
-        registerSystem.singOut(lecturer3);
-        registerSystem.singOut(practitioner3);
+//        registerSystem.singOut(lecturer3);
+//        registerSystem.singOut(practitioner3);
         // Creating the courses
         Course course1 = null;
         try {
@@ -116,6 +116,7 @@ public class Main {
             registerSystem.registerCourse(course2, dana, false);
             registerSystem.registerCourse(course2, yael, true);
             registerSystem.registerCourse(course3, yuval, false);
+            System.out.println("All students registered to the courses!");
         } catch (NotLoggedInException e) {
             e.printStackTrace();
         }

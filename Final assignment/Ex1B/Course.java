@@ -17,10 +17,10 @@ public class Course implements Subject {
 
     private final int courseCapacity;
 
-    private final Set<Student> students; // set of registered student
-
-    private final Set<CourseObserver> courseObservers;
-
+//    private final Set<Student> students; // set of registered student
+    private final ArrayList<Student> students;
+//    private final Set<CourseObserver> courseObservers;
+    private final ArrayList<CourseObserver> courseObservers;
 
     public Course(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity) {
         this.name = name;
@@ -29,8 +29,10 @@ public class Course implements Subject {
         this.practitioner = practitioner;
         this.courseCapacity = courseCapacity;
         this.type = type;
-        this.students = new HashSet<>(courseCapacity);
-        this.courseObservers = new HashSet<>();
+//        this.students = new HashSet<>(courseCapacity);
+//        this.courseObservers = new HashSet<>();
+        this.students = new ArrayList<>(courseCapacity);
+        this.courseObservers = new ArrayList<>();
     }
 
     // For flyweight design pattern, creating only one instance if exists
