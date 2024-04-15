@@ -133,9 +133,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        // TODO add the observer to the course and see the printing
-
-        // lets define a new course with capacity of 1, and see how the observer works
+        // let define a new course with capacity of 1, and see how the observer works
         Course course4 = null;
         try {
             course4 = registerSystem.createCourse("Data Bases", 4, lecturer1, practitioner3, CourseType.CHOICE, 1, lecturer3);

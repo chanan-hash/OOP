@@ -18,9 +18,10 @@ public class RegisterSystem {
     private static final RegisterSystem instance = new RegisterSystem();
     private static final int MAX_ACTIVE = 100; // Maximum number of active people
     private static final Set<UniversityPerson> REGISTER_SYSTEM = new HashSet<>(MAX_ACTIVE);
-//    private static final ArrayList<UniversityPerson> REGISTER_SYSTEM = new ArrayList<>(MAX_ACTIVE);
+    //    private static final ArrayList<UniversityPerson> REGISTER_SYSTEM = new ArrayList<>(MAX_ACTIVE);
     private static final Set<Course> COURSES_LIST = new HashSet<>();
-//    private static final ArrayList<Course> COURSES_LIST = new ArrayList<>();
+
+    //    private static final ArrayList<Course> COURSES_LIST = new ArrayList<>();
     // This is for singleton pattern
     public static RegisterSystem getInstance() { // for the singleton pattern
         return instance; // This will always return the same instance
@@ -99,8 +100,8 @@ public class RegisterSystem {
             course.removeStudent(student);
             System.out.println(student.getName() + " unregistered from " + course.getName());
         }
-        course.notifyStudents(); // Notifying all the students that observing the course
         System.out.println("The student is not registered to this course");
+        course.notifyStudents(); // Notifying all the students that observing the course
     }
 
     /**

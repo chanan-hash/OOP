@@ -80,7 +80,7 @@ public class Course implements Subject {
     public void removeStudent(Student student) {
         if (students.contains(student)) {
             this.students.remove(student);
-            notifyStudents();
+//            notifyStudents();
         }
     }
 
