@@ -73,7 +73,7 @@ public class RegisterSystem {
                 // Strategy design pattern for how to send notification
 
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("How would you like to get the notification ? (Email/Sms/Phone)");
+                System.out.println(student.getName() + " how would you like to get the notification ? (Email/Sms/Phone)");
                 String notificationMethod = scanner.nextLine();
                 if (notificationMethod.equalsIgnoreCase("Email")) {
                     student.setNotificationStrategy(new EmailNotificationStrategy());
@@ -97,9 +97,9 @@ public class RegisterSystem {
         } else if (student.getCourses().contains(course)) {
             student.getCourses().remove(course);
             course.removeStudent(student);
-            course.notifyStudents(); // Notifying all the students that observing the course
             System.out.println(student.getName() + " unregistered from " + course.getName());
         }
+        course.notifyStudents(); // Notifying all the students that observing the course
         System.out.println("The student is not registered to this course");
     }
 

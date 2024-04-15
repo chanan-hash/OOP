@@ -135,6 +135,26 @@ public class Main {
 
         // TODO add the observer to the course and see the printing
 
+        // lets define a new course with capacity of 1, and see how the observer works
+        Course course4 = null;
+        try {
+            course4 = registerSystem.createCourse("Data Bases", 4, lecturer1, practitioner3, CourseType.CHOICE, 1, lecturer3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        registerSystem.registerCourse(course4, yossi, false);
+        System.out.println("yossi registered to the course");
+
+        registerSystem.registerCourse(course4, dana, true);
+        registerSystem.registerCourse(course4, yael, true);
+
+        // Unregister from the course
+        try {
+            registerSystem.unsignedCourse(course4, yossi);
+        } catch (NotLoggedInException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 

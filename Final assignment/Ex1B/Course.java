@@ -17,9 +17,9 @@ public class Course implements Subject {
 
     private final int courseCapacity;
 
-    //    private final Set<Student> students; // set of registered student
+//        private final Set<Student> students; // set of registered student
     private final ArrayList<Student> students;
-    //    private final Set<CourseObserver> courseObservers;
+//        private final Set<CourseObserver> courseObservers;
     private final ArrayList<CourseObserver> courseObservers;
 
     private Course(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity) {
@@ -68,9 +68,9 @@ public class Course implements Subject {
             return false;
         }
         // if we're using ArrayList
-//        if (!students.contains(student)) {
-//            this.students.add(student);
-//        }
+        if (!students.contains(student)) {
+            this.students.add(student);
+        }
         if (courseObservers.contains(student)) {
             removeObserver(student);
         }
