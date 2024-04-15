@@ -67,9 +67,10 @@ public class Course implements Subject {
         if (this.students.size() == courseCapacity) {
             return false;
         }
-        if (!students.contains(student)) {
-            this.students.add(student);
-        }
+        // if we're using ArrayList
+//        if (!students.contains(student)) {
+//            this.students.add(student);
+//        }
         if (courseObservers.contains(student)) {
             removeObserver(student);
         }

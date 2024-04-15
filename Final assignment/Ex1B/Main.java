@@ -109,6 +109,18 @@ public class Main {
             e.printStackTrace();
         }
 
+        // Showing the flyweight pattern
+//        Course course4 = null;
+//        try {
+//            course4 = registerSystem.createCourse("Data Bases", 1, lecturer1, practitioner3, CourseType.CHOICE, 30, lecturer3);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//          // Both will be the same course because of the same id course, flyweight
+//        System.out.println(course1);
+//        System.out.println(course4);
+
+
         // Register students to the courses
         try {
             registerSystem.registerCourse(course1, chanan, true);
