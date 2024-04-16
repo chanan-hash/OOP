@@ -1,7 +1,7 @@
 /**
  * Question 3
  */
-public abstract class Animal {
+public class Animal {
     final static String sound = "Animal sound";
 
     void makeSound() {
