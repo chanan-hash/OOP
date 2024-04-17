@@ -8,9 +8,10 @@ public class Flight implements FlightSubject {
     private String dest;
     private double price; // in dollars
     private String date; // in format "dd/mm/yyyy"
-    private int numPassengers;
+    private int numPassengers; // maximum number of passengers to be allowed
     private int numCrewmates;
 
+    // Lists of flights data, each flight has a list of passengers and crewmates
     private final ArrayList<Passengers> passengers; // for each flight, we have a list of passengers
     private final ArrayList<Crewmate> crewmates; // for each flight, we have a list of crewmates
     private final ArrayList<FilghtObserver> flightObservers = new ArrayList<FilghtObserver>();
