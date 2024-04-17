@@ -1,6 +1,24 @@
 package Ex1A;
 
-public class FlightCompany { /*
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class FlightCompany {
+    private String companyName;
+
+    private final List<FlightCompany> subCompanies;
+    private final List<Flight> flights;
+    private final Map<Flight, ArrayList<FilghtObserver>> flightObservers;
+
+
+    public FlightCompany(String companyName){
+        this.subCompanies = new ArrayList<>();
+        this.flights = new ArrayList<>();
+        this.flightObservers = new HashMap<>();
+    }
+    /*
     @Override
     public boolean bookFlight(Flight flight, boolean subscribe){
         if(flight.getPassengers().size() < flight.getNumPassengers()){

@@ -1,5 +1,7 @@
 package Ex1A;
 
+import java.awt.*;
+import java.util.List;
 import java.util.ArrayList;
 
 public class Flight implements FlightSubject {
@@ -12,9 +14,9 @@ public class Flight implements FlightSubject {
     private int numCrewmates;
 
     // Lists of flights data, each flight has a list of passengers and crewmates
-    private final ArrayList<Passengers> passengers; // for each flight, we have a list of passengers
-    private final ArrayList<Crewmate> crewmates; // for each flight, we have a list of crewmates
-    private final ArrayList<FilghtObserver> flightObservers = new ArrayList<FilghtObserver>();
+    private final List<Passengers> passengers; // for each flight, we have a list of passengers
+    private final List<Crewmate> crewmates; // for each flight, we have a list of crewmates
+    private final List<FilghtObserver> flightObservers = new ArrayList<FilghtObserver>();
 
     // Constructor
     public Flight(String source, String dest, double price, String date, int numPassengers, int numCrewmates) {
@@ -78,15 +80,15 @@ public class Flight implements FlightSubject {
     }
 
     // Getters for the lists
-    public ArrayList<Passengers> getPassengers() {
+    public List<Passengers> getPassengers() {
         return passengers;
     }
 
-    public ArrayList<Crewmate> getCrewmates() {
+    public List<Crewmate> getCrewmates() {
         return crewmates;
     }
 
-    public ArrayList<FilghtObserver> getFlightObservers() {
+    public List<FilghtObserver> getFlightObservers() {
         return flightObservers;
     }
 
