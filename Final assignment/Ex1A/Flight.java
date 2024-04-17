@@ -5,13 +5,16 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Flight implements FlightSubject {
+    //TODO maybe do as flyweight for creating flights according to flight number
     // Variables
     private String source;
     private String dest;
-    private double price; // in dollars
     private String date; // in format "dd/mm/yyyy"
+    private double price; // in dollars
+    private double duration; // in hours
     private int numPassengers; // maximum number of passengers to be allowed
     private int numCrewmates;
+    private int flightNumber;
 
     // Lists of flights data, each flight has a list of passengers and crewmates
     private final List<Passengers> passengers; // for each flight, we have a list of passengers
@@ -19,13 +22,15 @@ public class Flight implements FlightSubject {
     private final List<FilghtObserver> flightObservers = new ArrayList<FilghtObserver>();
 
     // Constructor
-    public Flight(String source, String dest, double price, String date, int numPassengers, int numCrewmates) {
+    public Flight(String source, String dest, double price ,double duration , String date, int numPassengers, int numCrewmates, int flightNumber) {
         this.source = source;
         this.dest = dest;
         this.price = price;
         this.date = date;
+        this.duration = duration;
         this.numPassengers = numPassengers;
         this.numCrewmates = numCrewmates;
+        this.flightNumber = flightNumber;
         this.passengers = new ArrayList<Passengers>();
         this.crewmates = new ArrayList<Crewmate>();
     }
@@ -61,6 +66,14 @@ public class Flight implements FlightSubject {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getFlightNumber() {
+        return flightNumber;
+    }
+
+    public void setFlightNumber(int flightNumber) {
+        this.flightNumber = flightNumber;
     }
 
     public int getNumPassengers() {
@@ -110,5 +123,21 @@ public class Flight implements FlightSubject {
     @Override
     public void removeObserver(FilghtObserver observer) {
         this.flightObservers.remove(observer);
+    }
+
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "source='" + source + '\'' +
+                ", dest='" + dest + '\'' +
+                ", price=" + price +
+                ", date='" + date + '\'' +
+                ", numPassengers=" + numPassengers +
+                ", numCrewmates=" + numCrewmates +
+                ", flightNumber=" + flightNumber +
+                ", passengers=" + passengers +
+                ", crewmates=" + crewmates +
+                ", flightObservers=" + flightObservers +
+                '}';
     }
 }
