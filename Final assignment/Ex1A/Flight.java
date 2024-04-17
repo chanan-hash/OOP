@@ -77,6 +77,19 @@ public class Flight implements FlightSubject {
         this.numCrewmates = numCrewmates;
     }
 
+    // Getters for the lists
+    public ArrayList<Passengers> getPassengers() {
+        return passengers;
+    }
+
+    public ArrayList<Crewmate> getCrewmates() {
+        return crewmates;
+    }
+
+    public ArrayList<FilghtObserver> getFlightObservers() {
+        return flightObservers;
+    }
+
     @Override
     public void addObserver(FilghtObserver observer) {
         if (!this.flightObservers.contains(observer)) {
@@ -97,13 +110,4 @@ public class Flight implements FlightSubject {
     }
     // source, dest, price, date, number of passengers? number of crewmates
 
-
-    /*
-    printData(){
-        print the data of the the curr compny
-
-        if we have sub companies:
-            for rach sub_company
-                print the data of each sub company
-     */
 }

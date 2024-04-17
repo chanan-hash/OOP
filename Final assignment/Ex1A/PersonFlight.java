@@ -3,61 +3,74 @@ package Ex1A;
 /**
  * This class represents a person that is on a flight can be either a crewmate or a passenger.
  */
-public abstract class PersonFlight {
+public abstract class PersonFlight implements FlightObserver {
     private String name;
-    private String role;
+    private String email;
+    private int age;
+    private int phoneNumber;
 
     /**
      * Constructor for a person on a flight.
-     * @param name The name of the person.
-     * @param role The role of the person.
+     *
+     * @param name        The name of the person.
+     * @param email       The email of the person.
+     * @param age         The age of the person.
+     * @param phoneNumber The phone number of the person.
      */
-    public PersonFlight(String name, String role) {
+    public PersonFlight(String name, String email, int age, int phoneNumber) {
         this.name = name;
-        this.role = role;
+        this.email = email;
+        this.age = age;
+        this.phoneNumber = phoneNumber;
     }
 
     /**
-     * Get the name of the person.
-     * @return The name of the person.
+     * Getter and setter methods for the class attributes.
      */
     public String getName() {
         return name;
     }
 
-    /**
-     * Get the role of the person.
-     * @return The role of the person.
-     */
-    public String getRole() {
-        return role;
-    }
-
-    /**
-     * Set the name of the person.
-     * @param name The name of the person.
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Set the role of the person.
-     * @param role The role of the person.
-     */
-    public void setRole(String role) {
-        this.role = role;
+    public String getEmail() {
+        return email;
     }
 
-    /**
-     * Get the string representation of the person.
-     * @return The string representation of the person.
-     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     @Override
     public String toString() {
         return "PersonFlight{" +
                 "name='" + name + '\'' +
-                ", role='" + role + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", phoneNumber=" + phoneNumber +
                 '}';
+    }
+
+    @Override
+    public void update(Flight flight) {
+        flight.notifyPassenger();
     }
 }
