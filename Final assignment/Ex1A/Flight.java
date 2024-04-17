@@ -2,7 +2,7 @@ package Ex1A;
 
 import java.util.ArrayList;
 
-public class Flight implements FlightSubject{
+public class Flight implements FlightSubject {
     // Variables
     private String source;
     private String dest;
@@ -11,9 +11,10 @@ public class Flight implements FlightSubject{
     private int numPassengers;
     private int numCrewmates;
 
-    private ArrayList<Passengers> passengers; // for each flight, we have a list of passengers
-    private ArrayList<Crewmate> crewmates; // for each flight, we have a list of crewmates
-    private ArrayList<FilghtObserver> observers = new ArrayList<FilghtObserver>();
+    private final ArrayList<Passengers> passengers; // for each flight, we have a list of passengers
+    private final ArrayList<Crewmate> crewmates; // for each flight, we have a list of crewmates
+    private final ArrayList<FilghtObserver> flightObservers = new ArrayList<FilghtObserver>();
+
     // Constructor
     public Flight(String source, String dest, double price, String date, int numPassengers, int numCrewmates) {
         this.source = source;
@@ -23,6 +24,7 @@ public class Flight implements FlightSubject{
         this.numPassengers = numPassengers;
         this.numCrewmates = numCrewmates;
         this.passengers = new ArrayList<Passengers>();
+        this.crewmates = new ArrayList<Crewmate>();
     }
 
     // Getters and Setters
@@ -76,17 +78,21 @@ public class Flight implements FlightSubject{
 
     @Override
     public void addObserver(FilghtObserver observer) {
-
+        if (!this.flightObservers.contains(observer)) {
+            this.flightObservers.add(observer);
+        }
     }
 
     @Override
     public void notifyPassenger() {
-
+        for (FilghtObserver observer : flightObservers) {
+            observer.update(this);
+        }
     }
 
     @Override
     public void removeObserver(FilghtObserver observer) {
-
+        this.flightObservers.remove(observer);
     }
     // source, dest, price, date, number of passengers? number of crewmates
 
