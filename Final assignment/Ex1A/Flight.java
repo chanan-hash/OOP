@@ -92,6 +92,7 @@ public class Flight implements FlightSubject {
         return flightObservers;
     }
 
+    // Implementing the methods of the interface
     @Override
     public void addObserver(FilghtObserver observer) {
         if (!this.flightObservers.contains(observer)) {
@@ -110,6 +111,4 @@ public class Flight implements FlightSubject {
     public void removeObserver(FilghtObserver observer) {
         this.flightObservers.remove(observer);
     }
-    // source, dest, price, date, number of passengers? number of crewmates
-
 }
