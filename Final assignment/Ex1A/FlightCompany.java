@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FlightCompany {
+public class FlightCompany implements FlightComponent{
     private String companyName;
 
     private final List<FlightCompany> subCompanies;
