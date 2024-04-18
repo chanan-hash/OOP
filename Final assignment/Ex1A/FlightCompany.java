@@ -2,15 +2,13 @@ package Ex1A;
 
 import Ex1A.FlightsExceptions.NotWorkingHereException;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class FlightCompany implements FlightComponent{
+public class FlightCompany implements FlightComponent {
     private String companyName;
+    private FlightSearchStrategy searchStrategy;
 
-    private final List<FlightCompany> subCompanies;
+    private final List<FlightComponent> subCompanies;
     private final List<Flight> flights;
     private final List<Crewmate> workers;
 //    private final Map<Flight, ArrayList<FilghtObserver>> flightObservers;
@@ -82,7 +80,14 @@ public class FlightCompany implements FlightComponent{
         return false;
     }
 
-    public boolean addSubCompany(FlightCompany subCompany) {
+    /**
+     * This method is for the composite pattern
+     * Add a sub company to the company
+     *
+     * @param subCompany
+     * @return
+     */
+    public boolean addSubCompany(FlightComponent subCompany) {
         if (!subCompanies.contains(subCompany)) {
             subCompanies.add(subCompany);
             return true;
@@ -91,14 +96,23 @@ public class FlightCompany implements FlightComponent{
     }
 
 
-    // The composite pattern
+    // The composite pattern function
     public void printData() {
-        if (subCompanies.size() > 0) {
-            for (FlightCompany subCompany : subCompanies) {
-                // TODO need to prints all flights data for each sub company
+        toString(); // print the data of the curr company
+        if (subCompanies.size() > 0) { // going over the sub companies and printing them
+            for (FlightComponent subCompany : subCompanies) {
                 subCompany.printData();
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "FlightCompany{" +
+                "companyName='" + companyName + '\'' +
+                ", subCompanies=" + subCompanies +
+                ", flights=" + flights +
+                '}';
     }
 
     /*
@@ -108,6 +122,44 @@ public class FlightCompany implements FlightComponent{
             for each sub_company
                 print the data of each sub company
      */
+
+
+    /**
+     * Startegy pattern for searching the flights
+     */
+    public void setStrategy(FlightSearchStrategy searchStrategy) {
+        this.searchStrategy = searchStrategy;
+    }
+
+    public void search() throws InterruptedException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the search criteria: Price/Destination/Date");
+        String search = scanner.nextLine();
+        String searchCriteria = "";
+        if (search.equalsIgnoreCase("Price")) {
+            setStrategy(new searchByPriceStrategy());
+            System.out.println("Enter the price range: start,end");
+            searchCriteria = scanner.nextLine();
+            if (!searchCriteria.equalsIgnoreCase("(\\d+),(\\d+)")) {
+                throw new InterruptedException("The price range is not in the correct format");
+            }
+        } else if (search.equalsIgnoreCase("Destination")) {
+            setStrategy(new searchByDestinationStrategy());
+            System.out.println("Enter the destination: ");
+            searchCriteria = scanner.nextLine();
+//            if (!searchCriteria.equalsIgnoreCase()) {
+//                throw new InterruptedException("The destination is not in the correct format");
+//            }
+        } else if (search.equalsIgnoreCase("Date")) {
+            setStrategy(new searchByDateStrategy());
+            System.out.println("Enter the date in dd/mm/yyyy,dd/mm/yyyy , format: ");
+            searchCriteria = scanner.nextLine();
+            if (searchCriteria.equalsIgnoreCase("\\d{2}/\\d{2}/\\d{4},\\d{2}/\\d{2}/\\d{4}")) {
+                throw new InterruptedException("The date is not in the correct format");
+            }
+        }
+        searchStrategy.search(flights, searchCriteria);
+    }
 
 
 }
