@@ -4,7 +4,7 @@ import Ex1A.FlightsExceptions.NotWorkingHereException;
 
 import java.util.*;
 
-public class FlightCompany implements FlightComponent {
+public class FlightCompany implements FlightComponent ,FlightSubject {
     private String companyName;
     private FlightSearchStrategy searchStrategy;
 
@@ -13,6 +13,7 @@ public class FlightCompany implements FlightComponent {
     private final List<Crewmate> workers;
 //    private final Map<Flight, ArrayList<FilghtObserver>> flightObservers;
 
+    private final List<FilghtObserver> flightObservers = new ArrayList<FilghtObserver>(); // The observers looking on the company updates
 
     public FlightCompany(String companyName) {
         this.subCompanies = new ArrayList<>();
@@ -147,9 +148,6 @@ public class FlightCompany implements FlightComponent {
             setStrategy(new searchByDestinationStrategy());
             System.out.println("Enter the destination: ");
             searchCriteria = scanner.nextLine();
-//            if (!searchCriteria.equalsIgnoreCase()) {
-//                throw new InterruptedException("The destination is not in the correct format");
-//            }
         } else if (search.equalsIgnoreCase("Date")) {
             setStrategy(new searchByDateStrategy());
             System.out.println("Enter the date in dd/mm/yyyy,dd/mm/yyyy , format: ");
@@ -158,7 +156,31 @@ public class FlightCompany implements FlightComponent {
                 throw new InterruptedException("The date is not in the correct format");
             }
         }
-        searchStrategy.search(flights, searchCriteria);
+        searchStrategy.search(flights, searchCriteria); // Because we've done set strategy we know which one to chose/go
+    }
+
+
+    /**
+     * Observer pattern
+     * @param observer
+     */
+    @Override
+    public void addObserver(FilghtObserver observer) {
+        if (!this.flightObservers.contains(observer)) {
+            this.flightObservers.add(observer);
+        }
+    }
+
+    @Override
+    public void notifyPassenger() {
+        for (FilghtObserver observer : flightObservers) {
+            observer.update(this);
+        }
+    }
+
+    @Override
+    public void removeObserver(FilghtObserver observer) {
+        this.flightObservers.remove(observer);
     }
 
 

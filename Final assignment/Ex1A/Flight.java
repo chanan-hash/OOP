@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Flight implements FlightSubject {
+public class Flight {
     //TODO maybe do as flyweight for creating flights according to flight number
     // Variables
     private String source;
@@ -19,7 +19,6 @@ public class Flight implements FlightSubject {
     // Lists of flights data, each flight has a list of passengers and crewmates
     private final List<Passengers> passengers; // for each flight, we have a list of passengers
     private final List<Crewmate> crewmates; // for each flight, we have a list of crewmates
-    private final List<FilghtObserver> flightObservers = new ArrayList<FilghtObserver>();
 
     // Constructor
     public Flight(String source, String dest, double price ,double duration , String date, int numPassengers, int numCrewmates, int flightNumber) {
@@ -101,29 +100,8 @@ public class Flight implements FlightSubject {
         return crewmates;
     }
 
-    public List<FilghtObserver> getFlightObservers() {
-        return flightObservers;
-    }
 
     // Implementing the methods of the interface
-    @Override
-    public void addObserver(FilghtObserver observer) {
-        if (!this.flightObservers.contains(observer)) {
-            this.flightObservers.add(observer);
-        }
-    }
-
-    @Override
-    public void notifyPassenger() {
-        for (FilghtObserver observer : flightObservers) {
-            observer.update(this);
-        }
-    }
-
-    @Override
-    public void removeObserver(FilghtObserver observer) {
-        this.flightObservers.remove(observer);
-    }
 
     @Override
     public String toString() {
@@ -137,7 +115,6 @@ public class Flight implements FlightSubject {
                 ", flightNumber=" + flightNumber +
                 ", passengers=" + passengers +
                 ", crewmates=" + crewmates +
-                ", flightObservers=" + flightObservers +
                 '}';
     }
 }
