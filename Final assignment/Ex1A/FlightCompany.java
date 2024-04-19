@@ -1,11 +1,11 @@
 package Ex1A;
 
+import Ex1A.FlightManegers.FlightManager;
 import Ex1A.FlightManegers.FlightObserverManager;
 import Ex1A.FlightManegers.SearchFlightManager;
 import Ex1A.FlightsExceptions.*;
 import Ex1A.PatternsInterfaces.FlightComponent;
 import Ex1A.PatternsInterfaces.FlightObserver;
-import Ex1A.PatternsInterfaces.FlightSearchStrategy;
 import Ex1A.PatternsInterfaces.FlightSubject;
 import Ex1A.WorkerEnums.CompanyWorkers;
 
@@ -15,63 +15,59 @@ import java.util.ArrayList;
 public class FlightCompany implements FlightComponent, FlightSubject {
     private String companyName;
 
-    private final List<FlightComponent> subCompanies;
-    private final List<Flight> flights;
-    private final List<CompWorker> workers;
+    private List<FlightComponent> subCompanies;
+    private List<Flight> flights;
+    private List<CompWorker> workers;
 
-    private final List<FlightObserver> ComFlightObservers;  // The observers looking on the company updates
-    private final FlightObserverManager flightObserverManager; // An observer manager to manage the observers
+    private List<FlightObserver> ComFlightObservers;  // The observers looking on the company updates
+    private FlightObserverManager flightObserverManager; // An observer manager to manage the observers
 
-    private final SearchFlightManager searchMangers; // An manager object to manage the flight search strategy
+    private SearchFlightManager searchMangers; // An manager object to manage the flight search strategy
+
+    private FlightManager flightManager;
+
 
     // Constructor
     public FlightCompany(String companyName) {
+        this.companyName = companyName;
         this.subCompanies = new ArrayList<>();
         this.flights = new ArrayList<>();
         this.workers = new ArrayList<>();
         this.ComFlightObservers = new ArrayList<>();
         this.flightObserverManager = new FlightObserverManager();
         this.searchMangers = new SearchFlightManager();
-    }
-
-
-    // Flight company can create a flight
-    public Flight createFlight(String source, String destination, double price, double duration, String date, int numPassengers, int numCrewmates, int flightNumber) {
-        Flight flight = new Flight(source, destination, price, duration, date, numPassengers, numCrewmates, flightNumber);
-        flights.add(flight);
-        return flight;
+        this.flightManager = new FlightManager(flights);
     }
 
     // Methods
 
     /**
-     * this will be by another manager to show delegation pattern
+     * This will be by flight manager to show delegation pattern
      */
+
+    // Creating a flight by the manager and adding it to the list of flights
+    public Flight createFlights(String source, String destination, double price, double duration, String date, int numPassengers, int numCrewmates, int flightNumber) {
+        return this.flightManager.createFlight(source, destination, price, duration, date, numPassengers, numCrewmates, flightNumber);
+    }
+
     public boolean bookFlight(Flight flight, Passengers passenger, boolean subscribe) {
-        if (flight.getPassengers().size() < flight.getNumPassengers()) {
-            flight.getPassengers().add(passenger);
-            if (subscribe) {
-                addObserver((FlightObserver) passenger, this.ComFlightObservers); // TODO check the casting
-            }
-            return true;
+        if (subscribe) {
+            addObserver((FlightObserver) passenger, this.ComFlightObservers); // TODO check the casting
         }
-        return false;
+        return this.flightManager.bookFlight(flight, passenger);
     }
 
     // TODO maybe to go over the whole subcompenies and check if the flight is there
     // Only someone that was one flight can cancel it
     public boolean cancelFlight(Flight flight, Passengers passengers, boolean subscribe) {
-        if (!flight.getPassengers().contains(passengers)) {
-            flight.getPassengers().remove(passengers);
-        }
-        if (subscribe) {
+        if (subscribe) { // And this will also remove the observer from the list
             removeObserver((FlightObserver) passengers, this.ComFlightObservers); // TODO check the casting
         }
-        return false;
+        return this.flightManager.cancelFlight(flight, passengers);
     }
 
-    public void cancelFlight(Flight flight) {
-        flights.remove(flight);
+    public void flightCancellation(Flight flight) {
+        this.flightManager.flightCancellation(flight);
         this.notifyCancel(flight);
     }
 
@@ -143,6 +139,9 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         return false;
     }
 
+    public void removeSubCompany(FlightComponent subCompany) {
+        subCompanies.remove(subCompany);
+    }
 
     /**
      * This method is for the composite pattern
@@ -201,6 +200,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
     }
 
     // Getters and Setters
+
     public String getCompanyName() {
         return companyName;
     }
@@ -209,28 +209,60 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         this.companyName = companyName;
     }
 
-    public SearchFlightManager getSearchMangers() {
-        return searchMangers;
-    }
-
     public List<FlightComponent> getSubCompanies() {
         return subCompanies;
+    }
+
+    public void setSubCompanies(List<FlightComponent> subCompanies) {
+        this.subCompanies = subCompanies;
     }
 
     public List<Flight> getFlights() {
         return flights;
     }
 
+    public void setFlights(List<Flight> flights) {
+        this.flights = flights;
+    }
+
     public List<CompWorker> getWorkers() {
         return workers;
+    }
+
+    public void setWorkers(List<CompWorker> workers) {
+        this.workers = workers;
     }
 
     public List<FlightObserver> getComFlightObservers() {
         return ComFlightObservers;
     }
 
+    public void setComFlightObservers(List<FlightObserver> comFlightObservers) {
+        ComFlightObservers = comFlightObservers;
+    }
+
     public FlightObserverManager getFlightObserverManager() {
         return flightObserverManager;
+    }
+
+    public void setFlightObserverManager(FlightObserverManager flightObserverManager) {
+        this.flightObserverManager = flightObserverManager;
+    }
+
+    public SearchFlightManager getSearchMangers() {
+        return searchMangers;
+    }
+
+    public void setSearchMangers(SearchFlightManager searchMangers) {
+        this.searchMangers = searchMangers;
+    }
+
+    public FlightManager getFlightManager() {
+        return flightManager;
+    }
+
+    public void setFlightManager(FlightManager flightManager) {
+        this.flightManager = flightManager;
     }
 }
 
