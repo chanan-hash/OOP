@@ -36,6 +36,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         return false;
     }
 
+    // TODO maybe to go over the whole subcompenies and check if the flight is there
     // Only someone that was one flight cna cancel it
     public boolean cancelFlight(Flight flight, Passengers passengers, boolean subscribe) {
         if (!flight.getPassengers().contains(passengers)) {
