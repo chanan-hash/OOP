@@ -3,7 +3,7 @@ package Ex1A;
 import Ex1A.WorkerEnums.CompanyWorkers;
 import Ex1A.WorkerEnums.CrewRoll;
 
-public class CompWorker extends PersonFlight implements FlightObserver{
+public class CompWorker extends PersonFlight{
     private CompanyWorkers compWorker;
     private CrewRoll crewRoll; // The role of the crewmate.
     private int crewID;
@@ -46,7 +46,7 @@ public class CompWorker extends PersonFlight implements FlightObserver{
         this.crewID = crewID;
     }
 
-    public CompanyWorkers getCompWorker() {
+    public CompanyWorkers getCompanyWorker() {
         return compWorker;
     }
 
@@ -60,11 +60,5 @@ public class CompWorker extends PersonFlight implements FlightObserver{
                 "crewRoll=" + crewRoll +
                 ", crewID=" + crewID +
                 '}';
-    }
-
-    // Getting a message to notify the observers
-    @Override
-    public void update(String msg) {
-        System.out.println(msg);
     }
 }

@@ -1,6 +1,6 @@
 package Ex1A;
 
-public class Passengers extends PersonFlight implements FlightObserver{
+public class Passengers extends PersonFlight{
 
     private int passengerID;
     /**
@@ -31,10 +31,4 @@ public class Passengers extends PersonFlight implements FlightObserver{
                 "passengerID=" + passengerID +
                 '}';
     }
-
-    @Override
-    public void update(String msg) {
-        System.out.println(msg);
-    }
-
 }

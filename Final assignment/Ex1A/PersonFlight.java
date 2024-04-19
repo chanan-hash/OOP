@@ -70,7 +70,7 @@ public abstract class PersonFlight implements FlightObserver {
     }
 
     @Override
-    public void update(Flight flight) {
-        flight.notifyPassenger();
+    public void update(String msg) {
+        System.out.println(msg);
     }
 }
