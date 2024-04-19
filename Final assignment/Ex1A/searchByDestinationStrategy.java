@@ -1,5 +1,7 @@
 package Ex1A;
 
+import Ex1A.PatternsInterfaces.FlightSearchStrategy;
+
 import java.util.List;
 
 public class searchByDestinationStrategy implements FlightSearchStrategy {

@@ -1,5 +1,7 @@
 package Ex1A;
 
+import Ex1A.PatternsInterfaces.FlightObserver;
+
 /**
  * This class represents a person that is on a flight can be either a crewmate or a passenger.
  */

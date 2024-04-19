@@ -1,4 +1,6 @@
-package Ex1A;
+package Ex1A.PatternsInterfaces;
+
+import Ex1A.Flight;
 
 import java.util.List;
 
@@ -8,6 +10,6 @@ public interface FlightSearchStrategy {
      * @param flights
      * @param searchRange
      */
-    public void search(List<Flight> flights,String searchRange);
+    public void search(List<Flight> flights, String searchRange);
     // The main idea is to go over the list and to sort according to the strategy and print to the user
 }

@@ -1,9 +1,11 @@
 package Ex1A;
 
+import Ex1A.PatternsInterfaces.FlightSearchStrategy;
+
 import java.util.List;
 
 // TODO need to get the price range
-public class searchByPriceStrategy implements FlightSearchStrategy{
+public class searchByPriceStrategy implements FlightSearchStrategy {
     /**
      * This method sorts the list of flights by price and prints it to the user
      * The input string will be in this format to get the price range: (start, end)

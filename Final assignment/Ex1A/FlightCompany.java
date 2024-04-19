@@ -1,10 +1,18 @@
 package Ex1A;
 
+import Ex1A.FlightManegers.FlightObserverManager;
 import Ex1A.FlightsExceptions.NotCrewFlightException;
 import Ex1A.FlightsExceptions.NotWorkingHereException;
+import Ex1A.PatternsInterfaces.FlightComponent;
+import Ex1A.PatternsInterfaces.FlightObserver;
+import Ex1A.PatternsInterfaces.FlightSearchStrategy;
+import Ex1A.PatternsInterfaces.FlightSubject;
 import Ex1A.WorkerEnums.CompanyWorkers;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 
 public class FlightCompany implements FlightComponent, FlightSubject {
     private String companyName;
@@ -13,23 +21,23 @@ public class FlightCompany implements FlightComponent, FlightSubject {
     private final List<FlightComponent> subCompanies;
     private final List<Flight> flights;
     private final List<CompWorker> workers;
-//    private final Map<Flight, ArrayList<FilghtObserver>> flightObservers;
 
     private final List<FlightObserver> ComFlightObservers;  // The observers looking on the company updates
+    private final FlightObserverManager flightObserverManager; // An observer manager to manage the observers
 
     public FlightCompany(String companyName) {
         this.subCompanies = new ArrayList<>();
         this.flights = new ArrayList<>();
         this.workers = new ArrayList<>();
         this.ComFlightObservers = new ArrayList<>();
-//        this.flightObservers = new HashMap<>();
+        this.flightObserverManager = new FlightObserverManager();
     }
 
     public boolean bookFlight(Flight flight, Passengers passenger, boolean subscribe) {
         if (flight.getPassengers().size() < flight.getNumPassengers()) {
             flight.getPassengers().add(passenger);
             if (subscribe) {
-                addObserver((FlightObserver) passenger); // TODO check the casting
+               addObserver((FlightObserver) passenger,this.ComFlightObservers); // TODO check the casting
             }
             return true;
         }
@@ -43,7 +51,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
             flight.getPassengers().remove(passengers);
         }
         if (subscribe) {
-            removeObserver((FlightObserver) passengers);
+            removeObserver((FlightObserver) passengers, this.ComFlightObservers); // TODO check the casting
         }
         return false;
     }
@@ -85,7 +93,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
     public boolean addCrewmate(Flight flight, CompWorker crewmate) throws NotWorkingHereException, NotCrewFlightException {
         if (!workers.contains(crewmate)) {
             throw new NotWorkingHereException("The crewmate is not working in this company");
-        } else if (crewmate.getCompanyWorker() != CompanyWorkers.CREW_FLIGHT){
+        } else if (crewmate.getCompanyWorker() != CompanyWorkers.CREW_FLIGHT) {
             throw new NotCrewFlightException("The worker is not from a crew flight");
         }
 
@@ -188,60 +196,67 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         searchStrategy.search(flights, searchRange); // Because we've done set strategy we know which one to chose/go
     }
 
-    /**
-     * Observer pattern
-     *
-     * @param observer
-     */
-    @Override
-    public void addObserver(FlightObserver observer) {
-        if (!this.ComFlightObservers.contains(observer)) {
-            this.ComFlightObservers.add(observer);
-        }
-    }
 
     @Override
-    public void removeObserver(FlightObserver observer) {
-        if (this.ComFlightObservers.contains(observer)) {
-            this.ComFlightObservers.remove(observer);
-        }
+    public void addObserver(FlightObserver observer, List<FlightObserver> ComFlightObservers) {
+        this.flightObserverManager.addObserver(observer, ComFlightObservers);
     }
-
-    /**
-     * Because the subject is not the flight, rather than the company,
-     * we need to notify all the observers by going overs all the flight's Passengers and Crewmates
-     * We don't want to notify only the one that did subscribe to get updates,
-     * because we want to notify all the passengers and crewmates if the flight is delayed or canceled even if they didn't subscribe
-     *
-     * @param flight
-     * @param delay
-     */
 
     @Override
     public void notifyDelay(Flight flight, double delay) {
-        for (Passengers passengers : flight.getPassengers()) {
-            passengers.update("The flight " + flight.getFlightNumber() + " has been delayed by " + delay + " hours");
-        }
-        for (CompWorker crewmate : flight.getCrewmates()) {
-            crewmate.update("The flight " + flight.getFlightNumber() + " has been delayed by " + delay + " hours");
-        }
+        this.flightObserverManager.notifyDelay(flight, delay);
     }
 
     @Override
     public void notifyCancel(Flight flight) {
-        for (Passengers passengers : flight.getPassengers()) {
-            passengers.update("The flight " + flight.getFlightNumber() + " has been canceled");
-        }
-        for (CompWorker crewmate : flight.getCrewmates()) {
-            crewmate.update("The flight " + flight.getFlightNumber() + " has been canceled");
-        }
+        this.flightObserverManager.notifyCancel(flight);
     }
 
     @Override
-    public void notifySale() {
-        for (FlightObserver observer : ComFlightObservers) {
-            observer.update("There is a sale on the flights");
-        }
+    public void notifySale(List<FlightObserver> ComFlightObservers, Flight flight, int discount) {
+        this.flightObserverManager.notifySale(ComFlightObservers, flight, discount);
+    }
+
+    @Override
+    public void removeObserver(FlightObserver observer, List<FlightObserver> ComFlightObservers) {
+        this.flightObserverManager.removeObserver(observer, ComFlightObservers);
+    }
+
+    // Getters and Setters
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public FlightSearchStrategy getSearchStrategy() {
+        return searchStrategy;
+    }
+
+    public void setSearchStrategy(FlightSearchStrategy searchStrategy) {
+        this.searchStrategy = searchStrategy;
+    }
+
+    public List<FlightComponent> getSubCompanies() {
+        return subCompanies;
+    }
+
+    public List<Flight> getFlights() {
+        return flights;
+    }
+
+    public List<CompWorker> getWorkers() {
+        return workers;
+    }
+
+    public List<FlightObserver> getComFlightObservers() {
+        return ComFlightObservers;
+    }
+
+    public FlightObserverManager getFlightObserverManager() {
+        return flightObserverManager;
     }
 }
 
