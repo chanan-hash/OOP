@@ -50,6 +50,14 @@ public class Flight {
         this.dest = dest;
     }
 
+    public double getDuration() {
+        return duration;
+    }
+
+    public void setDuration(double duration) {
+        this.duration = duration;
+    }
+
     public double getPrice() {
         return price;
     }

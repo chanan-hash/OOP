@@ -1,8 +1,8 @@
 package Ex1A;
 
 import Ex1A.FlightManegers.FlightObserverManager;
-import Ex1A.FlightsExceptions.NotCrewFlightException;
-import Ex1A.FlightsExceptions.NotWorkingHereException;
+import Ex1A.FlightManegers.SearchFlightManager;
+import Ex1A.FlightsExceptions.*;
 import Ex1A.PatternsInterfaces.FlightComponent;
 import Ex1A.PatternsInterfaces.FlightObserver;
 import Ex1A.PatternsInterfaces.FlightSearchStrategy;
@@ -11,12 +11,9 @@ import Ex1A.WorkerEnums.CompanyWorkers;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Scanner;
-
 
 public class FlightCompany implements FlightComponent, FlightSubject {
     private String companyName;
-    private FlightSearchStrategy searchStrategy;
 
     private final List<FlightComponent> subCompanies;
     private final List<Flight> flights;
@@ -25,19 +22,36 @@ public class FlightCompany implements FlightComponent, FlightSubject {
     private final List<FlightObserver> ComFlightObservers;  // The observers looking on the company updates
     private final FlightObserverManager flightObserverManager; // An observer manager to manage the observers
 
+    private final SearchFlightManager searchMangers; // An manager object to manage the flight search strategy
+
+    // Constructor
     public FlightCompany(String companyName) {
         this.subCompanies = new ArrayList<>();
         this.flights = new ArrayList<>();
         this.workers = new ArrayList<>();
         this.ComFlightObservers = new ArrayList<>();
         this.flightObserverManager = new FlightObserverManager();
+        this.searchMangers = new SearchFlightManager();
     }
 
+
+    // Flight company can create a flight
+    public Flight createFlight(String source, String destination, double price, double duration, String date, int numPassengers, int numCrewmates, int flightNumber) {
+        Flight flight = new Flight(source, destination, price, duration, date, numPassengers, numCrewmates, flightNumber);
+        flights.add(flight);
+        return flight;
+    }
+
+    // Methods
+
+    /**
+     * this will be by another manager to show delegation pattern
+     */
     public boolean bookFlight(Flight flight, Passengers passenger, boolean subscribe) {
         if (flight.getPassengers().size() < flight.getNumPassengers()) {
             flight.getPassengers().add(passenger);
             if (subscribe) {
-               addObserver((FlightObserver) passenger,this.ComFlightObservers); // TODO check the casting
+                addObserver((FlightObserver) passenger, this.ComFlightObservers); // TODO check the casting
             }
             return true;
         }
@@ -45,7 +59,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
     }
 
     // TODO maybe to go over the whole subcompenies and check if the flight is there
-    // Only someone that was one flight cna cancel it
+    // Only someone that was one flight can cancel it
     public boolean cancelFlight(Flight flight, Passengers passengers, boolean subscribe) {
         if (!flight.getPassengers().contains(passengers)) {
             flight.getPassengers().remove(passengers);
@@ -56,11 +70,9 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         return false;
     }
 
-    // Flight company can create a flight
-    public Flight createFlight(String source, String destination, double price, double duration, String date, int numPassengers, int numCrewmates, int flightNumber) {
-        Flight flight = new Flight(source, destination, price, duration, date, numPassengers, numCrewmates, flightNumber);
-        flights.add(flight);
-        return flight;
+    public void cancelFlight(Flight flight) {
+        flights.remove(flight);
+        this.notifyCancel(flight);
     }
 
     /**
@@ -79,6 +91,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         }
         return false;
     }
+
 
     /**
      * We are assumings that which crewmate suppose to be in which flight is already decided or on a database
@@ -105,6 +118,17 @@ public class FlightCompany implements FlightComponent, FlightSubject {
     }
 
     /**
+     * Search for a flight by the search strategy
+     *
+     * @param flights
+     * @throws InCorrectInputException
+     */
+    public void searchFlight(List<Flight> flights) throws InCorrectInputException {
+        searchMangers.searchFlights(flights);
+    }
+
+
+    /**
      * This method is for the composite pattern
      * Add a sub company to the company
      *
@@ -120,7 +144,9 @@ public class FlightCompany implements FlightComponent, FlightSubject {
     }
 
 
-    // The composite pattern function
+    /**
+     * This method is for the composite pattern
+     */
     @Override
     public void printData() {
         this.toString(); // print the data of the curr company
@@ -148,54 +174,6 @@ public class FlightCompany implements FlightComponent, FlightSubject {
             for each sub_company
                 print the data of each sub company
      */
-
-
-    /**
-     * Strategy pattern for searching the flights.
-     * in the beginning we are setting the strategy type
-     * then we are searching the flights by the strategy while running the program
-     */
-    public void setStrategy(FlightSearchStrategy searchStrategy) {
-        this.searchStrategy = searchStrategy;
-    }
-
-    /**
-     * Acorrding to user input we'll search the flights
-     * Input: Price/Destination/Date
-     * for each one we'll have a different strategy amd range to search
-     *
-     * @throws InterruptedException
-     */
-    public void search() throws InterruptedException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the search criteria: Price/Destination/Date");
-        String search = scanner.nextLine();
-        String searchRange = "";
-        if (search.equalsIgnoreCase("Price")) {
-            setStrategy(new searchByPriceStrategy());
-            System.out.println("Enter the price range: start,end");
-            searchRange = scanner.nextLine();
-            if (!searchRange.equalsIgnoreCase("(\\d+),(\\d+)")) {
-                throw new InterruptedException("The price range is not in the correct format");
-            }
-        } else if (search.equalsIgnoreCase("Destination")) {
-            setStrategy(new searchByDestinationStrategy());
-            System.out.println("Enter the destination: ");
-            searchRange = scanner.nextLine();
-        } else if (search.equalsIgnoreCase("Date")) {
-            setStrategy(new searchByDateStrategy());
-            System.out.println("Enter the date in dd/mm/yyyy,dd/mm/yyyy , format: ");
-            searchRange = scanner.nextLine();
-            if (searchRange.equalsIgnoreCase("\\d{2}/\\d{2}/\\d{4},\\d{2}/\\d{2}/\\d{4}")) {
-                throw new InterruptedException("The date is not in the correct format");
-            }
-        } else {
-            throw new InterruptedException("The search criteria is not in the correct format");
-        }
-
-        searchStrategy.search(flights, searchRange); // Because we've done set strategy we know which one to chose/go
-    }
-
 
     @Override
     public void addObserver(FlightObserver observer, List<FlightObserver> ComFlightObservers) {
@@ -231,12 +209,8 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         this.companyName = companyName;
     }
 
-    public FlightSearchStrategy getSearchStrategy() {
-        return searchStrategy;
-    }
-
-    public void setSearchStrategy(FlightSearchStrategy searchStrategy) {
-        this.searchStrategy = searchStrategy;
+    public SearchFlightManager getSearchMangers() {
+        return searchMangers;
     }
 
     public List<FlightComponent> getSubCompanies() {
