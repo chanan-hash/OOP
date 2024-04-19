@@ -1,9 +1,13 @@
 package Ex1A.FlightManegers;
 
 
+import Ex1A.CompWorker;
 import Ex1A.Flight;
+import Ex1A.FlightsExceptions.NotCrewFlightException;
+import Ex1A.FlightsExceptions.NotWorkingHereException;
 import Ex1A.Passengers;
 import Ex1A.PatternsInterfaces.FlightObserver;
+import Ex1A.WorkerEnums.CompanyWorkers;
 
 import java.util.List;
 
@@ -54,6 +58,20 @@ public class FlightManager {
     // canceling the flight itself
     public void flightCancellation(Flight flight) {
         flights.remove(flight);
+    }
+
+
+    public boolean addCrewmate(Flight flight, List<CompWorker> workers, CompWorker crewmate) throws NotWorkingHereException, NotCrewFlightException {
+        if (!workers.contains(crewmate)) {
+            throw new NotWorkingHereException("The crewmate is not working in this company");
+        } else if (crewmate.getCompanyWorker() != CompanyWorkers.CREW_FLIGHT) {
+            throw new NotCrewFlightException("The worker is not from a crew flight");
+        }
+        if (flight.getCrewmates().size() < flight.getNumCrewmates()) {
+            flight.getCrewmates().add(crewmate);
+            return true;
+        }
+        return false;
     }
 
 

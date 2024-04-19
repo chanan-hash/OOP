@@ -42,6 +42,39 @@ public class FlightCompany implements FlightComponent, FlightSubject {
     // Methods
 
     /**
+     * Add a worker to the company
+     * After it when we are adding a crewmate to a flight we are checking if he's working in this company,
+     * and if his type is CREW_FLIGHT
+     *
+     * @param worker
+     * @return
+     */
+
+    public boolean addWorker(CompWorker worker) {
+        if (!workers.contains(worker)) {
+            workers.add(worker);
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * We are assumings that we know which crewmate suppose to be in which flight, is already decided or on a database
+     * and getting the info from there, and we are just adding the crewmate to the flight
+     * but only if he's working in that flight company and his type is CREW_FLIGHT
+     *
+     * @param flight
+     * @param crewmate
+     * @return
+     */
+    public boolean addCrewmate(Flight flight, CompWorker crewmate) throws NotWorkingHereException, NotCrewFlightException {
+        return this.flightManager.addCrewmate(flight, workers, crewmate);
+    }
+
+    /********************************   DELEGATION   ******************************************/
+
+    /**
      * This will be by flight manager to show delegation pattern
      */
 
@@ -71,47 +104,8 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         this.notifyCancel(flight);
     }
 
-    /**
-     * Add a worker to the company
-     * After it when we are adding a crewmate to a flight we are checking if he's working in this company,
-     * and if his type is CREW_FLIGHT
-     *
-     * @param worker
-     * @return
-     */
 
-    public boolean addWorker(CompWorker worker) {
-        if (!workers.contains(worker)) {
-            workers.add(worker);
-            return true;
-        }
-        return false;
-    }
-
-
-    /**
-     * We are assumings that which crewmate suppose to be in which flight is already decided or on a database
-     * and getting the info from there, and we are just adding the crewmate to the flight
-     * but only if he's working in that flight company
-     *
-     * @param flight
-     * @param crewmate
-     * @return
-     */
-    // TODO check the type of the worker
-    public boolean addCrewmate(Flight flight, CompWorker crewmate) throws NotWorkingHereException, NotCrewFlightException {
-        if (!workers.contains(crewmate)) {
-            throw new NotWorkingHereException("The crewmate is not working in this company");
-        } else if (crewmate.getCompanyWorker() != CompanyWorkers.CREW_FLIGHT) {
-            throw new NotCrewFlightException("The worker is not from a crew flight");
-        }
-
-        if (flight.getCrewmates().size() < flight.getNumCrewmates()) {
-            flight.getCrewmates().add(crewmate);
-            return true;
-        }
-        return false;
-    }
+    /********************************   STRATEGY   ******************************************/
 
     /**
      * Search for a flight by the search strategy
@@ -123,6 +117,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         searchMangers.searchFlights(flights);
     }
 
+    /********************************   COMPOSITE   ******************************************/
 
     /**
      * This method is for the composite pattern
@@ -174,6 +169,8 @@ public class FlightCompany implements FlightComponent, FlightSubject {
                 print the data of each sub company
      */
 
+    /********************************   OBSERVER   ******************************************/
+    // Observer pattern methods by FlightObserverManager
     @Override
     public void addObserver(FlightObserver observer, List<FlightObserver> ComFlightObservers) {
         this.flightObserverManager.addObserver(observer, ComFlightObservers);
@@ -199,8 +196,8 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         this.flightObserverManager.removeObserver(observer, ComFlightObservers);
     }
 
+    /**************************************************************************/
     // Getters and Setters
-
     public String getCompanyName() {
         return companyName;
     }

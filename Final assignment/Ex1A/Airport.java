@@ -27,4 +27,56 @@ public class Airport {
         }
         return instance;
     }
+
+    public void addFlightCompany(FlightCompany flightCompany) {
+        flightCompanies.add(flightCompany);
+    }
+
+    public void addIncomingFlight(Flight flight) {
+        incomingFlights.add(flight);
+    }
+
+    public void addOutgoingFlight(Flight flight) {
+        outgoingFlights.add(flight);
+    }
+
+    public static Airport getInstance() {
+        return instance;
+    }
+
+    public static void setInstance(Airport instance) {
+        Airport.instance = instance;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public static List<FlightCompany> getFlightCompanies() {
+        return flightCompanies;
+    }
+
+    public static void setFlightCompanies(List<FlightCompany> flightCompanies) {
+        Airport.flightCompanies = flightCompanies;
+    }
+
+    public static List<Flight> getIncomingFlights() {
+        return incomingFlights;
+    }
+
+    public static void setIncomingFlights(List<Flight> incomingFlights) {
+        Airport.incomingFlights = incomingFlights;
+    }
+
+    public static List<Flight> getOutgoingFlights() {
+        return outgoingFlights;
+    }
+
+    public static void setOutgoingFlights(List<Flight> outgoingFlights) {
+        Airport.outgoingFlights = outgoingFlights;
+    }
 }
