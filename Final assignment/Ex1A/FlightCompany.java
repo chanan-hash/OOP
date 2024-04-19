@@ -4,13 +4,13 @@ import Ex1A.FlightsExceptions.NotWorkingHereException;
 
 import java.util.*;
 
-public class FlightCompany implements FlightComponent ,FlightSubject {
+public class FlightCompany implements FlightComponent, FlightSubject {
     private String companyName;
     private FlightSearchStrategy searchStrategy;
 
     private final List<FlightComponent> subCompanies;
     private final List<Flight> flights;
-    private final List<Crewmate> workers;
+    private final List<CompWorker> workers;
 //    private final Map<Flight, ArrayList<FilghtObserver>> flightObservers;
 
     private final List<FilghtObserver> flightObservers = new ArrayList<FilghtObserver>(); // The observers looking on the company updates
@@ -46,7 +46,7 @@ public class FlightCompany implements FlightComponent ,FlightSubject {
         return false;
     }
 
-    public boolean addWorker(Crewmate crewmate) {
+    public boolean addWorker(CompWorker crewmate) {
         if (!workers.contains(crewmate)) {
             workers.add(crewmate);
             return true;
@@ -70,7 +70,7 @@ public class FlightCompany implements FlightComponent ,FlightSubject {
      * @param crewmate
      * @return
      */
-    public boolean addCrewmate(Flight flight, Crewmate crewmate) throws NotWorkingHereException {
+    public boolean addCrewmate(Flight flight, CompWorker crewmate) throws NotWorkingHereException {
         if (!workers.contains(crewmate)) {
             throw new NotWorkingHereException("The crewmate is not working in this company");
         }
@@ -98,8 +98,10 @@ public class FlightCompany implements FlightComponent ,FlightSubject {
 
 
     // The composite pattern function
+    @Override
     public void printData() {
-        toString(); // print the data of the curr company
+        this.toString(); // print the data of the curr company
+        System.out.println("My sub companies are: ");
         if (subCompanies.size() > 0) { // going over the sub companies and printing them
             for (FlightComponent subCompany : subCompanies) {
                 subCompany.printData();
@@ -136,32 +138,36 @@ public class FlightCompany implements FlightComponent ,FlightSubject {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the search criteria: Price/Destination/Date");
         String search = scanner.nextLine();
-        String searchCriteria = "";
+        String searchRange = "";
         if (search.equalsIgnoreCase("Price")) {
             setStrategy(new searchByPriceStrategy());
             System.out.println("Enter the price range: start,end");
-            searchCriteria = scanner.nextLine();
-            if (!searchCriteria.equalsIgnoreCase("(\\d+),(\\d+)")) {
+            searchRange = scanner.nextLine();
+            if (!searchRange.equalsIgnoreCase("(\\d+),(\\d+)")) {
                 throw new InterruptedException("The price range is not in the correct format");
             }
         } else if (search.equalsIgnoreCase("Destination")) {
             setStrategy(new searchByDestinationStrategy());
             System.out.println("Enter the destination: ");
-            searchCriteria = scanner.nextLine();
+            searchRange = scanner.nextLine();
         } else if (search.equalsIgnoreCase("Date")) {
             setStrategy(new searchByDateStrategy());
             System.out.println("Enter the date in dd/mm/yyyy,dd/mm/yyyy , format: ");
-            searchCriteria = scanner.nextLine();
-            if (searchCriteria.equalsIgnoreCase("\\d{2}/\\d{2}/\\d{4},\\d{2}/\\d{2}/\\d{4}")) {
+            searchRange = scanner.nextLine();
+            if (searchRange.equalsIgnoreCase("\\d{2}/\\d{2}/\\d{4},\\d{2}/\\d{2}/\\d{4}")) {
                 throw new InterruptedException("The date is not in the correct format");
             }
+        } else {
+            throw new InterruptedException("The search criteria is not in the correct format");
         }
-        searchStrategy.search(flights, searchCriteria); // Because we've done set strategy we know which one to chose/go
+
+        searchStrategy.search(flights, searchRange); // Because we've done set strategy we know which one to chose/go
     }
 
 
     /**
      * Observer pattern
+     *
      * @param observer
      */
     @Override

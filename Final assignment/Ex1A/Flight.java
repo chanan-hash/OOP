@@ -1,6 +1,5 @@
 package Ex1A;
 
-import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -18,7 +17,7 @@ public class Flight {
 
     // Lists of flights data, each flight has a list of passengers and crewmates
     private final List<Passengers> passengers; // for each flight, we have a list of passengers
-    private final List<Crewmate> crewmates; // for each flight, we have a list of crewmates
+    private final List<CompWorker> crewmates; // for each flight, we have a list of crewmates
 
     // Constructor
     public Flight(String source, String dest, double price ,double duration , String date, int numPassengers, int numCrewmates, int flightNumber) {
@@ -31,7 +30,7 @@ public class Flight {
         this.numCrewmates = numCrewmates;
         this.flightNumber = flightNumber;
         this.passengers = new ArrayList<Passengers>();
-        this.crewmates = new ArrayList<Crewmate>();
+        this.crewmates = new ArrayList<CompWorker>();
     }
 
     // Getters and Setters
@@ -96,7 +95,7 @@ public class Flight {
         return passengers;
     }
 
-    public List<Crewmate> getCrewmates() {
+    public List<CompWorker> getCrewmates() {
         return crewmates;
     }
 
