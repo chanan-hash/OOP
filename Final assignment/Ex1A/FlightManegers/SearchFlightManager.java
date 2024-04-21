@@ -58,7 +58,7 @@ public class SearchFlightManager {
             setStrategy(new searchByDateStrategy());
             System.out.println("Enter the date in dd/mm/yyyy,dd/mm/yyyy , format: ");
             searchRange = scanner.nextLine();
-            if (searchRange.equalsIgnoreCase("\\d{2}/\\d{2}/\\d{4},\\d{2}/\\d{2}/\\d{4}")) {
+            if (!searchRange.matches("\\d{2}/\\d{2}/\\d{4},\\d{2}/\\d{2}/\\d{4}")) { // allowing us to enter only dates like 01/01/2023,02/02/2023
                 throw new InCorrectInputException("The date is not in the correct format");
             }
         } else {

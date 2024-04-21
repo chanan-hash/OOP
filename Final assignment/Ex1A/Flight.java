@@ -115,7 +115,7 @@ public class Flight {
         return "Flight{" +
                 "source='" + source + '\'' +
                 ", dest='" + dest + '\'' +
-                ", price=" + price +
+                ", price=" + price + " $" +
                 ", date='" + date + '\'' +
                 ", numPassengers=" + numPassengers +
                 ", numCrewmates=" + numCrewmates +
