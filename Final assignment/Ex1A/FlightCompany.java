@@ -140,20 +140,6 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         subCompanies.remove(subCompany);
     }
 
-    /**
-     * This method is for the composite pattern
-     */
-    @Override
-    public void printData() {
-        this.toString(); // print the data of the curr company
-        System.out.println("My sub companies are: ");
-        if (subCompanies.size() > 0) { // going over the sub companies and printing them
-            for (FlightComponent subCompany : subCompanies) {
-                subCompany.printData();
-            }
-        }
-    }
-
     @Override
     public String toString() {
         return "FlightCompany{" +
@@ -162,6 +148,21 @@ public class FlightCompany implements FlightComponent, FlightSubject {
                 ", flights=" + flights +
                 '}';
     }
+
+    /**
+     * This method is for the composite pattern
+     */
+    @Override
+    public void printData() {
+        System.out.println(this.toString()); // print the data of the curr company
+        if (subCompanies.size() > 0) { // going over the sub companies and printing them
+            System.out.println("My sub companies are: ");
+            for (FlightComponent subCompany : subCompanies) {
+                subCompany.printData();
+            }
+        }
+    }
+
 
     /*
         print the data of the curr company
