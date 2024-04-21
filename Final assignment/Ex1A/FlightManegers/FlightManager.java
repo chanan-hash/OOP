@@ -6,7 +6,6 @@ import Ex1A.Flight;
 import Ex1A.FlightsExceptions.NotCrewFlightException;
 import Ex1A.FlightsExceptions.NotWorkingHereException;
 import Ex1A.Passengers;
-import Ex1A.PatternsInterfaces.FlightObserver;
 import Ex1A.WorkerEnums.CompanyWorkers;
 
 import java.util.List;

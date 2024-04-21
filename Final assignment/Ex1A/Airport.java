@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Like the Register system class ans we can use here the faced pattern, and singelton pattern
+ * Like the Register system class in part B, we can use here the faced pattern, and singleton pattern
  */
 
 public class Airport {
@@ -21,6 +21,7 @@ public class Airport {
         this.name = name;
     }
 
+    // For the singleton pattern
     public static Airport getInstace(String name) {
         if (instance == null) {
             instance = new Airport(name);
@@ -40,13 +41,30 @@ public class Airport {
         outgoingFlights.add(flight);
     }
 
-    public static Airport getInstance() {
-        return instance;
+    // Printing the incoming and outgoing flights
+    public void printIncomingFlights() {
+        System.out.println("Incoming Flights:");
+        for (Flight flight : incomingFlights) {
+            System.out.println(flight);
+        }
     }
 
-    public static void setInstance(Airport instance) {
-        Airport.instance = instance;
+    public void printOutgoingFlights() {
+        System.out.println("Outgoing Flights:");
+        for (Flight flight : outgoingFlights) {
+            System.out.println(flight);
+        }
     }
+
+    // Printing companies and sub companies flights data by the composite pattern
+
+    public void printCompaniesData() {
+        for (FlightCompany flightCompany : flightCompanies) {
+            flightCompany.printData();
+        }
+    }
+
+    /********************************* Getters and Setters *****************************************/
 
     public String getName() {
         return name;

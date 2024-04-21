@@ -1,5 +1,8 @@
 package Ex1A;
 
+// Idea for flight table in the database
+// https://www.geeksforgeeks.org/how-to-design-database-for-flight-reservation-system/
+
 import Ex1A.FlightManegers.FlightManager;
 import Ex1A.FlightManegers.FlightObserverManager;
 import Ex1A.FlightManegers.SearchFlightManager;
@@ -7,7 +10,6 @@ import Ex1A.FlightsExceptions.*;
 import Ex1A.PatternsInterfaces.FlightComponent;
 import Ex1A.PatternsInterfaces.FlightObserver;
 import Ex1A.PatternsInterfaces.FlightSubject;
-import Ex1A.WorkerEnums.CompanyWorkers;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -90,7 +92,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         return this.flightManager.bookFlight(flight, passenger);
     }
 
-    // TODO maybe to go over the whole subcompenies and check if the flight is there
+    // TODO maybe to go over the whole sub-companies and check if the flight is there
     // Only someone that was one flight can cancel it
     public boolean cancelFlight(Flight flight, Passengers passengers, boolean subscribe) {
         if (subscribe) { // And this will also remove the observer from the list
@@ -196,8 +198,8 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         this.flightObserverManager.removeObserver(observer, ComFlightObservers);
     }
 
-    /**************************************************************************/
-    // Getters and Setters
+    /********************************* Getters and Setters *****************************************/
+
     public String getCompanyName() {
         return companyName;
     }
