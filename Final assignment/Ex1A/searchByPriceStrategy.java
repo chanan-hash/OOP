@@ -15,10 +15,10 @@ public class searchByPriceStrategy implements FlightSearchStrategy {
     @Override
     public void search(List<Flight> flights, String searchRange) {
         String [] priceRange = searchRange.split(",");
-        double start = Double.parseDouble(priceRange[0].substring(1));
-        double end = Double.parseDouble(priceRange[1].substring(0, priceRange[1].length()-1));
+        double start = Double.parseDouble(priceRange[0]);
+        double end = Double.parseDouble(priceRange[1]);
 
-        // TODO can add List to sort according to the price
+        // We can add List to sort according to the price
         for (Flight flight : flights) {
             if (flight.getPrice() >= start && flight.getPrice() <= end) {
                 System.out.println(flight);

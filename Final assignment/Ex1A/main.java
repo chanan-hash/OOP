@@ -5,7 +5,7 @@ import Ex1A.WorkerEnums.CompanyWorkers;
 import Ex1A.WorkerEnums.CrewRoll;
 
 public class main {
-    public static void main(String[] args) throws NotWorkingHereException, NotCrewFlightException, InCorrectInputException{
+    public static void main(String[] args) throws NotWorkingHereException, NotCrewFlightException, InCorrectInputException {
         // Creating the airport
         Airport airport = Airport.getInstace("Ben Gurion");
 
@@ -140,5 +140,15 @@ public class main {
         elAl.bookFlight(elAlFlight1, passenger4, true);
         elAl.bookFlight(elAlFlight1, passenger5, false);
         elAl.bookFlight(elAlFlight1, passenger6, false);
+
+        System.out.println("\nCreating the passengers");
+
+        // searching for a flight
+        System.out.println("Searching for a flight:");
+        try {
+            elAl.searchFlight();
+        } catch (InCorrectInputException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

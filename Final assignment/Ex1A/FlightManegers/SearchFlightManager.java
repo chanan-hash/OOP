@@ -47,7 +47,7 @@ public class SearchFlightManager {
             setStrategy(new searchByPriceStrategy());
             System.out.println("Enter the price range: start,end");
             searchRange = scanner.nextLine();
-            if (!searchRange.equalsIgnoreCase("(\\d+),(\\d+)")) {
+            if (!searchRange.matches("(\\d+),(\\d+)")) { // allowing us to enter only numbers like 123,456
                 throw new InCorrectInputException("The price range is not in the correct format");
             }
         } else if (search.equalsIgnoreCase("Destination")) {

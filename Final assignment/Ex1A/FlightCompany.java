@@ -115,7 +115,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
      * @param flights
      * @throws InCorrectInputException
      */
-    public void searchFlight(List<Flight> flights) throws InCorrectInputException {
+    public void searchFlight() throws InCorrectInputException {
         searchMangers.searchFlights(flights);
     }
 
