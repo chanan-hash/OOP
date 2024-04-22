@@ -5,7 +5,7 @@ import Ex1A.WorkerEnums.CompanyWorkers;
 import Ex1A.WorkerEnums.CrewRoll;
 
 public class main {
-    public static void main(String[] args) throws NotWorkingHereException, NotCrewFlightException, InCorrectInputException {
+    public static void main(String[] args) throws NotWorkingHereException, NotCrewFlightException, InCorrectInputException, FlightNotExistsException {
         // Creating the airport
         Airport airport = Airport.getInstace("Ben Gurion");
 
@@ -107,13 +107,13 @@ public class main {
         CompWorker worker10 = new CompWorker("Olivia Martin", "oliviamartin@gmail.com", 26, 1234567899, CompanyWorkers.SIMPLE_WORKER, CrewRoll.NONE, 10);
 
         // Checking an exception for adding simple worker to a flight
-        elAl.addWorker(worker8);
-        elAl.addWorker(worker10);
-        try {
-            elAl.addCrewmate(elAlFlight1, worker8);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+//        elAl.addWorker(worker8, true);
+//        elAl.addWorker(worker10, true);
+//        try {
+//            elAl.addCrewmate(elAlFlight1, worker8);
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
 
         // Showing the exceptions.
 //        elAl.addCrewmate(elAlFlight1, worker9); // NotWorkingHereException
@@ -143,12 +143,52 @@ public class main {
 
         System.out.println("\nCreating the passengers");
 
-        // searching for a flight
-        System.out.println("Searching for a flight:");
-        try {
-            elAl.searchFlight();
-        } catch (InCorrectInputException e) {
-            System.out.println(e.getMessage());
-        }
+        // searching for a flight by the strategy pattern
+
+//        System.out.println("Searching for a flight:");
+//        try {
+//            elAl.searchFlight();
+//        } catch (InCorrectInputException e) {
+//            System.out.println(e.getMessage());
+//        }
+
+        System.out.println("\nChecking the observer pattern:\n");
+
+        /**
+         * In this part we'll work on one flight just for convenience.
+         */
+        // Adding passengers and crewmate to a flight
+        // Adding 5 crewmates to the flight
+        // Adding first the crewmates to the company itself
+        elAl.addWorker(worker1, true);
+        elAl.addWorker(worker2, true);
+        elAl.addWorker(worker3, true);
+        elAl.addWorker(worker4, false);
+        elAl.addWorker(worker5, false);
+
+        // Adding the crewmates to the flight
+        elAl.addCrewmate(elAlFlight1, worker1);
+        elAl.addCrewmate(elAlFlight1, worker2);
+        elAl.addCrewmate(elAlFlight1, worker3);
+        elAl.addCrewmate(elAlFlight1, worker4);
+        elAl.addCrewmate(elAlFlight1, worker5);
+
+
+//         Checking delay notification
+//        System.out.println("Checking the delay notification:\n");
+//        elAl.notifyDelay(elAlFlight1, 2); // Should notify all the crewmates and passengers
+//         Need to print 6 + 5 = 11 notifications for each passenger and crewmate
+
+        // Checking cancel notification
+//        System.out.println("Checking the cancel notification:\n");
+//        elAl.flightCancellation(elAlFlight1); // Should notify all the crewmates and passengers
+//        elAl.flightCancellation(elAlFlight1); // Should be an exception
+        // Need to print 6 + 5 = 11 notifications for each passenger and crewmate
+
+        // Checking sale notification
+        System.out.println("Checking the sale notification:\n");
+        System.out.println("Before the sale: " + elAlFlight1.getPrice());
+        elAl.flightSale(elAlFlight1, 10); // Should notify all the passengers that are subscribed (3 + 4 = 7)
+        System.out.println("\nAfter the sale: " + elAlFlight1.getPrice());
     }
 }

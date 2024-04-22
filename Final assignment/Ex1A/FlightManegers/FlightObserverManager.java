@@ -64,9 +64,9 @@ public class FlightObserverManager implements FlightSubject {
      * Notify all observers about special sales on flights according to the destination
      */
     @Override
-    public void notifySale(List<FlightObserver> ComFlightObservers, Flight flight, int discount) {
+    public void notifySale(List<FlightObserver> ComFlightObservers, Flight flight, double discount) {
         for (FlightObserver observer : ComFlightObservers) {
-            observer.update("The flight " + flight.getDest() + " has a special sale of " + discount + "%");
+            observer.update("New sale on flight from " + flight.getSource() + " to " + flight.getDest() + " has a special sale of " + discount + "%");
         }
     }
 }

@@ -49,12 +49,16 @@ public class FlightCompany implements FlightComponent, FlightSubject {
      * and if his type is CREW_FLIGHT
      *
      * @param worker
+     * @param subscribe - if the worker wants get updated on sales for the company
      * @return
      */
 
-    public boolean addWorker(CompWorker worker) {
+    public boolean addWorker(CompWorker worker, boolean subscribe) {
         if (!workers.contains(worker)) {
             workers.add(worker);
+            if (subscribe) {
+                addObserver((FlightObserver) worker, this.ComFlightObservers); // TODO check the casting
+            }
             return true;
         }
         return false;
@@ -87,7 +91,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
 
     public boolean bookFlight(Flight flight, Passengers passenger, boolean subscribe) {
         if (subscribe) {
-            addObserver((FlightObserver) passenger, this.ComFlightObservers); // TODO check the casting
+            addObserver((FlightObserver) passenger, this.ComFlightObservers);
         }
         return this.flightManager.bookFlight(flight, passenger);
     }
@@ -96,16 +100,25 @@ public class FlightCompany implements FlightComponent, FlightSubject {
     // Only someone that was one flight can cancel it
     public boolean cancelFlight(Flight flight, Passengers passengers, boolean subscribe) {
         if (subscribe) { // And this will also remove the observer from the list
-            removeObserver((FlightObserver) passengers, this.ComFlightObservers); // TODO check the casting
+            removeObserver((FlightObserver) passengers, this.ComFlightObservers);
         }
         return this.flightManager.cancelFlight(flight, passengers);
     }
 
-    public void flightCancellation(Flight flight) {
+    public void flightCancellation(Flight flight) throws FlightNotExistsException {
         this.flightManager.flightCancellation(flight);
         this.notifyCancel(flight);
     }
 
+    public void flightDelay(Flight flight, double delay) {
+        this.flightManager.flightDelay(flight, delay);
+        this.notifyDelay(flight, delay);
+    }
+
+    public void flightSale(Flight flight, double discount) {
+        this.flightManager.flightSale(flight, discount);
+        this.notifySale(this.ComFlightObservers, flight, discount);
+    }
 
     /********************************   STRATEGY   ******************************************/
 
@@ -189,7 +202,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
     }
 
     @Override
-    public void notifySale(List<FlightObserver> ComFlightObservers, Flight flight, int discount) {
+    public void notifySale(List<FlightObserver> ComFlightObservers, Flight flight, double discount) {
         this.flightObserverManager.notifySale(ComFlightObservers, flight, discount);
     }
 

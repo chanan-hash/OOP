@@ -11,7 +11,7 @@ public interface FlightSubject {
 
     public void notifyCancel(Flight flight); // Notify all observers about the cancellation of a flight
 
-    public void notifySale(List<FlightObserver> ComFlightObservers,Flight flight, int discount); // Notify all observers about special sales on flights
+    public void notifySale(List<FlightObserver> ComFlightObservers,Flight flight, double discount); // Notify all observers about special sales on flights
 
     public void removeObserver(FlightObserver observer,List<FlightObserver> ComFlightObservers);
 

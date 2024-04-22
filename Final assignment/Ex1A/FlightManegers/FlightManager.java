@@ -3,6 +3,7 @@ package Ex1A.FlightManegers;
 
 import Ex1A.CompWorker;
 import Ex1A.Flight;
+import Ex1A.FlightsExceptions.FlightNotExistsException;
 import Ex1A.FlightsExceptions.NotCrewFlightException;
 import Ex1A.FlightsExceptions.NotWorkingHereException;
 import Ex1A.Passengers;
@@ -54,9 +55,25 @@ public class FlightManager {
         return false;
     }
 
+    /**
+     * Observer helper functions
+     */
     // canceling the flight itself
-    public void flightCancellation(Flight flight) {
+    public void flightCancellation(Flight flight) throws FlightNotExistsException {
+        if (!flights.contains(flight)) {
+            throw new FlightNotExistsException("The flight is not in the company");
+        }
         flights.remove(flight);
+    }
+
+    public void flightDelay(Flight flight, double delay) {
+        flight.setDuration(flight.getDuration() + delay);
+    }
+
+    // The discount is in percentage
+    public void flightSale(Flight flight, double discount) {
+        double afterDiscount = (discount / 100) * flight.getPrice();
+        flight.setPrice(flight.getPrice() - afterDiscount);
     }
 
 
