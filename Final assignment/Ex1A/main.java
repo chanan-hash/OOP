@@ -143,7 +143,9 @@ public class main {
 
         System.out.println("\nCreating the passengers");
 
-        // searching for a flight by the strategy pattern
+        /**
+         * Searching flights according to the strategy pattern
+         */
 
 //        System.out.println("Searching for a flight:");
 //        try {

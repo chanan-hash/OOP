@@ -2,6 +2,8 @@ package Ex1A;
 
 import Ex1A.PatternsInterfaces.FlightSearchStrategy;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.time.LocalDate;
 
@@ -17,6 +19,14 @@ public class searchByDateStrategy implements FlightSearchStrategy {
         String[] dateRange = searchRange.split(","); // [dd/mm/yyyy, dd/mm/yyyy]
         String[] date1 = dateRange[0].split("/"); // [dd, mm, yyyy]
         String[] date2 = dateRange[1].split("/"); // [dd, mm, yyyy]
+
+        // Sort the flights by date
+        flights.sort((flight1, flight2) -> {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate date3 = LocalDate.parse(flight1.getDate(), formatter);
+            LocalDate date4 = LocalDate.parse(flight2.getDate(), formatter);
+            return date3.compareTo(date4);
+        });
 
         for (Flight flight : flights) {
             String[] flightDate = flight.getDate().split("/"); // [dd, mm, yyyy]
@@ -37,6 +47,16 @@ public class searchByDateStrategy implements FlightSearchStrategy {
         // Check if the given date is within the range
         return !givenDate.isBefore(startDate) && !givenDate.isAfter(endDate);
     }
+
+//    public void sortFlightsByDate(List<Flight> flights) {
+//        Collections.sort(flights, (flight1, flight2) -> {
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//            LocalDate date1 = LocalDate.parse(flight1.getDate(), formatter);
+//            LocalDate date2 = LocalDate.parse(flight2.getDate(), formatter);
+//            return date1.compareTo(date2);
+//        });
+//    }
+
 //    public boolean isBetween(String[] date1, String[] date2, String[] date) {
 //        // first date
 //        int day1 = Integer.parseInt(date1[0]);

@@ -17,7 +17,7 @@ public class searchByPriceStrategy implements FlightSearchStrategy {
         String [] priceRange = searchRange.split(",");
         double start = Double.parseDouble(priceRange[0]);
         double end = Double.parseDouble(priceRange[1]);
-
+        flights.sort((f1, f2) -> Double.compare(f1.getPrice(), f2.getPrice()));
         // We can add List to sort according to the price
         for (Flight flight : flights) {
             if (flight.getPrice() >= start && flight.getPrice() <= end) {

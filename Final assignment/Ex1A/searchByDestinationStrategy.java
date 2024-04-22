@@ -12,6 +12,7 @@ public class searchByDestinationStrategy implements FlightSearchStrategy {
      */
     @Override
     public void search(List<Flight> flights, String searchRange) {
+//        flights.sort((f1, f2) -> f1.getDest().compareTo(f2.getDest()));
         for (Flight flight : flights) {
             if (flight.getDest().equalsIgnoreCase(searchRange)) {
                 System.out.println(flight);
