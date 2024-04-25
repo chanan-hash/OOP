@@ -115,7 +115,7 @@ public class RegisterSystem {
         if (!(person instanceof Teacher)) {
             throw new NotATeacherException("Only teachers can create courses");
         }
-        Course course = Course.getInstance(name, courseID, lecturer, practitioner, type, courseCapacity);
+        Course course = Course.getCourse(name, courseID, lecturer, practitioner, type, courseCapacity);
         COURSES_LIST.add(course);
         return course;
     }
