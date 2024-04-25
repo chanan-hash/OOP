@@ -152,6 +152,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         subCompanies.remove(subCompany);
     }
 
+    // The toString function will print the flight company data, and if there are sub companies, it will print them too
     @Override
     public String toString() {
         return "FlightCompany{" +
@@ -164,17 +165,38 @@ public class FlightCompany implements FlightComponent, FlightSubject {
     /**
      * This method is for the composite pattern
      */
+
     @Override
     public void printData() {
-        System.out.println(this.toString()); // print the data of the curr company
-        if (subCompanies.size() > 0) { // going over the sub companies and printing them
-            System.out.println("My sub companies are: ");
+        // Print the company name
+        System.out.println("Company Name: " + this.companyName);
+
+        // Print the table header
+        System.out.format("%-10s %-15s %-15s %-10s %-10s %-15s %-15s %-15s%n", "Flight Nu.", "Source", "Destination", "Price", "Duration", "Date", "Passengers", "Crewmates");
+
+        // Loop through the list of flights
+        for (Flight flight : this.flights) {
+            // Print the flight data in a new row of the table
+            System.out.format("%-10d %-15s %-15s %-10.2f %-10.2f %-15s %-15d %-15d%n",
+                    flight.getFlightNumber(),
+                    flight.getSource(),
+                    flight.getDest(),
+                    flight.getPrice(),
+                    flight.getDuration(),
+                    flight.getDate(),
+                    flight.getNumPassengers(),
+                    flight.getNumCrewmates());
+        }
+
+        // If there are sub-companies, print their data as well
+        if (subCompanies.size() > 0) {
+            System.out.println("\nSub Companies: ");
             for (FlightComponent subCompany : subCompanies) {
+                System.out.println();
                 subCompany.printData();
             }
         }
     }
-
 
     /*
         print the data of the curr company
