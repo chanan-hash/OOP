@@ -1,27 +1,29 @@
 package Ex1B.courseBuilder;
 
 import Ex1B.*;
+import Ex1B.Exceptions.IncorrectPasswordException;
 import Ex1B.Exceptions.NotATeacherException;
 import Ex1B.Exceptions.NotLoggedInException;
 import Ex1B.Exceptions.SystemIsFullException;
 
-import java.util.Scanner;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * This will implement the singleton pattern, to make sure that there is only one register system
  */
 public class RegisterSystem {
-
     private static final RegisterSystem instance = new RegisterSystem();
     private static final int MAX_ACTIVE = 100; // Maximum number of active people
-    private static final Set<UniversityPerson> REGISTER_SYSTEM = new HashSet<>(MAX_ACTIVE);
-    //    private static final ArrayList<UniversityPerson> REGISTER_SYSTEM = new ArrayList<>(MAX_ACTIVE);
-    private static final Set<Course> COURSES_LIST = new HashSet<>();
+    private static final Map<Integer, UniversityPerson> REGISTER_SYSTEM = new HashMap<>(MAX_ACTIVE);
 
+    private static final Map<Integer, Course> COURSES_LIST = Course.getCourseMap();
+    //    private static final Set<UniversityPerson> REGISTER_SYSTEM = new HashSet<>(MAX_ACTIVE);
+    //    private static final ArrayList<UniversityPerson> REGISTER_SYSTEM = new ArrayList<>(MAX_ACTIVE);
+    // private static final Set<Course> COURSES_LIST = new HashSet<>();
     //    private static final ArrayList<Course> COURSES_LIST = new ArrayList<>();
-    // This is for singleton pattern
+
+
+    //******* singleton pattern ********
     public static RegisterSystem getInstance() { // for the singleton pattern
         return instance; // This will always return the same instance
     }
@@ -31,11 +33,18 @@ public class RegisterSystem {
      * University person registration system
      * return true if there is place in the system, else throws exception
      */
-    public boolean singIn(UniversityPerson person) throws SystemIsFullException {
+    public void singIn(int id, String password) throws SystemIsFullException, IncorrectPasswordException {
         if (REGISTER_SYSTEM.size() == MAX_ACTIVE) {
             throw new SystemIsFullException("System is full. There is no place right now");
         }
-        return REGISTER_SYSTEM.add(person);
+        UniversityPerson person = UniversityPerson.getIdMap().get(id);
+        if (person == null) {
+            throw new IllegalArgumentException("The person is not in the system");
+        }
+        if (!person.getPassword().equals(password)) {
+            throw new IncorrectPasswordException("Incorrect password");
+        }
+        REGISTER_SYSTEM.put(id, person);
     }
 
     /**
@@ -43,10 +52,11 @@ public class RegisterSystem {
      * If the student trying to log out when he is not in the system it'll throw exception
      */
     public boolean singOut(UniversityPerson person) throws NotLoggedInException {
-        if (!REGISTER_SYSTEM.contains(person)) {
+        if (REGISTER_SYSTEM.get(person.getId()) == null) {
             throw new NotLoggedInException("You're already not in the system");
         }
-        return REGISTER_SYSTEM.remove(person);
+        REGISTER_SYSTEM.remove(person.getId());
+        return true;
     }
 
     /**
@@ -59,10 +69,8 @@ public class RegisterSystem {
      * @return true/false if it had succeeded.
      */
     public boolean registerCourse(Course course, Student student, boolean subscribe) throws NotLoggedInException {
-        if (!REGISTER_SYSTEM.contains(student)) {
-            throw new NotLoggedInException("Try to login to register the course");
-        } else if (!COURSES_LIST.contains(course)) { // if trying to register to a course that is not in the system
-            throw new IllegalArgumentException("The course is not in the system");
+        if (REGISTER_SYSTEM.get(student.getId()) == null) {
+            throw new NotLoggedInException("Try to login to continue...");
         } else if (course.addStudent(student)) {
             student.getCourses().add(course);
             return true;
@@ -92,7 +100,7 @@ public class RegisterSystem {
      */
 
     public void unsignedCourse(Course course, Student student) throws NotLoggedInException {
-        if (!REGISTER_SYSTEM.contains(student)) {
+        if (REGISTER_SYSTEM.get(student.getId()) == null) {
             throw new NotLoggedInException("Try to login to continue...");
         } else if (student.getCourses().contains(course)) {
             student.getCourses().remove(course);
@@ -109,23 +117,14 @@ public class RegisterSystem {
      */
     // package private function, only the package can use it
     Course createCourse(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity, UniversityPerson person) throws NotLoggedInException, NotATeacherException {
-        if (!REGISTER_SYSTEM.contains(person)) {
+        if (REGISTER_SYSTEM.get(person.getId()) == null) {
             throw new NotLoggedInException("Try to login to continue...");
         }
         if (!(person instanceof Teacher)) {
             throw new NotATeacherException("Only teachers can create courses");
         }
         Course course = Course.getCourse(name, courseID, lecturer, practitioner, type, courseCapacity);
-        COURSES_LIST.add(course);
         return course;
     }
-
-
-    //    public void addCourse(Course course, Teacher teacher) throws NotLoggedInException {
-//        if (!REGISTER_SYSTEM.contains(teacher)) {
-//            throw new NotLoggedInException("Try to login to continue...");
-//        }
-//        COURSES_LIST.add(course);
-//    }
 
 }

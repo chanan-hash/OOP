@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This abstract class is for the teacherable classes aka lecturer and practitioner .
+ * This abstract class is for the teacherable classes aka lecturer and practitioner.
  * They will have to implement the option to define the course
  */
 public abstract class Teacher extends UniversityPerson {
@@ -15,8 +15,8 @@ public abstract class Teacher extends UniversityPerson {
     private int workHours;
 
     // Constructor for Teacher class
-    public Teacher(String name, int id, int workHours) {
-        super(name, id);
+    public Teacher(String name, int id, String password, int workHours) {
+        super(name, id, password);
         this.workHours = workHours;
     }
 
@@ -28,9 +28,9 @@ public abstract class Teacher extends UniversityPerson {
         this.workHours = workHours;
     }
 
-    public static Set<Integer> getIdTeacher() {
-        return idTeacher;
-    }
+//    public static Set<Integer> getIdTeacher() {
+//        return idTeacher;
+//    }
 
     // The method to define the course
     // non-private or public function it package private, so only Teacher instances can use it

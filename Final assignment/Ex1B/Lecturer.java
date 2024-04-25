@@ -11,17 +11,18 @@ import Ex1B.courseBuilder.Teacher;
 
 public class Lecturer extends Teacher {
 
-    public Lecturer(String name, int id, int workHours) {
-        super(name, id, workHours);
+    public Lecturer(String name, int id, String password, int workHours) {
+        super(name, id, password, workHours);
     }
 
-    // Factory method to create a Lecturer, checks if the id is already taken
-    public static Lecturer createLecturer(String name, int id, int workHours) throws IdTakenException {
-        if (Teacher.getIdTeacher().contains(id)) {
+    // This method is used to create a lecturer and add it to the id set, if id is taken throws an exception
+    public static Lecturer createLecturer(String name, int id, String password, int workHours) throws IdTakenException {
+        if (UniversityPerson.getIdMap().get(id) != null) {
             throw new IdTakenException("This ID is already taken");
         } else {
-            Teacher.getIdTeacher().add(id); // adding to the id set the student id
-            return new Lecturer(name, id, workHours);
+            Lecturer lecturer = new Lecturer(name, id, password, workHours);
+            UniversityPerson.getIdMap().put(id, lecturer); // adding to the id to ID map
+            return lecturer;
         }
     }
 }

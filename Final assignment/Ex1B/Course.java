@@ -47,7 +47,6 @@ public class Course implements Subject {
     }
 
 
-    // FACTORY METHOD!!!!!!!!!!!!!!!!!!!!!!!
     // For flyweight design pattern, creating only one instance. Checking according to the courseID
     // If the course with the given courseID already exists, return the existing instance
     public static Course getCourse(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity) {
@@ -59,6 +58,19 @@ public class Course implements Subject {
         }
         // Return the existing instance
         return courseMap.get(courseID);
+    }
+
+    //************ Getters and setters ************
+    public void setCourseCapacity(int courseCapacity) {
+        this.courseCapacity = courseCapacity;
+    }
+
+    public ArrayList<Student> getStudents() {
+        return students;
+    }
+
+    public ArrayList<CourseObserver> getCourseObservers() {
+        return courseObservers;
     }
 
     public String getName() {
@@ -77,26 +89,6 @@ public class Course implements Subject {
         return this.courseCapacity;
     }
 
-    public boolean addStudent(Student student) {
-        if (this.students.size() == courseCapacity) {
-            return false;
-        }
-        // if we're using ArrayList
-        if (!students.contains(student)) {
-            this.students.add(student);
-        }
-        if (courseObservers.contains(student)) {
-            removeObserver(student);
-        }
-        return true;
-    }
-
-    public void removeStudent(Student student) {
-        if (students.contains(student)) {
-            this.students.remove(student);
-//            notifyStudents();
-        }
-    }
 
     public Lecturer getLecturer() {
         return lecturer;
@@ -114,6 +106,37 @@ public class Course implements Subject {
         this.practitioner = practitioner;
     }
 
+    public CourseType getType() {
+        return type;
+    }
+
+    public static Map<Integer, Course> getCourseMap() {
+        return courseMap;
+    }
+
+    // Adding a student to the course only if there's a place available
+    public boolean addStudent(Student student) {
+        if (this.students.size() == courseCapacity) {
+            return false;
+        }
+        // if we're using ArrayList
+        if (!students.contains(student)) {
+            this.students.add(student);
+        }
+        if (courseObservers.contains(student)) { // because he is registered to the course, we don't need to notify him anymore
+            removeObserver(student);
+        }
+        return true;
+    }
+
+    // If student wants to unregister from the course
+    public void removeStudent(Student student) {
+        if (students.contains(student)) {
+            this.students.remove(student);
+        }
+    }
+
+
     @Override
     public String toString() {
         return "Course{" +
@@ -128,6 +151,7 @@ public class Course implements Subject {
                 '}';
     }
 
+    //************ Observer pattern methods ************
     @Override
     public void addObserver(CourseObserver observer) {
         if (!this.courseObservers.contains(observer)) {

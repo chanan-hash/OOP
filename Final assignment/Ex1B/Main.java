@@ -11,7 +11,7 @@ import Ex1B.courseBuilder.RegisterSystem;
 
 public class Main {
     public static void main(String[] args) throws NotATeacherException {
-
+        // TODO a new main
         // Creating the System
         RegisterSystem registerSystem = RegisterSystem.getInstance(); // singleton
 

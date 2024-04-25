@@ -16,21 +16,21 @@ public class Student extends UniversityPerson implements CourseObserver {
     private ArrayList<Course> courses; // courses that student have registered
     private NotificationStrategy notificationStrategy = null; // helping us to chose the notification strategy
 
-    private Student(String name, int id) {
-        super(name, id); // inherits from UniversityPerson
+    private Student(String name, int id, String password) {
+        super(name, id, password); // inherits from UniversityPerson
         this.courses = new ArrayList<>(); // course list the student is registered
         //        this.courses = new HashSet<>();
 
     }
 
     // This method is used to create a student and add it to the id set, if id is taken throws an exception
-    // This is a flyweight pattern
-    public static Student createStudent(String name, int id) throws IdTakenException {
-        if (idSet.contains(id)) {
+    public static Student createStudent(String name, int id, String password) throws IdTakenException {
+        if (UniversityPerson.getIdMap().get(id) != null) {
             throw new IdTakenException("This ID is already taken");
         } else {
-            idSet.add(id); // adding to the id set the student id
-            return new Student(name, id);
+            Student student = new Student(name, id, password);
+            UniversityPerson.getIdMap().put(id,student); // adding to the id set the student id
+            return student;
         }
     }
 

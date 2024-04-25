@@ -11,18 +11,18 @@ import Ex1B.courseBuilder.Teacher;
 
 public class Practitioner extends Teacher {
 
-    public Practitioner(String name, int id, int workHours) { // inherits from the Teacher class
-        super(name, id, workHours);
-    }
-
-    // TODO check it
-    // Factory method to create a Practitioner
-    public static Practitioner createPractitioner(String name, int id, int workHours) throws IdTakenException {
-        if (Teacher.getIdTeacher().contains(id)) {
+    // This method is used to create a practitioner and add it to the id set, if id is taken throws an exception
+    public static Practitioner createPractitioner(String name, int id, String password, int workHours) throws IdTakenException {
+        if (UniversityPerson.getIdMap().get(id) != null) {
             throw new IdTakenException("This ID is already taken");
         } else {
-            Teacher.getIdTeacher().add(id); // adding to the id set the student id
-            return new Practitioner(name, id, workHours);
+            Practitioner practitioner = new Practitioner(name, id, password, workHours);
+            UniversityPerson.getIdMap().put(id, practitioner); // adding to the id to ID map
+            return practitioner;
         }
+    }
+
+    public Practitioner(String name, int id, String password, int workHours) { // inherits from the Teacher class
+        super(name, id, password, workHours);
     }
 }

@@ -91,7 +91,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
 
     public boolean bookFlight(Flight flight, Passengers passenger, boolean subscribe) {
         if (subscribe) {
-            addObserver((FlightObserver) passenger, this.ComFlightObservers);
+            addObserver(passenger, this.ComFlightObservers);
         }
         return this.flightManager.bookFlight(flight, passenger);
     }
@@ -100,7 +100,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
     // Only someone that was one flight can cancel it
     public boolean cancelFlight(Flight flight, Passengers passengers, boolean subscribe) {
         if (subscribe) { // And this will also remove the observer from the list
-            removeObserver((FlightObserver) passengers, this.ComFlightObservers);
+            removeObserver(passengers, this.ComFlightObservers);
         }
         return this.flightManager.cancelFlight(flight, passengers);
     }
