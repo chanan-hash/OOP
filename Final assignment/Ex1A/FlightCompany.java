@@ -165,19 +165,19 @@ public class FlightCompany implements FlightComponent, FlightSubject {
     /**
      * This method is for the composite pattern
      */
-
+    // We can play with the numbers for the spaces after it print the data
     @Override
     public void printData() {
         // Print the company name
         System.out.println("Company Name: " + this.companyName);
 
         // Print the table header
-        System.out.format("%-10s %-15s %-15s %-10s %-10s %-15s %-15s %-15s%n", "Flight Nu.", "Source", "Destination", "Price", "Duration", "Date", "Passengers", "Crewmates");
+        System.out.format("%-10s %-15s %-15s %-12s %-19s %-15s %-15s %-15s%n", "Flight Nu.", "Source", "Destination", "Price ($)", "Duration (hours)", "Date", "Passengers", "Crewmates");
 
         // Loop through the list of flights
         for (Flight flight : this.flights) {
             // Print the flight data in a new row of the table
-            System.out.format("%-10d %-15s %-15s %-10.2f %-10.2f %-15s %-15d %-15d%n",
+            System.out.format("%-10d %-15s %-15s %-12.2f %-19.2f %-15s %-15d %-17d%n",
                     flight.getFlightNumber(),
                     flight.getSource(),
                     flight.getDest(),
