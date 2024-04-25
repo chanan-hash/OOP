@@ -1,6 +1,7 @@
 package Ex1B;
 
 import Ex1B.Exceptions.IdTakenException;
+import Ex1B.courseBuilder.Teacher;
 
 public class Lecturer extends Teacher {
 

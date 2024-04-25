@@ -1,4 +1,7 @@
-package Ex1B;
+package Ex1B.courseBuilder;
+
+import Ex1B.*;
+import Ex1B.Exceptions.NotATeacherException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,8 +33,9 @@ public abstract class Teacher extends UniversityPerson {
     }
 
     // The method to define the course
-    public Course defineCourse(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity) {
-        Course course = Course.getInstance(name, courseID, lecturer, practitioner, type, courseCapacity);
+    // non-private or public function it package private, so only Teacher instances can use it
+    public Course defineCourse(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity, UniversityPerson person) throws NotATeacherException {
+        Course course = RegisterSystem.getInstance().createCourse(name, courseID, lecturer, practitioner, type, courseCapacity, this);
         System.out.println("Course " + course.getName() + " defined by " + this.getName());
         return course; // return the course so we know it hase been created
     }

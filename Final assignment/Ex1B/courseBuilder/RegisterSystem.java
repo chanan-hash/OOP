@@ -1,11 +1,10 @@
-package Ex1B;
+package Ex1B.courseBuilder;
 
+import Ex1B.*;
 import Ex1B.Exceptions.NotATeacherException;
 import Ex1B.Exceptions.NotLoggedInException;
 import Ex1B.Exceptions.SystemIsFullException;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.HashSet;
@@ -108,8 +107,8 @@ public class RegisterSystem {
      * Only the admin aka Teacher can add courses to the system.
      * We want to enable only for them, so for creating a course we need to check if the person is a teacher, pass this argument
      */
-
-    public Course createCourse(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity, UniversityPerson person) throws NotLoggedInException, NotATeacherException {
+    // package private function, only the package can use it
+    Course createCourse(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity, UniversityPerson person) throws NotLoggedInException, NotATeacherException {
         if (!REGISTER_SYSTEM.contains(person)) {
             throw new NotLoggedInException("Try to login to continue...");
         }

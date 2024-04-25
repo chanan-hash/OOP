@@ -3,14 +3,14 @@ package Ex1B;
 import Ex1B.Exceptions.IdTakenException;
 import Ex1B.Exceptions.NotATeacherException;
 import Ex1B.Exceptions.NotLoggedInException;
-import Ex1B.Exceptions.SystemIsFullException;
+import Ex1B.courseBuilder.RegisterSystem;
 
 /**
  * This class will be the main program, it will implement the faced pattern, by simplify the usage fot the students
  */
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NotATeacherException {
 
         // Creating the System
         RegisterSystem registerSystem = RegisterSystem.getInstance(); // singleton
@@ -87,27 +87,34 @@ public class Main {
         // To check if they're not logged in and try to register for a course
 //        registerSystem.singOut(lecturer3);
 //        registerSystem.singOut(practitioner3);
-        // Creating the courses
-        Course course1 = null;
-        try {
-            course1 = registerSystem.createCourse("Calculus", 1, lecturer1, practitioner1, CourseType.CHOICE, 30, lecturer1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Course course2 = null;
-        try {
-            course2 = registerSystem.createCourse("Algebra", 2, lecturer2, practitioner2, CourseType.CHOICE, 30, lecturer2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        // Trying to create a course when he is not a logged in
-        Course course3 = null;
-        try {
-            course3 = registerSystem.createCourse("Geometry", 3, lecturer3, practitioner3, CourseType.CHOICE, 30, practitioner3);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        // Creating the courses
+//        Course course1 = null;
+//        try {
+//            course1 = registerSystem.createCourse("Calculus", 1, lecturer1, practitioner1, CourseType.CHOICE, 30, lecturer1);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        Course course2 = null;
+//        try {
+//            course2 = registerSystem.createCourse("Algebra", 2, lecturer2, practitioner2, CourseType.CHOICE, 30, lecturer2);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        // Trying to create a course when he is not a logged in
+//        Course course3 = null;
+//        try {
+//            course3 = registerSystem.createCourse("Geometry", 3, lecturer3, practitioner3, CourseType.CHOICE, 30, practitioner3);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        Course course1 = lecturer1.defineCourse("Calculus", 1, lecturer1, practitioner1, CourseType.CHOICE, 30, lecturer1);
+        Course course2 = lecturer2.defineCourse("Algebra", 2, lecturer2, practitioner2, CourseType.CHOICE, 30, lecturer2);
+        Course course3 = lecturer3.defineCourse("Geometry", 3, lecturer3, practitioner3, CourseType.CHOICE, 30, lecturer3);
+
 
         // Showing the flyweight pattern
 //        Course course4 = null;
@@ -136,7 +143,7 @@ public class Main {
         // let define a new course with capacity of 1, and see how the observer works
         Course course4 = null;
         try {
-            course4 = registerSystem.createCourse("Data Bases", 4, lecturer1, practitioner3, CourseType.CHOICE, 1, lecturer3);
+            course4 = practitioner3.defineCourse("Data Bases", 4, lecturer1, practitioner3, CourseType.CHOICE, 1, lecturer3);
         } catch (Exception e) {
             e.printStackTrace();
         }
