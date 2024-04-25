@@ -1,5 +1,8 @@
 package Ex1B;
 
+/**
+ * This class represents the SmsNotificationStrategy, One of the ways to notify students about available places in a course
+ */
 public class SmsNotificationStrategy implements NotificationStrategy{
     @Override
     public void notifyStudents(Course course, Student student) {

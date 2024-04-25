@@ -1,7 +1,9 @@
 package Ex1B;
 
 /**
- * This will be for the observer pattern, to update if there is place in one of the courses
+ * Interface for the observer pattern
+ * Student will be the observers on the courses.
+ * We want to notify them when a course has places available.
  */
 public interface CourseObserver {
     void update(Course course); // This will tell us which course is available

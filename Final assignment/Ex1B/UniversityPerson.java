@@ -1,11 +1,11 @@
 package Ex1B;
 
-import java.util.Objects;
-
 /**
- * It will be an abstract class, because we just want to union the students lecturers and the practitioners, under one title
+ * This class will be the parent class for the students, lecturers and practitioners.
+ * It's union the classes for the registration system.
  */
 public abstract class UniversityPerson {
+    // Attributes, every person has a name and an id to identify by them.
     private String name;
     private int id;
 
@@ -14,6 +14,7 @@ public abstract class UniversityPerson {
         this.id = id;
     }
 
+    // Getters and Setters
     public String getName() {
         return name;
     }
