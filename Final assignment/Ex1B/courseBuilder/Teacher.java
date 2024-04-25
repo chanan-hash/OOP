@@ -28,10 +28,6 @@ public abstract class Teacher extends UniversityPerson {
         this.workHours = workHours;
     }
 
-//    public static Set<Integer> getIdTeacher() {
-//        return idTeacher;
-//    }
-
     // The method to define the course
     // non-private or public function it package private, so only Teacher instances can use it
     public Course defineCourse(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity, UniversityPerson person) throws NotATeacherException {

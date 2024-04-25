@@ -12,26 +12,23 @@ import java.util.*;
  * This will implement the singleton pattern, to make sure that there is only one register system
  */
 public class RegisterSystem {
-    private static final RegisterSystem instance = new RegisterSystem();
+    private static final RegisterSystem instance = new RegisterSystem(); // Singleton pattern
     private static final int MAX_ACTIVE = 100; // Maximum number of active people
-    private static final Map<Integer, UniversityPerson> REGISTER_SYSTEM = new HashMap<>(MAX_ACTIVE);
-
-    private static final Map<Integer, Course> COURSES_LIST = Course.getCourseMap();
+    private static final Map<Integer, UniversityPerson> REGISTER_SYSTEM = new HashMap<>(MAX_ACTIVE); // HashMap to hold the registered people  id -> person
+    private static final Map<Integer, Course> COURSES_LIST = Course.getCourseMap(); // HashMap to hold the courses that were created courseID -> course
     //    private static final Set<UniversityPerson> REGISTER_SYSTEM = new HashSet<>(MAX_ACTIVE);
     //    private static final ArrayList<UniversityPerson> REGISTER_SYSTEM = new ArrayList<>(MAX_ACTIVE);
     // private static final Set<Course> COURSES_LIST = new HashSet<>();
     //    private static final ArrayList<Course> COURSES_LIST = new ArrayList<>();
-
 
     //******* singleton pattern ********
     public static RegisterSystem getInstance() { // for the singleton pattern
         return instance; // This will always return the same instance
     }
 
-
     /**
-     * University person registration system
-     * return true if there is place in the system, else throws exception
+     *  University person registration system, getting id and password
+     *  If there is no place in the system or password isn't correct throws exception
      */
     public void singIn(int id, String password) throws SystemIsFullException, IncorrectPasswordException {
         if (REGISTER_SYSTEM.size() == MAX_ACTIVE) {
@@ -44,19 +41,18 @@ public class RegisterSystem {
         if (!person.getPassword().equals(password)) {
             throw new IncorrectPasswordException("Incorrect password");
         }
-        REGISTER_SYSTEM.put(id, person);
+        REGISTER_SYSTEM.put(id, person); // Adding the person to the system
     }
 
     /**
-     * singing out form the system, if his not logged in he wouldn't be able to register for the course
-     * If the student trying to log out when he is not in the system it'll throw exception
+     * Signing out form the system, if his not logged-in, he wouldn't be able to register for courses.
+     * If the student trying to log out when he is not in the system it'll throw exception.
      */
-    public boolean singOut(UniversityPerson person) throws NotLoggedInException {
+    public void singOut(UniversityPerson person) throws NotLoggedInException {
         if (REGISTER_SYSTEM.get(person.getId()) == null) {
             throw new NotLoggedInException("You're already not in the system");
         }
         REGISTER_SYSTEM.remove(person.getId());
-        return true;
     }
 
     /**
@@ -79,7 +75,6 @@ public class RegisterSystem {
                 course.addObserver(student);
 
                 // Strategy design pattern for how to send notification
-
                 Scanner scanner = new Scanner(System.in);
                 System.out.println(student.getName() + " how would you like to get the notification ? (Email/Sms/Phone)");
                 String notificationMethod = scanner.nextLine();
@@ -96,9 +91,8 @@ public class RegisterSystem {
     }
 
     /**
-     * For unregister from the course, we have a function to handle it
+     * For un-registering from the course, the student need to be logged in to get access to register the course
      */
-
     public void unsignedCourse(Course course, Student student) throws NotLoggedInException {
         if (REGISTER_SYSTEM.get(student.getId()) == null) {
             throw new NotLoggedInException("Try to login to continue...");
@@ -113,9 +107,9 @@ public class RegisterSystem {
 
     /**
      * Only the admin aka Teacher can add courses to the system.
-     * We want to enable only for them, so for creating a course we need to check if the person is a teacher, pass this argument
+     * For that we've put Teacher and RegisterSystem in the same package, for the package private access.
+     * Student won't be able to have this kind of function, because he is not in the same package.
      */
-    // package private function, only the package can use it
     Course createCourse(String name, int courseID, Lecturer lecturer, Practitioner practitioner, CourseType type, int courseCapacity, UniversityPerson person) throws NotLoggedInException, NotATeacherException {
         if (REGISTER_SYSTEM.get(person.getId()) == null) {
             throw new NotLoggedInException("Try to login to continue...");
