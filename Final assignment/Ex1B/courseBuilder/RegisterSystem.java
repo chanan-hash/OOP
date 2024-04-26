@@ -12,23 +12,33 @@ import java.util.*;
  * This will implement the singleton pattern, to make sure that there is only one register system
  */
 public class RegisterSystem {
-    private static final RegisterSystem instance = new RegisterSystem(); // Singleton pattern
-    private static final int MAX_ACTIVE = 100; // Maximum number of active people
-    private static final Map<Integer, UniversityPerson> REGISTER_SYSTEM = new HashMap<>(MAX_ACTIVE); // HashMap to hold the registered people  id -> person
-    private static final Map<Integer, Course> COURSES_LIST = Course.getCourseMap(); // HashMap to hold the courses that were created courseID -> course
+    private static int MAX_ACTIVE = 100; // Maximum number of active people
+    private static RegisterSystem instance = null; // Singleton pattern
+    private Map<Integer, UniversityPerson> REGISTER_SYSTEM;// = new HashMap<>(MAX_ACTIVE); // HashMap to hold the registered people  id -> person
+    private Map<Integer, Course> COURSES_LIST; // = Course.getCourseMap(); // HashMap to hold the courses that were created courseID -> course
+
     //    private static final Set<UniversityPerson> REGISTER_SYSTEM = new HashSet<>(MAX_ACTIVE);
     //    private static final ArrayList<UniversityPerson> REGISTER_SYSTEM = new ArrayList<>(MAX_ACTIVE);
     // private static final Set<Course> COURSES_LIST = new HashSet<>();
     //    private static final ArrayList<Course> COURSES_LIST = new ArrayList<>();
 
-    //******* singleton pattern ********
+    //******* singleton pattern ********//
+    // private empty constructor, so no one can create an instance of this class by "new RegisterSystem()"
+    private RegisterSystem() {
+        REGISTER_SYSTEM = new HashMap<>(MAX_ACTIVE);
+        COURSES_LIST = Course.getCourseMap();
+    }
+
     public static RegisterSystem getInstance() { // for the singleton pattern
+        if (instance == null) {
+            instance = new RegisterSystem();
+        }
         return instance; // This will always return the same instance
     }
 
     /**
-     *  University person registration system, getting id and password
-     *  If there is no place in the system or password isn't correct throws exception
+     * University person registration system, getting id and password
+     * If there is no place in the system or password isn't correct throws exception
      */
     public void singIn(int id, String password) throws SystemIsFullException, IncorrectPasswordException {
         if (REGISTER_SYSTEM.size() == MAX_ACTIVE) {
@@ -120,5 +130,6 @@ public class RegisterSystem {
         Course course = Course.getCourse(name, courseID, lecturer, practitioner, type, courseCapacity);
         return course;
     }
+
 
 }

@@ -1,164 +1,113 @@
 package Ex1B;
 
-import Ex1B.Exceptions.IdTakenException;
-import Ex1B.Exceptions.NotATeacherException;
-import Ex1B.Exceptions.NotLoggedInException;
-import Ex1B.courseBuilder.RegisterSystem;
+import Ex1B.Exceptions.*;
+import Ex1B.courseBuilder.*;
 
 /**
- * This class will be the main program, it will implement the faced pattern, by simplify the usage fot the students
+ * This main class for to show how does the program work
  */
 
 public class Main {
-    public static void main(String[] args) throws NotATeacherException {
-        // TODO a new main
-        // Creating the System
-        RegisterSystem registerSystem = RegisterSystem.getInstance(); // singleton
+    public static void main(String[] args) throws NotATeacherException, IncorrectPasswordException {
+        // First creating the register-system;
+        RegisterSystem registerSystem = RegisterSystem.getInstance();
+        System.out.println("RegisterSystem created" + registerSystem);
 
-        // Creating the students
-        Student chanan = Student.createStudent("chanan", 1234);
-//        System.out.println(chanan);
-        Student yossi = Student.createStudent("yossi", 1235);
-//        System.out.println(yossi);
+        // Singleton pattern - they'll have the same address in the memory
+        RegisterSystem registerSystem2 = RegisterSystem.getInstance();
+        System.out.println("RegisterSystem created" + registerSystem2);
 
-//        Student tom = Student.createStudent("Tom", 1234); // will be an Exception
-        Student dana = Student.createStudent("Dana", 1236);
-        Student yael = Student.createStudent("Yael", 1237);
-        Student yuval = Student.createStudent("Yuval", 1238);
+        // Creating 3 students
+        Student student1 = Student.createStudent("John", 123, "123");
+        Student student2 = Student.createStudent("Jane", 124, "124");
+        Student student3 = Student.createStudent("Jack", 125, "125");
 
-        // Creating the teachers
-        Lecturer lecturer1 = null;
+        System.out.println("Student1: " + student1);
+        System.out.println("Student2: " + student2);
+        System.out.println("Student3: " + student3);
+
         try {
-            lecturer1 = Lecturer.createLecturer("Lecturer1", 1111, 5);
+            // Trying to create a student with the same ID
+            Student student4 = Student.createStudent("Tom", 123, "123");
         } catch (IdTakenException e) {
-            e.printStackTrace();
-        }
-        Lecturer lecturer2 = null;
-        try {
-            lecturer2 = Lecturer.createLecturer("Lecturer2", 1112, 6);
-        } catch (IdTakenException e) {
-            e.printStackTrace();
-        }
-        Lecturer lecturer3 = null;
-        try {
-            lecturer3 = Lecturer.createLecturer("Lecturer3", 1113, 7);
-        } catch (IdTakenException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
-        Practitioner practitioner1 = null;
-        try {
-            practitioner1 = Practitioner.createPractitioner("Practitioner1", 2222, 8);
+        // Creating 2 Lecturers
+        Lecturer lecturer1 = Lecturer.createLecturer("Yossi", 1, "1", 7);
+        Lecturer lecturer2 = Lecturer.createLecturer("Dani", 2, "2", 8);
+
+        try { // Trying to create a lecturer with the same ID
+            Lecturer lecturer3 = Lecturer.createLecturer("Noam", 2, "5", 4);
         } catch (IdTakenException e) {
-            e.printStackTrace();
-        }
-        Practitioner practitioner2 = null;
-        try {
-            practitioner2 = Practitioner.createPractitioner("Practitioner2", 2223, 9);
-        } catch (IdTakenException e) {
-            e.printStackTrace();
-        }
-        Practitioner practitioner3 = null;
-        try {
-            practitioner3 = Practitioner.createPractitioner("Practitioner3", 2224, 10);
-        } catch (IdTakenException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
-        // Register students to the system
-        registerSystem.singIn(chanan);
-        registerSystem.singIn(yossi);
-        registerSystem.singIn(dana);
-        registerSystem.singIn(yael);
-        registerSystem.singIn(yuval);
+        // Creating 2 practitioners
+        Practitioner practitioner1 = Practitioner.createPractitioner("Moshe", 3, "33", 5);
+        Practitioner practitioner2 = Practitioner.createPractitioner("David", 4, "44", 6);
 
-        // To check if they're not logged in and try to register for a course
-//        registerSystem.singOut(yuval);
-//        registerSystem.singOut(yael);
+        try { // Trying to create a practitioner with the same ID
+            Practitioner practitioner3 = Practitioner.createPractitioner("Moshe", 4, "55", 9);
+        } catch (IdTakenException e) {
+            System.out.println(e.getMessage());
+        }
 
-        // register the teachers
-        registerSystem.singIn(lecturer1);
-        registerSystem.singIn(lecturer2);
-        registerSystem.singIn(lecturer3);
-        registerSystem.singIn(practitioner1);
-        registerSystem.singIn(practitioner2);
-        registerSystem.singIn(practitioner3);
+        // Adding everyone to the register system
+        // Adding the students
+        registerSystem.singIn(123, "123");
+        registerSystem.singIn(124, "124");
+        registerSystem2.singIn(125, "125"); // showing the singleton pattern
 
-        // To check if they're not logged in and try to register for a course
-//        registerSystem.singOut(lecturer3);
-//        registerSystem.singOut(practitioner3);
+        // Adding the lecturers
+        registerSystem.singIn(1, "1");
+        registerSystem2.singIn(2, "2"); // showing the singleton pattern
 
-
-        // Creating the courses
-//        Course course1 = null;
-//        try {
-//            course1 = registerSystem.createCourse("Calculus", 1, lecturer1, practitioner1, CourseType.CHOICE, 30, lecturer1);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        Course course2 = null;
-//        try {
-//            course2 = registerSystem.createCourse("Algebra", 2, lecturer2, practitioner2, CourseType.CHOICE, 30, lecturer2);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        // Trying to create a course when he is not a logged in
-//        Course course3 = null;
-//        try {
-//            course3 = registerSystem.createCourse("Geometry", 3, lecturer3, practitioner3, CourseType.CHOICE, 30, practitioner3);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-        Course course1 = lecturer1.defineCourse("Calculus", 1, lecturer1, practitioner1, CourseType.CHOICE, 30, lecturer1);
-        Course course2 = lecturer2.defineCourse("Algebra", 2, lecturer2, practitioner2, CourseType.CHOICE, 30, lecturer2);
-        Course course3 = lecturer3.defineCourse("Geometry", 3, lecturer3, practitioner3, CourseType.CHOICE, 30, lecturer3);
+        // Adding the practitioners
+        registerSystem.singIn(3, "33");
+        registerSystem2.singIn(4, "44"); // showing the singleton pattern
 
 
-        // Showing the flyweight pattern
-//        Course course4 = null;
-//        try {
-//            course4 = registerSystem.createCourse("Data Bases", 1, lecturer1, practitioner3, CourseType.CHOICE, 30, lecturer3);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//          // Both will be the same course because of the same id course, flyweight
-//        System.out.println(course1);
-//        System.out.println(course4);
+        // Creating 3 courses, only kind of Teacher class can create courses
+        Course course1 = lecturer1.defineCourse("Math", 1, lecturer1, practitioner1, CourseType.REQUIRED, 10, lecturer1);
+        Course course2 = lecturer2.defineCourse("History", 2, lecturer2, practitioner2, CourseType.CHOICE, 1, lecturer2);
 
+        System.out.println("Two courses created!");
 
-        // Register students to the courses
+        // sign-out one the practitioner, and try to create a course, should throw an exception
+        registerSystem.singOut(practitioner1);
         try {
-            registerSystem.registerCourse(course1, chanan, true);
-            registerSystem.registerCourse(course1, yossi, true);
-            registerSystem.registerCourse(course2, dana, false);
-            registerSystem.registerCourse(course2, yael, true);
-            registerSystem.registerCourse(course3, yuval, false);
-            System.out.println("All students registered to the courses!");
+            practitioner1.defineCourse("Science", 3, lecturer1, practitioner1, CourseType.REQUIRED, 10, practitioner1);
         } catch (NotLoggedInException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
-        // let define a new course with capacity of 1, and see how the observer works
-        Course course4 = null;
+        // Registering the students to the courses, only who is logged in can register for a course
+        registerSystem.singOut(student3);
         try {
-            course4 = practitioner3.defineCourse("Data Bases", 4, lecturer1, practitioner3, CourseType.CHOICE, 1, lecturer3);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        registerSystem.registerCourse(course4, yossi, false);
-        System.out.println("yossi registered to the course");
-
-        registerSystem.registerCourse(course4, dana, true);
-        registerSystem.registerCourse(course4, yael, true);
-
-        // Unregister from the course
-        try {
-            registerSystem.unsignedCourse(course4, yossi);
+            registerSystem.registerCourse(course1, student1, true);
+            registerSystem.registerCourse(course1, student2, true);
+            registerSystem.registerCourse(course1, student3, true);
         } catch (NotLoggedInException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
+
+        // Student 3 trying to register the system with wrong password
+        try {
+            registerSystem.singIn(125, "123");
+        } catch (IncorrectPasswordException e) {
+            System.out.println(e.getMessage());
+        }
+
+        registerSystem.singIn(125, "125");
+
+        // Strategy and observer design patterns
+        registerSystem.registerCourse(course2, student1, false);
+        registerSystem.registerCourse(course2, student2, true);
+        registerSystem.registerCourse(course2, student3, false);
+
+        // Student 1 un-registering from the course 2, so the observer pattern will be triggered notifying only student 2 and not student 3
+        registerSystem.unsignedCourse(course2, student1);
 
     }
 }
