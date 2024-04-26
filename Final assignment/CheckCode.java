@@ -47,7 +47,7 @@ public class CheckCode {
         }
         for (Position[] position_row : positiona) {
             for (Position position : position_row) {
-                System.out.println(position);
+                System.out.print(position);
             }
             System.out.println();
         }
