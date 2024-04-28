@@ -1,7 +1,11 @@
 package Ex1A;
 
-// Idea for flight table in the database
-// https://www.geeksforgeeks.org/how-to-design-database-for-flight-reservation-system/
+/**
+ * This class is one of our main classes in the project.
+ * It represents a flight company, which can have sub-companies, flights, and workers.
+ * The class implements the FlightComponent and FlightSubject interfaces, which are part of the composite and observer patterns.
+ * The flight company also implements the strategy pattern in searching flights.
+ */
 
 import Ex1A.FlightManegers.FlightManager;
 import Ex1A.FlightManegers.FlightObserverManager;
@@ -17,16 +21,16 @@ import java.util.ArrayList;
 public class FlightCompany implements FlightComponent, FlightSubject {
     private String companyName;
 
-    private List<FlightComponent> subCompanies;
+    private List<FlightComponent> subCompanies; // All the sub companies of the company
     private List<Flight> flights;
-    private List<CompWorker> workers;
+    private List<CompWorker> workers; // All the workers of the company
 
     private List<FlightObserver> ComFlightObservers;  // The observers looking on the company updates
-    private FlightObserverManager flightObserverManager; // An observer manager to manage the observers
+    private FlightObserverManager flightObserverManager; // An observer manager to manage the observers, using delegation pattern
 
-    private SearchFlightManager searchMangers; // An manager object to manage the flight search strategy
+    private SearchFlightManager searchMangers; // A manager object to manage the flight search strategy
 
-    private FlightManager flightManager;
+    private FlightManager flightManager; // A manager object to manage the flight operations
 
 
     // Constructor
@@ -42,7 +46,6 @@ public class FlightCompany implements FlightComponent, FlightSubject {
     }
 
     // Methods
-
     /**
      * Add a worker to the company
      * After it when we are adding a crewmate to a flight we are checking if he's working in this company,
@@ -57,7 +60,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         if (!workers.contains(worker)) {
             workers.add(worker);
             if (subscribe) {
-                addObserver((FlightObserver) worker, this.ComFlightObservers); // TODO check the casting
+                addObserver((FlightObserver) worker, this.ComFlightObservers);
             }
             return true;
         }
@@ -96,8 +99,7 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         return this.flightManager.bookFlight(flight, passenger);
     }
 
-    // TODO maybe to go over the whole sub-companies and check if the flight is there
-    // Only someone that was one flight can cancel it
+    // Only someone that was one flight's list can cancel it
     public boolean cancelFlight(Flight flight, Passengers passengers, boolean subscribe) {
         if (subscribe) { // And this will also remove the observer from the list
             removeObserver(passengers, this.ComFlightObservers);
@@ -105,16 +107,19 @@ public class FlightCompany implements FlightComponent, FlightSubject {
         return this.flightManager.cancelFlight(flight, passengers);
     }
 
+    // Canceling the flight itself
     public void flightCancellation(Flight flight) throws FlightNotExistsException {
         this.flightManager.flightCancellation(flight);
         this.notifyCancel(flight);
     }
 
+    // Delaying the flight and notifying the observers of the flights
     public void flightDelay(Flight flight, double delay) {
         this.flightManager.flightDelay(flight, delay);
         this.notifyDelay(flight, delay);
     }
 
+    // Sale on the flight and notifying the observers of the flights
     public void flightSale(Flight flight, double discount) {
         this.flightManager.flightSale(flight, discount);
         this.notifySale(this.ComFlightObservers, flight, discount);

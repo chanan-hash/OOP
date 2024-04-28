@@ -1,5 +1,10 @@
 package Ex1A;
 
+/**
+ * This class represents a passenger on a flight.
+ * Inherits from PersonFlight, the basic attributes.
+ * In addition, it has a passenger ID.
+ */
 public class Passengers extends PersonFlight{
 
     private int passengerID;

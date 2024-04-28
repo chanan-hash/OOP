@@ -1,8 +1,11 @@
 package Ex1A.PatternsInterfaces;
 import java.util.List;
 import Ex1A.Flight;
-import Ex1A.PatternsInterfaces.FlightObserver;
 
+/**
+ * The subject interface that will be implemented by the flight-company
+ * The flight-company will notify all the observers about the delay, cancel, and sales of the flights
+ */
 public interface FlightSubject {
 
     public void addObserver(FlightObserver observer, List<FlightObserver> ComFlightObservers);

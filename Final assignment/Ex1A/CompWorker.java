@@ -3,13 +3,15 @@ package Ex1A;
 import Ex1A.WorkerEnums.CompanyWorkers;
 import Ex1A.WorkerEnums.CrewRoll;
 
+/**
+ * This class represents a company worker on a flight.
+ * It extends the PersonFlight class.
+ * In addition to the person's data, it has the role in the company and the role of the crewmate.
+ */
 public class CompWorker extends PersonFlight{
     private CompanyWorkers compWorker;
     private CrewRoll crewRoll; // The role of the crewmate.
     private int crewID;
-
-    // TODO maybe list of flights like for month?
-
     /**
      * Constructor for a person on a flight.
      *

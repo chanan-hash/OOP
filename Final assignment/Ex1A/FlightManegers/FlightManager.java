@@ -76,7 +76,7 @@ public class FlightManager {
         flight.setPrice(flight.getPrice() - afterDiscount);
     }
 
-
+    // To add a crewmate we need to check that he is working in the company first, and then to check that he's roll is from a crew flight
     public boolean addCrewmate(Flight flight, List<CompWorker> workers, CompWorker crewmate) throws NotWorkingHereException, NotCrewFlightException {
         if (!workers.contains(crewmate)) {
             throw new NotWorkingHereException("The crewmate is not working in this company");

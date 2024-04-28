@@ -71,6 +71,10 @@ public abstract class PersonFlight implements FlightObserver {
                 '}';
     }
 
+    /**
+     * For the observer pattern, each person can be updated and notified.
+     * @param msg
+     */
     @Override
     public void update(String msg) {
         System.out.println(msg);

@@ -3,16 +3,19 @@ package Ex1A;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * This class represents a simple flight.
+ */
 public class Flight {
-    //TODO maybe do as flyweight for creating flights according to flight number
-    // Variables
+
+    // Attributes
     private String source;
     private String dest;
     private String date; // in format "dd/mm/yyyy"
     private double price; // in dollars
     private double duration; // in hours
     private int numPassengers; // maximum number of passengers to be allowed
-    private int numCrewmates;
+    private int numCrewmates; // maximum number of crewmates to be allowed
     private int flightNumber;
 
     // Lists of flights data, each flight has a list of passengers and crewmates
@@ -107,21 +110,13 @@ public class Flight {
         return crewmates;
     }
 
-
-    // Implementing the methods of the interface
-
+    // printing simple data on the flight
     @Override
     public String toString() {
-        return "Flight{" +
+        return "Flight info:" +
                 "source='" + source + '\'' +
                 ", dest='" + dest + '\'' +
-                ", price=" + price + " $" +
                 ", date='" + date + '\'' +
-                ", numPassengers=" + numPassengers +
-                ", numCrewmates=" + numCrewmates +
-                ", flightNumber=" + flightNumber +
-                ", passengers=" + passengers +
-                ", crewmates=" + crewmates +
-                '}';
+                ", numPassengers=" + numPassengers;
     }
 }
