@@ -3,10 +3,14 @@ package Ex1A;
 import Ex1A.PatternsInterfaces.FlightSearchStrategy;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.List;
 import java.time.LocalDate;
 
+/**
+ * This class is an implementation of the FlightSearchStrategy interface.
+ * By getting a list of flight and string we'll search a flight according to date range in the format "dd/mm/yyyy, dd/mm/yyyy".
+ * We're using LocalDate to compare the dates, and for convenience we're converting the input date strings into LocalDate objects.
+ */
 public class searchByDateStrategy implements FlightSearchStrategy {
     /**
      * Search for flights by date, such as "25/12/2021"
@@ -20,7 +24,7 @@ public class searchByDateStrategy implements FlightSearchStrategy {
         String[] date1 = dateRange[0].split("/"); // [dd, mm, yyyy]
         String[] date2 = dateRange[1].split("/"); // [dd, mm, yyyy]
 
-        // Sort the flights by date
+        // Sorting all the flights by date
         flights.sort((flight1, flight2) -> {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate date3 = LocalDate.parse(flight1.getDate(), formatter);
@@ -28,7 +32,7 @@ public class searchByDateStrategy implements FlightSearchStrategy {
             return date3.compareTo(date4);
         });
 
-        for (Flight flight : flights) {
+        for (Flight flight : flights) { // printing all the flights between thw range
             String[] flightDate = flight.getDate().split("/"); // [dd, mm, yyyy]
             if (isBetween(date1, date2, flightDate)) {
                 System.out.println(flight);
@@ -37,14 +41,14 @@ public class searchByDateStrategy implements FlightSearchStrategy {
     }
 
     // By converting the input date strings into LocalDate objects,
-    // we can use the isBefore() and isAfter() methods to check if the given date is within the range
+    // we can use the isBefore() and isAfter() methods to check if the given date is within the range.
     public boolean isBetween(String[] date1, String[] date2, String[] date) {
         // Convert the input date strings into LocalDate objects
         LocalDate startDate = LocalDate.of(Integer.parseInt(date1[2]), Integer.parseInt(date1[1]), Integer.parseInt(date1[0]));
         LocalDate endDate = LocalDate.of(Integer.parseInt(date2[2]), Integer.parseInt(date2[1]), Integer.parseInt(date2[0]));
         LocalDate givenDate = LocalDate.of(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]));
 
-        // Check if the given date is within the range
+        // Check if the given date is within the range, by inbuilt methods isBefore() and isAfter()
         return !givenDate.isBefore(startDate) && !givenDate.isAfter(endDate);
     }
 
