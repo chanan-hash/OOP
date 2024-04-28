@@ -83,9 +83,11 @@ public class main {
 //        airport.printOutgoingFlights();
         System.out.println();
         // Printing the companies and sub companies flights data by the composite pattern
-        elAl.printData();
-        arkia.printData();
-        israir.printData();
+//        elAl.printData();
+//        arkia.printData();
+//        israir.printData();
+
+        airport.printCompaniesData(); // Using the composite pattern to print all companies and sub companies data
 
         System.out.println("\nTill here every thing is working fine. Now we will try to add a sub company to a sub company, and it should throw an exception.");
 

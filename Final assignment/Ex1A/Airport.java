@@ -57,7 +57,6 @@ public class Airport {
     }
 
     // Printing companies and sub companies flights data by the composite pattern
-
     public void printCompaniesData() {
         for (FlightCompany flightCompany : flightCompanies) {
             flightCompany.printData();

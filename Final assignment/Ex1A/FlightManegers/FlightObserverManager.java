@@ -12,9 +12,8 @@ public class FlightObserverManager implements FlightSubject {
 
     /**
      * Observer pattern
-     *
-     * @param observer
      */
+
     @Override
     public void addObserver(FlightObserver observer, List<FlightObserver> ComFlightObservers) {
         if (!ComFlightObservers.contains(observer)) {

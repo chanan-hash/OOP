@@ -32,7 +32,7 @@ public class SearchFlightManager {
     }
 
     /**
-     * Acorrding to user input we'll search the flights
+     * According to user input we'll search the flights
      * Input: Price/Destination/Date
      * for each one we'll have a different strategy amd range to search
      *
@@ -41,27 +41,38 @@ public class SearchFlightManager {
     public void searchFlights(List<Flight> flights) throws InCorrectInputException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the search criteria: Price/Destination/Date");
-        String search = scanner.nextLine();
-        String searchRange = "";
+        String search = scanner.nextLine(); // for setting the flight search strategy
+        String searchRange = ""; // after we'll have the strategy we need to know the range to search
+
+        // Price
         if (search.equalsIgnoreCase("Price")) {
-            setStrategy(new searchByPriceStrategy());
+            setStrategy(new searchByPriceStrategy()); // setting the strategy
             System.out.println("Enter the price range: start,end");
             searchRange = scanner.nextLine();
             if (!searchRange.matches("(\\d+),(\\d+)")) { // allowing us to enter only numbers like 123,456
                 throw new InCorrectInputException("The price range is not in the correct format");
             }
-        } else if (search.equalsIgnoreCase("Destination")) {
+        }
+
+        // Destination
+        else if (search.equalsIgnoreCase("Destination")) {
             setStrategy(new searchByDestinationStrategy());
             System.out.println("Enter the destination: ");
             searchRange = scanner.nextLine();
-        } else if (search.equalsIgnoreCase("Date")) {
+        }
+
+        // Date
+        else if (search.equalsIgnoreCase("Date")) {
             setStrategy(new searchByDateStrategy());
             System.out.println("Enter the date in dd/mm/yyyy,dd/mm/yyyy , format: ");
             searchRange = scanner.nextLine();
             if (!searchRange.matches("\\d{2}/\\d{2}/\\d{4},\\d{2}/\\d{2}/\\d{4}")) { // allowing us to enter only dates like 01/01/2023,02/02/2023
                 throw new InCorrectInputException("The date is not in the correct format");
             }
-        } else {
+        }
+
+        // Incorrect input
+        else {
             throw new InCorrectInputException("The search criteria is not in the correct format");
         }
 
