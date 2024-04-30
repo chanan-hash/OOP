@@ -11,7 +11,7 @@ import Ex1B.courseBuilder.Teacher;
 
 public class Lecturer extends Teacher {
 
-    public Lecturer(String name, int id, String password, int workHours) {
+    private Lecturer(String name, int id, String password, int workHours) {
         super(name, id, password, workHours);
     }
 

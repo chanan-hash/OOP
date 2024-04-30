@@ -11,6 +11,10 @@ import Ex1B.courseBuilder.Teacher;
 
 public class Practitioner extends Teacher {
 
+    private Practitioner(String name, int id, String password, int workHours) { // inherits from the Teacher class
+        super(name, id, password, workHours);
+    }
+
     // This method is used to create a practitioner and add it to the id set, if id is taken throws an exception
     public static Practitioner createPractitioner(String name, int id, String password, int workHours) throws IdTakenException {
         if (UniversityPerson.getIdMap().get(id) != null) {
@@ -22,7 +26,4 @@ public class Practitioner extends Teacher {
         }
     }
 
-    public Practitioner(String name, int id, String password, int workHours) { // inherits from the Teacher class
-        super(name, id, password, workHours);
-    }
 }
