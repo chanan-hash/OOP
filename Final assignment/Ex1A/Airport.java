@@ -66,7 +66,7 @@ public class Airport {
     @Override
     public String toString() {
         return "Airport" +
-                  name + '\'';
+                name + '\'';
     }
 
     /********************************* Getters and Setters *****************************************/

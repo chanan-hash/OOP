@@ -54,8 +54,8 @@ public class CheckCode {
 
         // Q3
         Animal animal = new Dog();
-        animal.makeSound(); // will return the sound of a dog because the method is overridden in the Dog class, and we've created a dog object
+        animal.makeSound(); // Animal sound
         Dog dog = new Dog();
-        dog.makeSound();
+        dog.makeSound(); // Bark
     }
 }
