@@ -1,8 +1,8 @@
 public class Dog extends Animal {
         final static String sound = "Bark";
 
-    //    @Override
-    void makeSound() {
+//        @Override
+        static void makeSound() {
         System.out.println(sound);
 //        super.makeSound();
     }

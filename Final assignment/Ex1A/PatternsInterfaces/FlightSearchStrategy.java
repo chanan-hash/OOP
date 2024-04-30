@@ -9,7 +9,6 @@ import java.util.List;
  * Each class that implements this interface will have a different search strategy, by filtering the flights according to users input.
  * This method will search,will set the strategy search according to the search criteria Price/Destination/Date
  */
-
 public interface FlightSearchStrategy {
-    public void search(List<Flight> flights, String searchRange);
+    void search(List<Flight> flights, String searchRange);
 }

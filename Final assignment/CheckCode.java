@@ -55,33 +55,7 @@ public class CheckCode {
         // Q3
         Animal animal = new Dog();
         animal.makeSound(); // will return the sound of a dog because the method is overridden in the Dog class, and we've created a dog object
+        Dog dog = new Dog();
+        dog.makeSound();
     }
 }
-
-/**
-public class Animal {
-    final static String sound = "Animal sound";
-
-    void makeSound() {
-        System.out.println(sound);
-    }
-}
-public class Dog extends Animal{
-    final static String sound = "Bark";
-
-    void makeSound() {
-        System.out.println(sound);
-    }
-}
-
-
-public class CheckCode {
-    public static void main(String[] args) {
-
-        Animal animal = new Dog();
-        animal.makeSound(); // will return the sound of a dog because the method is overridden in the Dog class, and we've created a dog object
-    }
-}
-
-What one thing should I change the code to be polymorfic behavior?
-*/

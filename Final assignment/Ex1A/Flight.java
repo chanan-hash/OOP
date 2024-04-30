@@ -117,6 +117,7 @@ public class Flight {
                 "source='" + source + '\'' +
                 ", dest='" + dest + '\'' +
                 ", date='" + date + '\'' +
+                ", price=" + price + "$" + '\'' +
                 ", numPassengers=" + numPassengers;
     }
 }

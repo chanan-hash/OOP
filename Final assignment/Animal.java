@@ -4,7 +4,7 @@
 public class Animal {
     final static String sound = "Animal sound";
 
-    void makeSound() {
+    static void makeSound() {
         System.out.println(sound);
     }
 }
