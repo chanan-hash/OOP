@@ -11,13 +11,13 @@ public class CheckCode {
         lowercaseLettersList.add(new Person("alice"));
         lowercaseLettersList.add(new Person("bob"));
 
-        for (int i = 0; i < lowercaseLettersList.size(); i++) {
-            uppercaseLettersList.add(new Person(lowercaseLettersList.get(i).getName().toUpperCase()));
-        }
-        for (int i = 0; i < lowercaseLettersList.size(); i++) {
-            uppercaseLettersList.add(lowercaseLettersList.get(i));
-            uppercaseLettersList.get(i).setName(uppercaseLettersList.get(i).getName().toUpperCase());
-        }
+//        for (int i = 0; i < lowercaseLettersList.size(); i++) {
+//            uppercaseLettersList.add(new Person(lowercaseLettersList.get(i).getName().toUpperCase()));
+//        }
+//        for (int i = 0; i < lowercaseLettersList.size(); i++) {
+//            uppercaseLettersList.add(lowercaseLettersList.get(i));
+//            uppercaseLettersList.get(i).setName(uppercaseLettersList.get(i).getName().toUpperCase());
+//        }
 
         for (int i = 0; i < lowercaseLettersList.size(); i++) {
             uppercaseLettersList.add(new Person(lowercaseLettersList.get(i).getName()));
